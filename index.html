@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <meta name="theme-color" content="#050b14">
+  <title>Orbit Defender: Degree Protocol</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main id="game" class="game-shell">
+    <canvas id="arena" aria-label="สนามรบ Orbit Defender"></canvas>
+    <div class="vignette"></div>
+    <header class="hud-top">
+      <div class="brand-lockup"><span class="sigil">◎</span><div><b>ORBIT DEFENDER</b><small>DEGREE PROTOCOL</small></div></div>
+      <div class="mission-readout"><span class="live-dot"></span><span id="stage-name">ACADEMY</span><i>/</i><span id="stage-phase">SYSTEM READY</span><i>/</i><span id="difficulty-label">PILOT</span></div>
+      <div class="hud-actions"><div class="score-box"><small>SCORE</small><b id="score">000000</b></div><div class="pilot-box"><div class="pilot-hp-head"><small>PILOT HP</small><b id="pilot-health">3 / 3</b></div><i><u id="pilot-health-fill"></u></i></div><div class="energy-box"><div><small>WEAPON ENERGY</small><b id="pilot-energy-text">100%</b></div><i><u id="pilot-energy-fill"></u></i></div><div class="hull-box"><small>CORE HP</small><b id="hull">◆ ◆ ◆</b></div><button class="hud-icon" id="sound" title="เพลงและเสียงเปิด/ปิด" aria-label="เปิดหรือปิดเพลงและเสียง">♫<span id="sound-state">ON</span></button><button class="hud-icon pause-button" id="pause" title="พักเกม">Ⅱ</button></div>
+    </header>
+    <aside class="mission-panel panel">
+      <div class="panel-heading"><span class="tiny-mark">✦</span> MISSION BRIEF</div>
+      <div class="mission-kicker" id="mission-kicker">TRAINING</div>
+      <h1 id="mission-title">สถานีวงโคจร</h1>
+      <p id="mission-copy">เตรียมยานให้พร้อม นักบิน</p>
+      <div class="panel-rule"></div>
+      <div class="mission-objective"><span class="objective-glyph">⌖</span><div><small>OBJECTIVE</small><b id="objective">เตรียมพร้อมปฏิบัติการ</b></div></div>
+      <div class="wave-line"><span>WAVE PROGRESS</span><b id="progress-text">—</b></div>
+      <div class="progress-track"><i id="progress-fill"></i></div>
+      <div class="combo-readout"><small>COMBO</small><b id="combo">×0</b><span id="combo-label">BUILD YOUR STREAK</span></div>
+    </aside>
+    <aside class="learning-panel panel">
+      <div class="panel-heading"><span class="tiny-mark">⌖</span> LEARNING GOAL</div>
+      <div class="learn-goal"><b>✓</b><span>อ่านมุมและพิกัดเพื่อจดจำค่าตรีโกณมิติ</span></div>
+      <div class="learn-goal"><b>✓</b><span>เชื่อม x = cos θ และ y = sin θ</span></div>
+      <div class="learn-goal"><b>✓</b><span>เลือกอาวุธจากค่าที่ตรงกับสัญญาณของศัตรู</span></div>
+    </aside>
+    <aside class="telemetry-panel panel">
+      <div class="panel-heading"><span class="tiny-mark">π</span> TRIGONOMETRY INFO</div>
+      <div class="telemetry-label" id="telemetry-label">YOUR BEARING / THETA</div>
+      <div class="angle-readout"><strong id="angle">000°</strong><span id="angle-unit">BEARING</span></div>
+      <div class="coord-readout"><div><small>X / COS θ</small><b id="coord-x">1.00</b></div><div><small>Y / SIN θ</small><b id="coord-y">0.00</b></div></div>
+      <div class="exact-readout"><div><small>cos θ</small><b id="cos-exact">1</b></div><div><small>sin θ</small><b id="sin-exact">0</b></div></div>
+      <div class="quadrant-readout"><b id="quadrant-text">AXIS / +X</b><span id="quadrant-signs">(+, 0)</span></div>
+      <svg class="mini-quadrants" viewBox="0 0 220 124" aria-label="แผนภาพเครื่องหมายของสี่ควอดแรนต์">
+        <path class="quad q2" d="M110 62H29A81 81 0 0 1 110-19Z" transform="translate(0 19)"/><path class="quad q1" d="M110 62V-19A81 81 0 0 1 191 62Z" transform="translate(0 19)"/>
+        <path class="quad q3" d="M110 62H29A81 81 0 0 0 110 143Z" transform="translate(0 -19)"/><path class="quad q4" d="M110 62V143A81 81 0 0 0 191 62Z" transform="translate(0 -19)"/>
+        <path d="M22 62H198M110 8V116" stroke="#75d9f3" stroke-width="1.5"/><path d="M198 62l-7-4v8zM110 8l-4 7h8z" fill="#75d9f3"/>
+        <text x="150" y="42">I (+,+)</text><text x="48" y="42">II (−,+)</text><text x="40" y="91">III (−,−)</text><text x="151" y="91">IV (+,−)</text>
+      </svg>
+      <div class="orbit-status"><span>CORE DEFENSE PILOT</span><b id="orbit-speed">AIM VECTOR · READY</b><small>แตะปุ่มอาวุธเพื่อหันยานและยิง</small></div>
+      <div class="telemetry-rule"></div>
+      <div class="target-readout"><small id="target-label">TARGET SIGNAL</small><b id="target-data">NO CONTACT</b></div>
+      <div class="bearing-bar"><span id="bearing-mark"></span></div>
+      <div class="target-foot"><span id="target-angle">LOCKED TO ORBIT</span><span id="target-distance">—</span></div>
+    </aside>
+    <aside class="reference-panel panel" id="reference-panel" hidden>
+      <div class="panel-heading"><span class="tiny-mark">⌗</span> UNIT CIRCLE REFERENCE</div>
+      <div class="ref-equation"><b>x = cos θ</b><span>horizontal coordinate</span></div>
+      <div class="ref-equation"><b>y = sin θ</b><span>vertical coordinate</span></div>
+      <div class="ref-quadrants"><span>I&nbsp; (+,+)</span><span>II&nbsp; (−,+)</span><span>III&nbsp; (−,−)</span><span>IV&nbsp; (+,−)</span></div>
+      <div class="ref-note">0° ≤ θ &lt; 360° · counter-clockwise from +x</div>
+    </aside>
+    <div class="center-reticle" aria-hidden="true"><i></i><b></b></div>
+    <div class="toast" id="toast"></div>
+    <div class="weapon-rack" id="weapon-rack" aria-label="แถบเลือกอาวุธสองชนิด"><div class="weapon-strip angle-strip"><b>ANGLE<br>CANNON</b><div class="weapon-cards" id="angle-weapons"></div></div><div class="weapon-strip value-strip"><b>VALUE<br>CANNON</b><div class="weapon-cards" id="value-weapons"></div></div></div>
+    <div class="start-overlay" id="overlay">
+      <div class="overlay-grid"></div>
+      <div class="brief-box">
+        <div class="brief-top"><span class="live-dot"></span> ORBITAL DEFENSE NETWORK <span class="brief-code">OD-07 / 360°</span></div>
+        <div class="brief-emblem">◎<span>✦</span></div>
+        <div class="eyebrow">TACTICAL TRAINING SIMULATION</div>
+        <h2 id="overlay-title">ORBIT DEFENDER<span>DEGREE PROTOCOL</span></h2>
+        <div class="mission-art" id="mission-art" hidden></div>
+        <p id="overlay-copy">Degree Core กำลังตกอยู่ในอันตราย เรียนรู้มุมและค่าบนวงกลมหนึ่งหน่วย แล้วนำทักษะไปปกป้องดาวเคราะห์ เลือกความยากและหน่วยการเรียนรู้เพื่อเริ่มภารกิจ</p>
+        <div class="lesson-art" id="lesson-art" hidden></div>
+        <div class="unit-select"><span>LEARNING MODE</span><button data-unit="degree" class="active">องศา °</button><button data-unit="radian">เรเดียน π</button></div>
+        <div class="difficulty-select"><span>เลือกความยาก</span><button data-difficulty="cadet"><b>CADET</b><small>แสดงมุมและ x/y ครบ · พลังชีวิตเพิ่ม</small></button><button data-difficulty="pilot" class="active"><b>PILOT</b><small>แสดงโจทย์ทีละด้าน · สมดุล</small></button><button data-difficulty="ace"><b>ACE</b><small>ซ่อนค่าบางส่วน · ศัตรูเร็วและเกราะหนา</small></button></div>
+        <div class="brief-controls"><span>ปกป้อง Degree Core</span><span>เลือกมุมและค่าที่ตรงกับสัญญาณ</span><span>เรียนรู้ก่อนแล้วค่อยปลดล็อกปืน</span></div>
+        <div class="upgrade-choices" id="upgrade-choices" hidden></div>
+        <div class="run-actions" id="run-actions" hidden><button id="continue-run">CONTINUE RUN ↗</button><button id="extract-run">EXTRACT WITH LOOT</button></div>
+        <button id="retry-wave" class="retry-button" hidden>เล่น Wave นี้อีกครั้ง</button>
+        <button id="launch" class="launch-button"><span>เริ่มแคมเปญ</span><b>↗</b></button>
+        <div id="menu-actions" class="menu-actions" hidden><button id="academy-button" class="academy-button">เริ่มฝึก Academy</button><small>ฝึกพื้นฐานก่อนเริ่มแคมเปญได้ทุกเมื่อ</small></div>
+        <div class="brief-foot">ACADEMY FLIGHT SYSTEMS &nbsp;·&nbsp; SELECT UNIT + THREAT LEVEL</div>
+      </div>
+    </div>
+    <div class="bottom-hud">
+      <div class="controls-legend"><span class="legend-title">FLIGHT CONTROLS</span><span>CENTER DEFENSE</span><span><kbd>SPACE</kbd> FIRE SELECTED</span><span><kbd>1–9</kbd> VALUE WEAPONS</span><span><kbd>SHIFT</kbd> SHIELD ON CONTACT</span><span><kbd>E</kbd> SCAN</span><span><kbd>H</kbd> HINT</span><span><kbd>TAB</kbd> REF</span><span><kbd>ESC</kbd> PAUSE</span></div>
+      <div class="status-line"><span class="status-pip"></span><b id="status-text">FLIGHT SYSTEM STANDBY</b><span id="feedback">UNIT CIRCLE ONLINE</span><button id="deploy-button" hidden>LAUNCH MISSION ↗</button></div>
+      <div class="touch-controls"><button data-control="fire">FIRE</button><button data-action="hint">HINT</button><button data-action="scan">SCAN</button><button data-control="shield">SHIELD</button></div>
+    </div>
+  </main>
+  <script src="game.js"></script>
+</body>
+</html>
+
