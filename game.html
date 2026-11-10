@@ -26,6 +26,12 @@
       <div class="wave-line"><span>WAVE PROGRESS</span><b id="progress-text">—</b></div>
       <div class="progress-track"><i id="progress-fill"></i></div>
       <div class="combo-readout"><small>COMBO</small><b id="combo">×0</b><span id="combo-label">BUILD YOUR STREAK</span></div>
+      <section id="mission-completion" class="mission-completion" hidden aria-live="polite">
+        <b class="completion-status">MISSION COMPLETE</b>
+        <p id="completion-copy">เลือกอัปเกรดก่อนออกเดินทาง</p>
+        <div class="upgrade-choices" id="upgrade-choices" hidden></div>
+        <div class="run-actions" id="run-actions" hidden><button id="continue-run">LEAVE MISSION ↗</button><button id="extract-run">EXTRACT WITH LOOT</button></div>
+      </section>
     </aside>
     <aside class="learning-panel panel">
       <div class="panel-heading"><span class="tiny-mark">⌖</span> LEARNING GOAL</div>
@@ -70,6 +76,13 @@
       <div><small>ACCURACY</small><b id="travel-accuracy">100%</b></div>
       <button id="resupply-open" type="button">RESUPPLY QUIZ <span>π</span></button>
     </aside>
+    <section id="zombie-break" class="zombie-break" hidden aria-label="ช่วงเกมยิงซอมบี้">
+      <header class="zombie-break-header">
+        <span>RADIATED RADIANS · SURVIVE THE INTERMISSION</span>
+        <b id="zombie-clock">00:30</b>
+      </header>
+      <iframe id="zombie-game" title="เกมยิงซอมบี้ Radiated Radians"></iframe>
+    </section>
     <section id="quiz-overlay" class="quiz-overlay" hidden aria-labelledby="quiz-title">
       <div class="quiz-card"><div class="quiz-kicker">RESUPPLY TERMINAL <span>FLIGHT PAUSED TO 18%</span></div><h2 id="quiz-title">คำนวณเพื่อเติมกระสุน</h2><p id="quiz-question"></p><div id="quiz-options" class="quiz-options"></div><div id="quiz-feedback" class="quiz-feedback" aria-live="polite"></div><button id="quiz-resume" type="button" disabled>เลือกคำตอบเพื่อกลับสู่การเดินทาง</button></div>
     </section>
@@ -84,8 +97,6 @@
         <p id="overlay-copy">กำลังรับข้อมูลดาวและวัตถุประสงค์ภารกิจ...</p>
         <div class="lesson-art" id="lesson-art" hidden></div>
         <div class="brief-controls"><span>ปกป้อง Degree Core</span><span>เลือกมุมและค่าที่ตรงกับสัญญาณ</span><span>เรียนรู้ก่อนแล้วค่อยปลดล็อกปืน</span></div>
-        <div class="upgrade-choices" id="upgrade-choices" hidden></div>
-        <div class="run-actions" id="run-actions" hidden><button id="continue-run">CONTINUE RUN ↗</button><button id="extract-run">EXTRACT WITH LOOT</button></div>
         <button id="retry-wave" class="retry-button" hidden>เล่น Wave นี้อีกครั้ง</button>
         <button id="launch" class="launch-button"><span>เริ่มแคมเปญ</span><b>↗</b></button>
         <div class="brief-foot">STARFALL ROUTE &nbsp;·&nbsp; QUADRANT FLIGHT SYSTEMS</div>
@@ -100,4 +111,3 @@
   <script src="game.js"></script>
 </body>
 </html>
-

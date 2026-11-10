@@ -265,3 +265,20 @@
 @media(max-width:950px){.game-shell::before{inset:4px}.game-shell::after{inset:7px}.hud-top{height:70px}.panel{border-color:#3bd9ea80}.travel-hud{max-width:calc(100vw - 24px);flex-wrap:wrap;justify-content:center;gap:6px;padding:8px}}
 @media(max-width:650px){.hud-top{height:59px}.brand-lockup b{font-size:8px}.brand-lockup small{letter-spacing:.16em}.panel{border-color:#3bd9ea75}.travel-hud{top:64px;max-width:calc(100vw - 12px);width:max-content}.travel-hud>div{padding:2px 5px}.quiz-card{border-width:1px}.brief-box{animation-duration:.28s}}
 @media(prefers-reduced-motion:reduce){.brief-box,.quiz-card{animation:none!important}.hud-icon,.weapon-card,.launch-button,.retry-button,.run-actions button,.quiz-options button{transition:none!important}}
+
+.mission-completion{margin-top:12px;padding:10px;border:1px solid #50e3e677;background:linear-gradient(145deg,#082437,#071422);box-shadow:inset 0 0 18px #50e3e60d}
+.mission-completion[hidden]{display:none}
+.completion-status{display:block;color:var(--mint);font:700 10px var(--mono);letter-spacing:.09em}
+.mission-completion p{margin:6px 0 9px;font-size:10px}
+.game-shell.mission-complete .mission-panel{z-index:5;width:min(330px,36vw);max-height:calc(100dvh - 160px);overflow-y:auto;scrollbar-width:thin}
+.mission-completion .upgrade-choices{display:flex;flex-direction:column;gap:6px;margin:8px 0}
+.mission-completion .upgrade-choice{min-height:44px;padding:7px 8px;text-align:left;font-size:9px;line-height:1.35}
+.mission-completion .upgrade-choice b{display:block;margin-bottom:3px;font-size:9px}
+.mission-completion .run-actions{display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.mission-completion .run-actions button{width:100%;min-height:40px;padding:7px;font-size:9px;white-space:normal}
+.zombie-break{position:absolute;z-index:10;inset:0;display:flex;flex-direction:column;background:#080b06}
+.zombie-break[hidden]{display:none}
+.zombie-break-header{height:58px;flex:none;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 18px;border-bottom:1px solid #8fff6b66;background:#0c1009;color:#b8d7a9;font:10px var(--mono);letter-spacing:.08em}
+.zombie-break-header b{color:#8fff6b;font-size:18px}
+#zombie-game{flex:1;width:100%;min-height:0;border:0}
+@media(max-width:650px){.game-shell.mission-complete .mission-panel{top:64px;left:8px;width:min(340px,calc(100vw - 16px));max-height:calc(100dvh - 145px);padding:10px}.mission-completion .upgrade-choice{min-height:40px}.zombie-break-header{height:54px;padding:6px 8px;gap:6px;font-size:7px}.zombie-break-header b{font-size:14px}}

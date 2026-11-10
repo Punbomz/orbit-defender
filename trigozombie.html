@@ -1358,12 +1358,15 @@
     ac();
     startGame();
   });
+  const timedIntermission = new URLSearchParams(location.search).get('autostart') === '1';
   retryBtn.addEventListener('click', ()=>{
+    if(timedIntermission){ startGame(); return; }
     screenOver.classList.add('hidden');
     screenMenu.classList.remove('hidden');
   });
 
   resize();
+  if(timedIntermission) startGame();
 })();
 </script>
 </body>
