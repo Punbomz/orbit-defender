@@ -37,11 +37,7 @@
 
     <section class="launch-panel" aria-label="ตั้งค่าก่อนออกบิน">
       <div class="panel-heading"><span>FLIGHT CONFIGURATION</span><span>HELIOS SYSTEM · ROUTE 01</span></div>
-      <nav class="mode-tabs" aria-label="โหมดเกม">
-        <button class="mode-tab active" type="button" data-mode="campaign" aria-pressed="true"><span>◈</span> CAMPAIGN</button>
-        <button class="mode-tab" type="button" data-mode="academy" aria-pressed="false"><span>✦</span> ACADEMY</button>
-        <small>เลือกภารกิจและตั้งค่าการบิน</small>
-      </nav>
+      <div class="mode-tabs"><small>ตั้งค่าหน่วยการเรียนรู้และระดับความยากก่อนออกเดินทาง</small></div>
 
       <div class="panel-main">
         <div class="choices">
@@ -50,25 +46,34 @@
             <button class="choice" type="button" data-group="unit" data-value="radian" aria-pressed="false"><i></i><span>RADIANS</span></button>
           </fieldset>
           <fieldset><legend>THREAT LEVEL</legend>
-            <button class="choice" type="button" data-group="difficulty" data-value="cadet" aria-pressed="false"><i></i><span>CADET<small>ฝึกฝน</small></span></button>
-            <button class="choice active" type="button" data-group="difficulty" data-value="pilot" aria-pressed="true"><i></i><span>PILOT<small>สมดุล</small></span></button>
-            <button class="choice" type="button" data-group="difficulty" data-value="ace" aria-pressed="false"><i></i><span>ACE<small>ท้าทาย</small></span></button>
+            <button class="choice" type="button" data-group="difficulty" data-value="cadet" aria-pressed="false"><i></i><span><b class="difficulty-name">CADET</b><small>ศัตรูช้าลง · ♥ 5 HP<br>ชาร์จไว · ยิงพลาด −4%<br>จับคู่ผ่อนปรน · Hint ×1</small></span></button>
+            <button class="choice active" type="button" data-group="difficulty" data-value="pilot" aria-pressed="true"><i></i><span><b class="difficulty-name">PILOT</b><small>ความเร็วปกติ · ♥ 3 HP<br>ชาร์จสมดุล · ยิงพลาด −8%<br>จับคู่ตรงโจทย์ · Hint ×3</small></span></button>
+            <button class="choice" type="button" data-group="difficulty" data-value="ace" aria-pressed="false"><i></i><span><b class="difficulty-name">ACE</b><small>ศัตรูเร็วขึ้น · ♥ 2 HP<br>ชาร์จช้า · ยิงพลาด −12%<br>จับคู่ตรงโจทย์ · Hint ×5</small></span></button>
           </fieldset>
         </div>
         <div class="launch-actions">
-          <a class="start-button" id="campaign-link" href="game.html?mode=campaign&amp;unit=degree&amp;difficulty=pilot"><span><b id="launch-label">LAUNCH CAMPAIGN</b></span><i>»</i></a>
-          <button class="academy-quick" type="button"><span aria-hidden="true">♧</span> FLIGHT SCHOOL</button>
+          <a class="start-button" id="campaign-link" href="game.html?mode=campaign&amp;unit=degree&amp;difficulty=pilot"><span><b id="launch-label">START MISSION</b></span><i>»</i></a>
           <details class="options-menu">
-            <summary><span>⚙</span> OPTIONS</summary>
-            <div class="options-popover"><b>FLIGHT MANUAL</b><p>เลือกอาวุธให้ตรงสัญญาณ แล้วคลิกเพื่อเล็งและยิง</p><p><kbd>Space</kbd> ยิง　<kbd>Shift</kbd> กางโล่</p><p><kbd>E</kbd> สแกน　<kbd>H</kbd> คำใบ้　<kbd>Esc</kbd> พักเกม</p></div>
+            <summary><span>⚙</span> ตั้งค่าและวิธีเล่น</summary>
+            <div class="options-popover"><b>ตั้งค่าการบิน</b><p>เลือกองศาหรือเรเดียนได้จาก Learning Unit</p><p>ระดับความยากกำหนดความเร็วศัตรู พลังชีวิต และเวลาที่ระบบจะแสดงคำใบ้</p><p>ระหว่างเล่น คลิกการ์ดมุมหรือค่าเพื่อเลือกอาวุธและยิง คำใบ้จะแสดงเมื่อพลาดซ้ำกับสัญญาณเดิม</p></div>
           </details>
         </div>
       </div>
 
-      <div class="route-progress" aria-label="Route progression"><span class="route-title">ROUTE PROGRESSION</span><b class="route-stop current" data-route-stage="0" aria-label="ด่าน 1 ปลดล็อกแล้ว">01</b><i></i><b class="route-stop locked" data-route-stage="1" aria-label="ด่าน 2 ล็อกอยู่">02</b><i></i><b class="route-stop locked" data-route-stage="2" aria-label="ด่าน 3 ล็อกอยู่">03</b><i></i><b class="route-stop boss locked" data-route-stage="3" aria-label="บอสล็อกอยู่">★ BOSS</b><small>HELIOS OUTPOST　·　MIRROR BELT　·　MERIDIAN　·　HOMEWORLD</small></div>
+      <section class="route-progress" aria-label="เส้นทางแคมเปญ">
+        <div class="route-heading"><span class="route-title">ROUTE PROGRESSION</span><small>เส้นทางความคืบหน้า · ระดับความคืบหน้าแคมเปญ</small></div>
+        <div class="route-track">
+          <i class="route-energy-line" aria-hidden="true"></i>
+          <article class="route-stop current" data-route-stage="0" data-route-name="Helios Outpost · Q1 Basics"><img class="route-planet-art route-q1" src="assets/planet-helios-outpost.webp" alt="ดาว Helios Outpost สำหรับบทเรียนพื้นฐาน Q1"><span class="route-step">01</span><span class="route-copy"><b>HELIOS OUTPOST</b><small>Q1 · พื้นฐาน</small></span></article>
+          <article class="route-stop locked" data-route-stage="1" data-route-name="Mirror Belt · Q2 Reflection"><img class="route-planet-art route-q2" src="assets/planet-mirror-belt.webp" alt="ดาวน้ำแข็งและวงแหวนสะท้อนสำหรับบทเรียน Q2"><span class="route-step">02</span><span class="route-copy"><b>MIRROR BELT</b><small>Q2 · การสะท้อน</small></span></article>
+          <article class="route-stop locked" data-route-stage="2" data-route-name="Shattered Meridian · Q3/Q4 Coordinates"><img class="route-planet-art route-q34" src="assets/planet-shattered-meridian.webp" alt="ดาวแยกสองซีกสำหรับบทเรียนพิกัด Q3 และ Q4"><span class="route-step">03</span><span class="route-copy"><b>MERIDIAN</b><small>Q3–Q4 · พิกัด</small></span></article>
+          <article class="route-stop locked" data-route-stage="3" data-route-name="Special Angle"><img class="route-planet-art route-special" src="assets/planet-special-angle.webp" alt="ดาวม่วงและวงโคจรมุมพิเศษ"><span class="route-step">04</span><span class="route-copy"><b>SPECIAL ANGLE</b><small>มุมพิเศษ</small></span></article>
+          <article class="route-stop boss locked" data-route-stage="4" data-route-name="Degree Overlord · Boss"><img class="route-planet-art route-boss" src="assets/planet-degree-overlord.webp" alt="ดาวบอส Degree Overlord ที่มีแกนพลังงานสีทอง"><span class="route-step">★</span><span class="route-copy"><b>HOMEWORLD</b><small>BOSS · DEGREE OVERLORD</small></span></article>
+        </div>
+      </section>
     </section>
 
-    <footer><span>ORBITAL DEFENSE NETWORK <b>OD-07</b></span><span><kbd>ENTER</kbd> เริ่มภารกิจ　 <kbd>O</kbd> ตั้งค่า　 <kbd>M</kbd> สลับโหมด</span></footer>
+    <footer><span>ORBITAL DEFENSE NETWORK <b>OD-07</b></span><span>คลิกปุ่มเพื่อเลือกค่า · ปรับหน่วยและความยากได้ก่อนเริ่ม</span></footer>
   </main>
   <script src="menu.js"></script>
 </body>

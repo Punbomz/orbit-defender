@@ -14,7 +14,7 @@
     <header class="hud-top">
       <div class="brand-lockup"><span class="sigil">◎</span><div><b>ORBIT DEFENDER</b><small>DEGREE PROTOCOL</small></div></div>
       <div class="mission-readout"><span class="live-dot"></span><span id="stage-name">ACADEMY</span><i>/</i><span id="stage-phase">SYSTEM READY</span><i>/</i><span id="difficulty-label">PILOT</span></div>
-      <div class="hud-actions"><div class="score-box"><small>SCORE</small><b id="score">000000</b></div><div class="pilot-box"><div class="pilot-hp-head"><small>PILOT HP</small><b id="pilot-health">3 / 3</b></div><i><u id="pilot-health-fill"></u></i></div><div class="energy-box"><div><small>WEAPON ENERGY</small><b id="pilot-energy-text">100%</b></div><i><u id="pilot-energy-fill"></u></i></div><div class="hull-box"><small>CORE HP</small><b id="hull">◆ ◆ ◆</b></div><button class="hud-icon" id="sound" title="เพลงและเสียงเปิด/ปิด" aria-label="เปิดหรือปิดเพลงและเสียง">♫<span id="sound-state">ON</span></button><button class="hud-icon pause-button" id="pause" title="พักเกม">Ⅱ</button></div>
+      <div class="hud-actions"><div class="score-box"><small>SCORE</small><b id="score">000000</b></div><div class="pilot-box"><small>HP</small><div class="health-stat"><span class="health-icon" aria-hidden="true">♥</span><b id="pilot-health">3 / 3</b></div></div><div class="energy-box"><div><small>SHOT CHARGE</small><b id="pilot-energy-text">100%</b></div><i><u id="pilot-energy-fill"></u></i></div><div class="shield-box"><small>ARMOR</small><div id="shield-meter" aria-label="เกราะ 0 จาก 3"><svg class="armor-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 20 5v6.1c0 5.2-3.4 8.4-8 10.4-4.6-2-8-5.2-8-10.4V5l8-2.5Z"/></svg><b id="shield-count">0 / 3</b></div></div><button class="hud-icon" id="sound" title="เพลงและเสียงเปิด/ปิด" aria-label="เปิดหรือปิดเพลงและเสียง">♫<span id="sound-state">ON</span></button><button class="hud-icon pause-button" id="pause" title="พักเกม">Ⅱ</button></div>
     </header>
     <aside class="mission-panel panel">
       <div class="panel-heading"><span class="tiny-mark">✦</span> MISSION BRIEF</div>
@@ -33,14 +33,9 @@
         <div class="run-actions" id="run-actions" hidden><button id="continue-run">LEAVE MISSION ↗</button><button id="extract-run">EXTRACT WITH LOOT</button></div>
       </section>
     </aside>
-    <aside class="learning-panel panel">
-      <div class="panel-heading"><span class="tiny-mark">⌖</span> LEARNING GOAL</div>
-      <div class="learn-goal"><b>✓</b><span>อ่านมุมและพิกัดเพื่อจดจำค่าตรีโกณมิติ</span></div>
-      <div class="learn-goal"><b>✓</b><span>เชื่อม x = cos θ และ y = sin θ</span></div>
-      <div class="learn-goal"><b>✓</b><span>เลือกอาวุธจากค่าที่ตรงกับสัญญาณของศัตรู</span></div>
-    </aside>
-    <aside class="telemetry-panel panel">
-      <div class="panel-heading"><span class="tiny-mark">π</span> TRIGONOMETRY INFO</div>
+    <aside class="telemetry-panel panel" id="telemetry-panel">
+      <div class="panel-heading"><span><span class="tiny-mark">π</span> TRIGONOMETRY INFO</span><button id="telemetry-toggle" type="button" aria-expanded="false">DETAILS ＋</button></div>
+      <div class="compact-readout"><b id="compact-angle">000°</b><span>x <i id="compact-x">1</i></span><span>y <i id="compact-y">0</i></span><strong id="compact-quadrant">AXIS</strong></div>
       <div class="telemetry-label" id="telemetry-label">YOUR BEARING / THETA</div>
       <div class="angle-readout"><strong id="angle">000°</strong><span id="angle-unit">BEARING</span></div>
       <div class="coord-readout"><div><small>X / COS θ</small><b id="coord-x">1.00</b></div><div><small>Y / SIN θ</small><b id="coord-y">0.00</b></div></div>
@@ -57,13 +52,6 @@
       <div class="target-readout"><small id="target-label">TARGET SIGNAL</small><b id="target-data">NO CONTACT</b></div>
       <div class="bearing-bar"><span id="bearing-mark"></span></div>
       <div class="target-foot"><span id="target-angle">LOCKED TO ORBIT</span><span id="target-distance">—</span></div>
-    </aside>
-    <aside class="reference-panel panel" id="reference-panel" hidden>
-      <div class="panel-heading"><span class="tiny-mark">⌗</span> UNIT CIRCLE REFERENCE</div>
-      <div class="ref-equation"><b>x = cos θ</b><span>horizontal coordinate</span></div>
-      <div class="ref-equation"><b>y = sin θ</b><span>vertical coordinate</span></div>
-      <div class="ref-quadrants"><span>I&nbsp; (+,+)</span><span>II&nbsp; (−,+)</span><span>III&nbsp; (−,−)</span><span>IV&nbsp; (+,−)</span></div>
-      <div class="ref-note">0° ≤ θ &lt; 360° · counter-clockwise from +x</div>
     </aside>
     <div class="center-reticle" aria-hidden="true"><i></i><b></b></div>
     <div class="toast" id="toast"></div>
@@ -93,20 +81,30 @@
         <div class="brief-emblem">◎<span>✦</span></div>
         <div class="eyebrow">STARFALL ROUTE · PRE-FLIGHT BRIEF</div>
         <h2 id="overlay-title">MISSION BRIEFING<span>PRE-FLIGHT CONFIGURATION</span></h2>
+        <section class="result-visual" id="result-visual" hidden aria-label="สรุปผลการเล่น">
+          <div class="result-hero"><img src="assets/degree-core-planet.png" alt="Degree Core"><div><small>FLIGHT REPORT</small><b id="result-status">RUN COMPLETE</b><span id="result-loot"></span></div></div>
+          <div class="result-metrics">
+            <article><span class="metric-icon score-icon">✦</span><small>SCORE</small><b id="result-score">0</b></article>
+            <article><span class="metric-icon mission-icon">◎</span><small>MISSIONS</small><b id="result-missions">0</b></article>
+            <article><span class="metric-icon accuracy-icon">⌖</span><small>WEAPON MATCH</small><b id="result-accuracy">0%</b></article>
+            <article><span class="metric-icon mini-icon">▣</span><small>MINIGAMES</small><b id="result-minigames">0 / 0</b></article>
+          </div>
+          <div class="result-feedback"><article class="strength-card"><b><span>✓</span> ทำได้ดี</b><p id="result-strength"></p></article><article class="improve-card"><b><span>↗</span> ควรปรับปรุง</b><p id="result-improve"></p></article></div>
+        </section>
         <div class="mission-art" id="mission-art" hidden></div>
+        <div class="tutorial-tools" id="tutorial-tools" hidden>
+          <button id="edit-tutorial" type="button">แก้ไข Tutorial</button>
+          <button id="speak-dialog" type="button">▶ ฟังบทพูด</button>
+        </div>
         <p id="overlay-copy">กำลังรับข้อมูลดาวและวัตถุประสงค์ภารกิจ...</p>
         <div class="lesson-art" id="lesson-art" hidden></div>
-        <div class="brief-controls"><span>ปกป้อง Degree Core</span><span>เลือกมุมและค่าที่ตรงกับสัญญาณ</span><span>เรียนรู้ก่อนแล้วค่อยปลดล็อกปืน</span></div>
+        <div class="brief-controls"><span>ปกป้อง Degree Core</span><span>เป้าใกล้ที่สุดถูกเลือกอัตโนมัติ · คลิกยานเพื่อล็อกเป้าอื่น</span><span>เลือกมุมหรือค่าที่ตรงกับสัญญาณเพื่อยิง</span></div>
         <button id="retry-wave" class="retry-button" hidden>เล่น Wave นี้อีกครั้ง</button>
         <button id="launch" class="launch-button"><span>เริ่มแคมเปญ</span><b>↗</b></button>
         <div class="brief-foot">STARFALL ROUTE &nbsp;·&nbsp; QUADRANT FLIGHT SYSTEMS</div>
       </div>
     </div>
-    <div class="bottom-hud">
-      <div class="controls-legend"><span class="legend-title">FLIGHT CONTROLS</span><span>CENTER DEFENSE</span><span><kbd>SPACE</kbd> FIRE SELECTED</span><span><kbd>1–9</kbd> VALUE WEAPONS</span><span><kbd>SHIFT</kbd> SHIELD ON CONTACT</span><span><kbd>E</kbd> SCAN</span><span><kbd>H</kbd> HINT</span><span><kbd>TAB</kbd> REF</span><span><kbd>ESC</kbd> PAUSE</span></div>
-      <div class="status-line"><span class="status-pip"></span><b id="status-text">FLIGHT SYSTEM STANDBY</b><span id="feedback">UNIT CIRCLE ONLINE</span><button id="deploy-button" hidden>LAUNCH MISSION ↗</button></div>
-      <div class="touch-controls"><button data-control="fire">FIRE</button><button data-action="hint">HINT</button><button data-action="scan">SCAN</button><button data-control="shield">SHIELD</button></div>
-    </div>
+    <div id="auto-hint" class="auto-hint" hidden aria-live="polite"></div>
   </main>
   <script src="game.js"></script>
 </body>
