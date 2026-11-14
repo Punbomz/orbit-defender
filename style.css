@@ -203,8 +203,8 @@
 .quiz-circle{display:block;width:110px;height:110px;margin:9px auto 13px;overflow:visible}.quiz-circle circle{fill:none;stroke:#50e3e655;stroke-width:1}.quiz-circle path{fill:none;stroke:#9fb0c866;stroke-width:.7}.quiz-circle line{stroke:#ffd166;stroke-width:1.8}.quiz-circle .point{fill:#ff5d8f;stroke:#fff;stroke-width:1}
 .drag-circle{grid-column:1/-1;width:135px;height:135px;margin:3px auto}.quiz-options input[type=range]{grid-column:1/-1;width:100%;accent-color:var(--violet);touch-action:pan-y}.quiz-options output{grid-column:1/-1;text-align:center;color:var(--gold);font:13px var(--mono)}.quiz-options #quiz-check-angle{grid-column:1/-1;width:100%;min-height:40px;border-color:var(--violet);color:#e5dcff}
 .quiz-feedback{min-height:26px;color:var(--gold);font-size:12px}.quiz-card>#quiz-resume{width:100%;min-height:43px;border:1px solid var(--violet);background:#a37bff1a;color:#e5dcff;font:10px var(--mono);cursor:pointer}.quiz-card>#quiz-resume:disabled{opacity:.5;cursor:not-allowed}
-.game-shell.traveling .mission-panel,.game-shell.traveling .learning-panel,.game-shell.traveling .telemetry-panel,.game-shell.traveling .reference-panel,.game-shell.traveling .weapon-rack,.game-shell.traveling .bottom-hud{display:none!important}
-.game-shell.traveling .hud-actions>*:not(#sound){display:none!important}
+.game-shell.traveling .mission-panel,.game-shell.traveling .learning-panel,.game-shell.traveling .telemetry-panel,.game-shell.traveling .weapon-rack,.game-shell.traveling .bottom-hud{display:none!important}
+.game-shell.traveling .hud-actions>*:not(#sound):not(.shield-box){display:none!important}
 .game-shell.traveling .mission-readout #stage-name{font-size:10px;color:var(--cyan)}
 .game-shell.traveling canvas{cursor:crosshair}
 @media(max-width:650px){.travel-hud{top:67px;gap:10px;padding:8px 10px}.travel-hud>div{min-width:42px}.travel-hud small{font-size:5px}.travel-hud b{font-size:8px}#resupply-open{padding:8px;font-size:6px}.quiz-card{padding:18px}.quiz-card h2{font-size:19px}.quiz-options button{font-size:10px}}
@@ -282,3 +282,130 @@
 .zombie-break-header b{color:#8fff6b;font-size:18px}
 #zombie-game{flex:1;width:100%;min-height:0;border:0}
 @media(max-width:650px){.game-shell.mission-complete .mission-panel{top:64px;left:8px;width:min(340px,calc(100vw - 16px));max-height:calc(100dvh - 145px);padding:10px}.mission-completion .upgrade-choice{min-height:40px}.zombie-break-header{height:54px;padding:6px 8px;gap:6px;font-size:7px}.zombie-break-header b{font-size:14px}}
+
+.tutorial-tools{display:flex;gap:10px;margin:12px 0}.tutorial-tools button{padding:9px 12px;border:1px solid #73d7d766;background:#0b202b;color:#b7f7eb;border-radius:5px;cursor:pointer;font:10px Consolas,monospace;letter-spacing:.06em}.tutorial-tools button:hover{background:#153847}
+
+/* Fixed quadrant sections for the angle and coordinate weapon racks. */
+.weapon-rack{width:min(1480px,94vw);max-width:none;gap:5px;padding:8px 10px;overflow-x:auto;overflow-y:hidden;clip-path:none;border:1px solid #58ddff77;border-radius:7px;background:linear-gradient(110deg,#071421f2,#071d2af0);box-shadow:0 0 24px #28c7ff18}
+.weapon-strip{align-items:stretch;gap:8px;min-height:48px}
+.weapon-strip>b{width:74px;display:grid;place-content:center;border-right:1px solid #70b4c333;color:#9ac4d1;font-size:9px}
+.weapon-cards{display:grid;grid-template-columns:repeat(5,minmax(140px,1fr));gap:5px;overflow:visible;flex:1;min-width:0;padding:0}
+.quadrant-group{display:flex;min-width:0;flex-direction:column;justify-content:flex-start;gap:4px;padding:3px 5px;border-left:1px solid #70b4c322}
+.quadrant-group>small{text-align:center;color:#89afbd;font:7px Consolas,monospace;letter-spacing:.08em;white-space:nowrap}
+.quadrant-weapons{display:flex;justify-content:center;align-items:center;gap:4px;min-height:38px}
+.weapon-card{flex:1 1 38px;min-width:35px;width:auto;height:37px;padding:2px 4px;border-radius:4px}
+.weapon-card b{font-size:12px}
+@media(max-width:900px){.weapon-rack{width:calc(100vw - 18px);bottom:77px}.weapon-cards{grid-template-columns:repeat(5,minmax(125px,1fr));min-width:660px}.weapon-strip>b{width:55px;font-size:7px}}
+
+/* Compact, user-expandable telemetry keeps the orbital approach lane clear. */
+.telemetry-panel{top:82px;right:16px;width:282px;padding:9px 12px;clip-path:none;border-radius:6px}
+.telemetry-panel:not(.expanded)>:not(.panel-heading):not(.compact-readout){display:none!important}
+.telemetry-panel:not(.expanded) .panel-heading{padding:0;border:0}
+.telemetry-panel .panel-heading{justify-content:space-between}
+.telemetry-panel .panel-heading>span{display:flex;align-items:center;gap:6px}
+#telemetry-toggle{border:1px solid #58bfd066;border-radius:3px;background:#091a27;color:#9fd7e0;padding:4px 7px;font:7px Consolas,monospace;cursor:pointer}
+.compact-readout{display:flex;align-items:center;gap:12px;margin-top:7px;padding:7px 8px;border:1px solid #50cef533;background:#071320;white-space:nowrap;font:8px Consolas,monospace;color:#a9c2cd}
+.compact-readout>b{color:var(--mint);font-size:18px}.compact-readout i{color:#e8f5f7;font-style:normal}.compact-readout strong{margin-left:auto;color:var(--gold);font-size:8px}
+.telemetry-panel.expanded{width:250px;max-height:calc(100vh - 170px);overflow:auto}
+.auto-hint{position:absolute;z-index:3;bottom:190px;left:50%;transform:translateX(-50%);max-width:min(680px,80vw);padding:8px 13px;border:1px solid #ffd27b8a;border-radius:5px;background:#091827ed;color:#ffe4a6;box-shadow:0 4px 20px #0008;font:10px/1.5 var(--mono);text-align:center;pointer-events:none}
+.auto-hint[hidden]{display:none}
+#shield-toggle{flex:none;margin-left:6px;padding:5px 9px;border:1px solid #51c8e566;border-radius:3px;background:#0a1b29;color:#99cbd7;font:8px Consolas,monospace;cursor:pointer}
+#shield-toggle.active{border-color:#7ef0cf;color:#7ef0cf;background:#0b2a2b;box-shadow:0 0 12px #7ef0cf28}
+#shield-toggle:disabled{opacity:.55;cursor:not-allowed}
+@media(max-width:950px){.telemetry-panel{right:10px;width:258px}.telemetry-panel.expanded{width:230px}}
+@media(max-width:650px){.telemetry-panel{top:66px;right:8px;width:calc(50% - 16px);padding:7px 8px}.telemetry-panel.expanded{width:calc(58% - 10px);max-height:calc(100dvh - 180px)}.telemetry-panel .panel-heading{font-size:6px}.compact-readout{gap:5px;margin-top:5px;padding:5px;font-size:6px}.compact-readout>b{font-size:14px}.compact-readout strong{font-size:6px}.auto-hint{bottom:150px;max-width:90vw;padding:6px 8px;font-size:8px}#shield-toggle{padding:4px 6px;font-size:7px}.status-line{gap:5px}}
+@media(max-height:760px) and (min-width:651px){.telemetry-panel{top:80px}.telemetry-panel.expanded{max-height:calc(100vh - 145px)}}
+
+@media(max-width:650px){.status-line #feedback{display:none}.status-line{justify-content:space-between;gap:5px}.status-line #status-text{flex:1;text-align:left;font-size:6px}#shield-toggle{height:25px;margin-left:0}.auto-hint{bottom:205px}}
+
+/* Persistent unit-circle reference, top shield meter, and clear lower play area */
+.bottom-hud{display:none!important}
+.weapon-rack{bottom:18px}
+.reference-panel{top:auto;left:16px;right:auto;bottom:155px;width:220px;padding:10px 12px;z-index:3}
+.reference-panel .panel-heading{padding-bottom:7px;font-size:8px}
+.unit-circle-diagram{display:block;width:116px;height:116px;margin:5px auto 2px;overflow:visible}
+.unit-circle{fill:#071a2a99;stroke:#55ddf0;stroke-width:1.5}
+.unit-axis{fill:none;stroke:#9bddeb;stroke-width:1}
+.unit-arrow{fill:#9bddeb}
+.unit-circle-diagram text{fill:#d9f5ff;font:7px Consolas,monospace;text-anchor:middle}
+.unit-circle-diagram .unit-sign{font-size:6px;fill:#91aab8}
+.unit-circle-diagram .unit-radius{stroke:#ffd166;stroke-width:1.5;stroke-dasharray:3 2}
+.unit-circle-diagram .unit-point{fill:#ffd166;stroke:#fff2bb;stroke-width:1}
+.unit-circle-diagram .unit-angle-label{fill:#ffd166;font-size:7px}
+.ref-equation{margin-top:5px}.ref-equation b{font-size:10px}.ref-equation span{font-size:7px}
+.ref-quadrants{gap:3px;margin-top:6px}.ref-quadrants span{padding:4px;font-size:7px}.ref-note{margin-top:5px;font-size:7px}
+.shield-box{display:flex;flex-direction:column;justify-content:center;gap:5px;min-height:38px;padding:5px 8px;border-left:1px solid #3acde544}
+.shield-box>small{color:#8ca8b8;font:7px Consolas,monospace;letter-spacing:.09em}
+#shield-meter{display:flex;gap:3px}.shield-pip{font:14px/1 Consolas,monospace;color:#38505b;font-style:normal}.shield-pip.filled{color:#72eaff;text-shadow:0 0 9px #65eaffaa}
+@media(max-width:1200px) and (min-width:651px){.reference-panel{left:10px;width:192px}.unit-circle-diagram{width:98px;height:98px}}
+@media(max-height:760px) and (min-width:651px){.reference-panel{bottom:145px}}
+@media(max-width:650px){.hud-actions{gap:3px}.shield-box{min-height:31px;padding:3px 4px}.shield-box>small{font-size:4px}#shield-meter{gap:1px}.shield-pip{font-size:10px}.reference-panel{left:8px;right:auto;bottom:140px;width:132px;padding:6px 7px}.reference-panel .panel-heading{font-size:5px}.unit-circle-diagram{width:78px;height:78px;margin:2px auto}.ref-equation{margin-top:3px}.ref-equation b{font-size:7px}.ref-equation span{font-size:5px}.ref-quadrants{margin-top:3px;gap:2px}.ref-quadrants span{padding:2px;font-size:5px}.ref-note{font-size:5px;margin-top:3px}.weapon-rack{bottom:8px}}
+
+.choice small{line-height:1.35}
+
+/* Make the reference diagram the sole right-side learning visual */
+#telemetry-panel{display:none!important}
+.reference-panel{left:18px;right:auto;bottom:190px;width:270px;padding:12px 14px}
+.reference-panel .panel-heading{font-size:9px;padding-bottom:9px}
+.unit-circle-diagram{width:230px;height:230px;margin:6px auto 8px}
+.unit-circle{stroke-width:2.5}
+.unit-axis{stroke-width:1.6}
+.unit-circle-diagram text{font-size:9px}
+.unit-circle-diagram .unit-sign{font-size:7px}
+.unit-circle-diagram .unit-radius{stroke-width:2.5}
+.unit-circle-diagram .unit-point{r:5}
+.unit-circle-diagram .unit-angle-label{font-size:9px}
+.ref-equation{margin-top:8px}.ref-equation b{font-size:13px}.ref-equation span{font-size:9px}.ref-note{font-size:8px}
+@media(max-height:760px) and (min-width:651px){.reference-panel{bottom:170px}.unit-circle-diagram{width:190px;height:190px}}
+@media(max-width:1200px) and (min-width:651px){.reference-panel{left:12px;width:240px;bottom:175px}.unit-circle-diagram{width:200px;height:200px}}
+@media(max-width:650px){.reference-panel{left:8px;right:auto;bottom:140px;width:184px;padding:7px 8px}.reference-panel .panel-heading{font-size:6px;padding-bottom:5px}.unit-circle-diagram{width:148px;height:148px;margin:3px auto 4px}.unit-circle-diagram text{font-size:8px}.unit-circle-diagram .unit-sign{font-size:6px}.unit-circle-diagram .unit-angle-label{font-size:8px}.ref-equation{margin-top:4px}.ref-equation b{font-size:9px}.ref-equation span{font-size:6px}.ref-note{font-size:6px;margin-top:4px}}
+
+/* Icon based health and armor counters */
+.pilot-box{width:auto;min-width:78px;align-items:flex-start;justify-content:center;gap:4px}
+.pilot-box>small,.shield-box>small{font:7px Consolas,monospace;color:#9db0bd;letter-spacing:.1em}
+.health-stat{display:flex;align-items:center;gap:6px}
+.health-icon{font:20px/1 var(--sans);color:#ff718b;text-shadow:0 0 10px #ff456e88;transition:filter .2s}
+.health-stat b{font:12px Consolas,monospace;color:#ff9aaa;text-shadow:0 0 8px #ff718066}
+.health-stat.low .health-icon{animation:hp-warning .65s ease-in-out infinite alternate}
+.shield-box{width:auto;min-width:84px;align-items:flex-start;justify-content:center;gap:4px}
+#shield-meter{display:flex;align-items:center;gap:6px;color:#7cecff}
+#shield-meter .armor-icon{width:18px;height:18px;fill:#30c7e52a;stroke:#75eaff;stroke-width:1.8;filter:drop-shadow(0 0 5px #50dfff66)}
+#shield-count{font:11px Consolas,monospace;color:#a9f4ff;text-shadow:0 0 8px #65eaff66}
+#shield-meter.empty .armor-icon{fill:#152631;stroke:#526b76;filter:none}
+#shield-meter.empty #shield-count{color:#788f99;text-shadow:none}
+/* Graphic post-flight summary */
+.brief-box.has-results{width:min(780px,calc(100vw - 32px));max-height:calc(100dvh - 48px);overflow:auto;padding:22px 28px 18px;text-align:left}
+.brief-box.has-results .brief-emblem,.brief-box.has-results #overlay-copy{display:none}
+.brief-box.has-results .eyebrow{text-align:center;margin-top:8px}
+.brief-box.has-results h2{text-align:center;margin:6px 0 12px}
+.result-visual{display:grid;gap:12px;margin:0 auto 15px}
+.result-visual[hidden]{display:none}
+.result-hero{display:flex;align-items:center;gap:18px;min-height:112px;padding:9px 16px;border:1px solid #49dcec55;background:radial-gradient(ellipse at 16% 50%,#0e778444,transparent 50%),linear-gradient(110deg,#071a2bf5,#0b2639e8);box-shadow:inset 0 0 24px #32d8e410}
+.result-hero img{width:102px;height:92px;object-fit:contain;filter:drop-shadow(0 0 12px #43ddf777)}
+.result-hero>div{display:grid;gap:5px;min-width:0}
+.result-hero small{font:8px var(--mono);letter-spacing:.2em;color:#62e9ef}
+.result-hero b{font:700 clamp(14px,2vw,21px) var(--mono);letter-spacing:.05em;color:#f2fcff}
+.result-hero span{font:11px var(--sans);color:#aec8d3}
+.result-metrics{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.result-metrics article{display:grid;justify-items:center;gap:5px;padding:10px 6px;border:1px solid #48d8e345;background:linear-gradient(145deg,#0b2535,#071522);text-align:center}
+.metric-icon{display:grid;place-items:center;width:30px;height:30px;border:1px solid #5bdce977;border-radius:50%;font:17px var(--sans);color:#7cecff;background:#51dcec12;text-shadow:0 0 10px #55e4f588}
+.score-icon{color:#ffd166;border-color:#ffd16688}.accuracy-icon{color:#84f0bd;border-color:#84f0bd77}.mini-icon{color:#d9a3ff;border-color:#d9a3ff77}
+.result-metrics small{font:7px var(--mono);letter-spacing:.1em;color:#90aeba}
+.result-metrics article>b{font:700 14px var(--mono);color:#e9faff}
+.result-feedback{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.result-feedback article{padding:11px 13px;border:1px solid #3fd58f66;background:linear-gradient(120deg,#0b2e2b,#081922)}
+.result-feedback .improve-card{border-color:#f0b65066;background:linear-gradient(120deg,#332713,#111923)}
+.result-feedback article>b{display:flex;align-items:center;gap:7px;font:700 11px var(--sans);color:#8cf0bb}
+.result-feedback .improve-card>b{color:#ffd27b}
+.result-feedback article>b span{display:grid;place-items:center;width:21px;height:21px;border-radius:50%;background:#7cf0bd1c;font:15px var(--mono)}
+.result-feedback .improve-card>b span{background:#ffd1661c}
+.result-feedback p{margin:6px 0 0;font:11px/1.5 var(--sans);color:#c8dce5}
+.brief-box.has-results .launch-button{margin-top:7px}
+@media(max-width:650px){.pilot-box{min-width:44px;width:auto;gap:3px;padding:4px}.pilot-box>small,.shield-box>small{font-size:5px}.health-icon{font-size:15px}.health-stat{gap:3px}.health-stat b{font-size:8px}.shield-box{min-width:51px;width:auto;gap:3px;padding:4px}.shield-box #shield-meter{gap:3px}.shield-box #shield-meter .armor-icon{width:14px;height:14px}#shield-count{font-size:8px}.brief-box.has-results{width:calc(100vw - 24px);max-height:calc(100dvh - 24px);padding:16px 13px 13px}.brief-box.has-results h2{font-size:18px}.result-visual{gap:8px}.result-hero{min-height:78px;gap:9px;padding:6px 9px}.result-hero img{width:68px;height:64px}.result-hero small{font-size:6px}.result-hero b{font-size:12px}.result-hero span{font-size:9px}.result-metrics{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.result-metrics article{gap:3px;padding:7px 4px}.metric-icon{width:24px;height:24px;font-size:14px}.result-metrics small{font-size:6px}.result-metrics article>b{font-size:11px}.result-feedback{grid-template-columns:1fr;gap:6px}.result-feedback article{padding:8px 10px}.result-feedback article>b{font-size:9px}.result-feedback p{font-size:9px}}
+
+[hidden]{display:none!important}
+
+/* Precision reticle cursor for aiming and enemy selection */
+#arena{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%237af7ff' stroke-width='1.6'/%3E%3Cpath d='M16 1v8m0 14v8M1 16h8m14 0h8' fill='none' stroke='%237af7ff' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='1.4' fill='%23ffffff'/%3E%3C/svg%3E") 16 16,crosshair}
+.game-shell{cursor:crosshair}
+.game-shell button,.game-shell a,.game-shell summary{cursor:pointer}

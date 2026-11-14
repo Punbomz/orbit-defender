@@ -1338,6 +1338,17 @@
     document.getElementById('goQuiz').textContent = qacc+'%';
     document.getElementById('goBest').textContent = fmtTime(bestTime);
 
+    if (window.parent !== window) {
+      const quizAccuracy = state.quizTotal ? Math.round(100 * state.quizCorrect / state.quizTotal) : 0;
+      window.parent.postMessage({
+        type: 'orbit-minigame-result',
+        success: state.kills > 0 && quizAccuracy >= 70,
+        score: Math.floor(state.score),
+        level: Number(new URLSearchParams(location.search).get('level')) || 1,
+        quizAccuracy,
+      }, '*');
+    }
+
     screenGame.classList.add('hidden');
     screenOver.classList.remove('hidden');
   }

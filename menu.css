@@ -168,3 +168,103 @@ footer{border-color:#42d3df91}
 .choice.active{box-shadow:inset 0 0 0 1px #50e3e655,0 0 12px #50e3e633}
 .choices fieldset:nth-child(2) .choice.active{box-shadow:inset 0 0 0 1px #ffca6755,0 0 12px #ffca6738}
 @media(prefers-reduced-motion:reduce){.start-button::before,.mode-tab.active,.route-stop.current,.spacecraft,.flight-path,.planet-image{animation:none!important}}
+
+/* Campaign route visual mockup: world art can be replaced independently per level. */
+.hero{height:42vh;min-height:310px;max-height:500px}
+.planet-art{width:min(100%,68vh,780px)}
+.launch-panel{min-height:0}
+.route-progress{display:block;min-height:0;margin-top:15px;padding:12px 4px 1px;border-top:1px solid #45dce844}
+.route-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.route-heading .route-title{font:700 10px var(--mono);color:#f0f8fa;letter-spacing:.12em}
+.route-heading>small{color:#91a9b4;font:10px var(--thai)}
+.route-track{position:relative;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;min-height:156px;padding:4px 12px 0;overflow:hidden}
+.route-energy-line{position:absolute;z-index:0;top:59px;left:8%;right:8%;width:auto!important;height:3px!important;background:linear-gradient(90deg,#50e3e6aa,#45e2ed,#a58affaa,#ffca67)!important;box-shadow:0 0 12px #45dce899}
+.route-energy-line:after{display:none}
+.route-stop{position:relative;z-index:1;display:grid;justify-items:center;align-content:start;gap:5px;flex:1;min-width:0;width:auto;height:auto;padding:0;border:0;background:transparent;clip-path:none;color:#b9cbd0;font:inherit;filter:none;box-shadow:none;text-align:center}
+.route-stop:before,.route-stop:after{content:none!important;display:none!important}
+.route-stop.boss{width:auto;padding:0;border:0;background:transparent;color:inherit}
+.route-planet-art{display:block;width:clamp(78px,8.8vw,116px);aspect-ratio:1;object-fit:contain;transition:transform .25s,filter .25s}
+.route-step{position:absolute;top:88px;display:grid;place-items:center;width:29px;height:25px;border:1px solid #5be8ed;background:#071923;color:#f3fcff;font:700 10px var(--mono);box-shadow:0 0 11px #13d9e755}
+.route-stop.current .route-step{border-color:var(--gold);color:var(--gold);box-shadow:0 0 13px #ffc85f77}
+.route-stop.locked .route-step{border-color:#52656e;color:#84969d;background:#0a151b}
+.route-stop.boss .route-step{width:38px;border-color:#ff7896;color:#ff9bb1}
+.route-copy{display:grid;gap:3px;max-width:100%;margin-top:3px}
+.route-copy b{overflow:hidden;color:#e8f3f4;font:700 9px var(--mono);letter-spacing:.03em;text-overflow:ellipsis;white-space:nowrap}
+.route-copy small{color:#91a9b4;font:9px var(--thai);white-space:nowrap}
+.route-stop.current .route-copy b{color:#ffe29a}
+.route-stop.locked .route-copy{opacity:.64}
+@media(max-width:900px){.hero{height:38vh;min-height:285px}.route-track{gap:4px;padding-inline:2px}.route-planet-art{width:clamp(66px,10vw,92px)}.route-step{top:68px;width:25px;height:22px;font-size:9px}.route-energy-line{top:49px}.route-copy b{font-size:7px}.route-copy small{font-size:8px}.route-heading>small{font-size:9px}}
+@media(max-width:600px){.hero{height:40vh;min-height:285px}.launch-panel{padding:11px 10px 9px}.route-progress{margin-top:10px;padding-top:9px}.route-heading{align-items:flex-start;gap:6px}.route-heading .route-title{font-size:8px}.route-heading>small{font-size:8px;text-align:right}.route-track{justify-content:flex-start;gap:8px;min-height:132px;padding:2px 5px 8px;overflow-x:auto;scrollbar-color:#35d6df55 #07131b;scrollbar-width:thin}.route-stop{flex:0 0 104px}.route-planet-art{width:72px}.route-energy-line{top:38px;left:39px;right:auto;width:calc(100% - 78px)!important;min-width:430px}.route-step{top:59px;width:24px;height:21px}.route-copy{margin-top:4px}.route-copy b{font-size:7px}.route-copy small{font-size:8px}}
+
+/* Replaceable per-level planet sprites and a roomier difficulty selector. */
+.mode-tabs{min-height:24px;margin:7px 0 11px}
+.mode-tabs>small{margin:0;color:#a9bfcd;font:10px var(--thai);letter-spacing:0}
+.panel-main{grid-template-columns:minmax(0,1.85fr) minmax(300px,.9fr)}
+.choices{display:grid;grid-template-columns:minmax(205px,.78fr) minmax(0,2fr);gap:clamp(15px,2.2vw,34px)}
+.choices fieldset:first-child{display:flex;flex-direction:column;justify-content:flex-start;gap:7px}
+.choices fieldset:first-child legend{margin:0 0 3px}
+.choices fieldset:first-child .choice{flex:1;width:100%;min-height:42px}
+.choices fieldset:nth-child(2){display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-content:start;gap:8px}
+.choices fieldset:nth-child(2) legend{grid-column:1/-1;margin:0 0 3px}
+.choices fieldset:nth-child(2) .choice{width:100%;min-width:0;min-height:114px;padding:10px 8px;gap:7px;border-radius:3px;align-items:flex-start}
+.choices fieldset:nth-child(2) .choice>i{margin-top:2px}
+.choices fieldset:nth-child(2) .choice>span{font:700 10px var(--mono);white-space:normal;line-height:1.3}
+.choices fieldset:nth-child(2) .choice small{margin-top:6px;color:#b4c9d4;font:400 9px/1.55 var(--thai);letter-spacing:0;white-space:normal}
+.route-stop,.route-stop.current,.route-stop.locked,.route-stop.boss{border:0!important;background:transparent!important;box-shadow:none!important;clip-path:none!important}
+.route-stop.locked{filter:none!important}
+.route-planet-art{display:block;width:clamp(82px,8vw,116px);aspect-ratio:1;object-fit:contain;padding:0;border:0;border-radius:50%;background:none!important;box-shadow:none;transition:transform .25s,filter .25s}
+.route-q1{filter:drop-shadow(0 0 15px #ffdb84a8)}
+.route-q2{filter:drop-shadow(0 0 15px #5edffff0)}
+.route-q34{filter:drop-shadow(0 0 15px #9c86ffb0)}
+.route-special{filter:drop-shadow(0 0 17px #c76cffb8)}
+.route-boss{filter:drop-shadow(0 0 18px #ff436fbd)}
+.route-stop.current .route-planet-art{transform:translateY(-4px) scale(1.05)}
+.route-stop.locked .route-planet-art{filter:brightness(.88) drop-shadow(0 0 11px #76dce366)}
+.route-stop.boss.locked .route-planet-art{filter:brightness(.82) drop-shadow(0 0 12px #ff476b88)}
+@media(max-width:1100px){.panel-main{grid-template-columns:1fr}.choices{grid-template-columns:minmax(180px,.7fr) minmax(0,2fr)}}
+@media(max-width:900px){.panel-main{grid-template-columns:1fr}.choices{grid-template-columns:minmax(170px,.7fr) minmax(0,2fr)}.choices fieldset:nth-child(2) .choice{min-height:106px}}
+@media(max-width:600px){.mode-tabs{margin:4px 0 9px}.mode-tabs>small{max-width:none;text-align:left;font-size:9px}.choices{grid-template-columns:1fr;gap:13px}.choices fieldset:first-child{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.choices fieldset:first-child legend{grid-column:1/-1}.choices fieldset:first-child .choice{min-height:38px}.choices fieldset:nth-child(2){grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.choices fieldset:nth-child(2) .choice{min-height:104px;padding:8px 5px;gap:5px}.choices fieldset:nth-child(2) .choice>span{font-size:8px}.choices fieldset:nth-child(2) .choice small{font-size:7px;line-height:1.5}.route-planet-art{width:76px}}
+
+/* Keep the console frame around route progress only. */
+.launch-panel{min-height:0;padding:0;border:0;background:transparent;box-shadow:none;overflow:visible}
+.launch-panel:before,.launch-panel:after{display:none}
+.launch-panel>.panel-heading{padding:0 0 10px;border-bottom:0;color:#d2eaf0}
+.launch-panel>.mode-tabs{margin:4px 0 12px}
+.launch-panel>.panel-main{align-items:center}
+.launch-panel>.route-progress{position:relative;isolation:isolate;min-height:205px;margin-top:28px;padding:24px clamp(26px,4vw,64px) 18px;border:0;border-top:0;background:transparent;box-shadow:none}
+.route-progress:before{content:"";position:absolute;z-index:-1;inset:-10px;pointer-events:none;background:url("assets/ui-console-frame.png") center/100% 100% no-repeat;filter:drop-shadow(0 0 13px #05cfe47a)}
+.route-heading,.route-track{position:relative;z-index:1}
+.route-heading{margin-bottom:12px}
+.route-track{min-height:153px}
+.route-energy-line{top:58px}
+.choices fieldset:nth-child(2) .choice{display:grid;grid-template-columns:14px minmax(0,1fr);align-content:start;min-height:128px;padding:12px 11px;gap:8px;text-align:left}
+.choices fieldset:nth-child(2) .choice>i{margin-top:1px}
+.choices fieldset:nth-child(2) .choice>span{font-size:11px;line-height:1.35}
+.choices fieldset:nth-child(2) .choice small{margin-top:8px;font-size:10px;line-height:1.55}
+.route-stop.locked .route-planet-art{filter:brightness(0) drop-shadow(0 0 7px #02080c)}
+.route-stop.boss.locked .route-planet-art{filter:brightness(0) drop-shadow(0 0 9px #09030a)}
+@media(max-width:900px){.launch-panel>.route-progress{min-height:190px;padding-inline:24px}.route-track{min-height:140px}.route-energy-line{top:51px}.choices fieldset:nth-child(2) .choice{min-height:124px;padding:10px 7px}.choices fieldset:nth-child(2) .choice small{font-size:9px}}
+@media(max-width:600px){.launch-panel>.panel-heading{font-size:7px}.launch-panel>.mode-tabs{margin:2px 0 10px}.launch-panel>.panel-main{gap:13px}.launch-panel>.route-progress{min-height:168px;margin-top:20px;padding:20px 14px 12px}.route-progress:before{inset:-6px}.route-heading{margin-bottom:7px}.route-heading .route-title{font-size:7px}.route-heading>small{font-size:7px}.route-track{min-height:126px}.route-energy-line{top:37px}.route-step{top:59px}.choices fieldset:nth-child(2) .choice{min-height:112px;padding:8px 4px;gap:4px}.choices fieldset:nth-child(2) .choice>i{width:10px;height:10px}.choices fieldset:nth-child(2) .choice>span{font-size:7px}.choices fieldset:nth-child(2) .choice small{margin-top:5px;font-size:6px;line-height:1.45}}
+
+.active-mode{align-self:center;padding:7px 13px;border:1px solid var(--cyan);background:linear-gradient(100deg,#50e3e62a,#50e3e60b);color:#f5ffff;font:700 10px var(--mono);letter-spacing:.08em}
+.choice>span{white-space:normal;line-height:1.25}.choice small{line-height:1.35}
+.options-popover{line-height:1.75}.options-popover p{margin-top:7px}
+@media(max-width:720px){.active-mode{padding:6px 10px;font-size:8px}.mode-tabs>small{max-width:55%;text-align:right;line-height:1.4}}
+
+.choices fieldset:nth-child(2) .choice{align-items:flex-start;min-height:76px;height:auto}
+.choices fieldset:nth-child(2) .choice>span{display:block}
+.choices fieldset:nth-child(2) .choice small{display:block;margin-top:4px;color:#afc5d2;font:400 8px/1.35 var(--sans);letter-spacing:0}
+@media(max-width:480px){.choices fieldset:nth-child(2) .choice{min-height:90px;padding:6px 4px}.choices fieldset:nth-child(2) .choice>span{font-size:7px}.choices fieldset:nth-child(2) .choice small{font-size:6px}}
+
+/* Final menu overrides after the legacy control theme rules. */
+.choices fieldset:nth-child(2) .choice{display:grid;grid-template-columns:14px minmax(0,1fr);min-height:128px;height:auto;padding:12px 11px;gap:8px;align-items:start}
+.choices fieldset:nth-child(2) .choice>span{display:block;font:700 11px/1.35 var(--mono);white-space:normal}
+.choices fieldset:nth-child(2) .choice{position:relative;grid-template-columns:minmax(0,1fr);padding:22px 11px 10px}
+.choices fieldset:nth-child(2) .choice>i{position:absolute;margin:0;top:23px;left:13px;z-index:1}
+.choices fieldset:nth-child(2) .choice>span{position:relative;z-index:1;min-width:0;width:100%;padding-left:20px}
+.choices fieldset:nth-child(2) .choice .difficulty-name{display:block;margin:0 0 7px;color:#f3fcff;font:800 12px/1.2 var(--mono);letter-spacing:.1em;text-shadow:0 1px 5px #000,0 0 8px #45dff0a6}
+.choices fieldset:nth-child(2) .choice small{display:block;margin-top:8px;font:400 10px/1.55 var(--thai);color:#c2d4dd;letter-spacing:0}
+.route-stop.locked .route-planet-art{filter:brightness(0) drop-shadow(0 0 7px #02080c)}
+.route-stop.boss.locked .route-planet-art{filter:brightness(0) drop-shadow(0 0 9px #09030a)}
+@media(max-width:900px){.choices fieldset:nth-child(2) .choice{min-height:124px;padding:10px 7px}.choices fieldset:nth-child(2) .choice small{font-size:9px}}
+@media(max-width:600px){.choices fieldset:nth-child(2) .choice{min-height:112px;padding:18px 4px 8px;gap:4px}.choices fieldset:nth-child(2) .choice>i{width:10px;height:10px;top:19px;left:7px}.choices fieldset:nth-child(2) .choice>span{font-size:7px;padding-left:14px}.choices fieldset:nth-child(2) .choice .difficulty-name{font-size:9px;margin-bottom:5px}.choices fieldset:nth-child(2) .choice small{margin-top:5px;font-size:6px;line-height:1.45}}
