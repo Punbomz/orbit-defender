@@ -1195,7 +1195,7 @@
   });
 
   resize();
-  if(timedIntermission) startGame();
+  if(timedIntermission){if(window.parent!==window)parent.postMessage({type:'orbit-minigame-start'},'*');startGame();}
 })();
 </script>
 </body>
