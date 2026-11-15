@@ -7,7 +7,7 @@ Read this file before changing the project. Keep it updated when core gameplay c
 - This is a static browser game. It uses HTML, CSS, vanilla JavaScript, Canvas, and local assets; there is no build step or package manager.
 - `index.html`, `menu.css`, `menu.js`: launch menu and campaign route display. Keep the original menu controls and visual theme; place the console frame around the planet route only, keep unit/difficulty/launch/options controls outside it, and render locked planets as black silhouettes. Each route stage gets its own replaceable art and level label.
 - `game.html`, `style.css`, `game.js`: campaign, tutorials, orbital combat, HUD, and minigame host iframe.
-- `trigozombie.html`: standalone minigame and iframe child page.
+- `trigozombie.html`, `wiring.html`, `radar.html`: standalone minigames and iframe child pages.
 - `assets/`: game art and audio-related visuals. The menu route uses one standalone transparent WebP planet per level (`planet-helios-outpost.webp`, `planet-mirror-belt.webp`, `planet-shattered-meridian.webp`, `planet-special-angle.webp`, `planet-degree-overlord.webp`); keep each image replaceable without changing route structure.
 - `README.md`: player-facing overview. `AGENTS.md` is the working reference for future code changes.
 
@@ -35,6 +35,7 @@ Cadet, Pilot, and Ace must remain distinct in enemy speed, player durability, fi
 ## Minigame page contract
 
 - The host selects from the `miniGames` list in `game.js` and loads a separate page in `#zombie-game`.
+- The available list currently includes Trigo Zombie, Wiring, and Radar. Wiring shows a scenario and instructions before play, then draws five mixed question types from a randomized pool for the completed level's content. Players connect all five cables before checking; the System Restore tube reports each wire result in its own segment. Radar asks players to drag five targets using distance and angle with live X/Y/r guide readouts; each target has a 30-second timer, and expired targets count as misses. The host allows 210 seconds for the five-target Radar run. It includes a basic arithmetic calculator and per-target X/Y scratch fields, while players recall sine and cosine values themselves. Lesson angles follow the completed level's content and unit.
 - Pass `autostart=1`, one-based `level`, `unit`, and a level `content` identifier in the child page URL. The child must use these values to choose relevant lesson material.
 - When a minigame ends, the child posts `{ type: 'orbit-minigame-result', success, score, level, quizAccuracy }` to its parent. The host validates the iframe window source before accepting the message.
 - A run is currently considered successful when the player gets at least one kill and at least 70% quiz accuracy. Save unsuccessful runs too; a timeout is a failed result.
