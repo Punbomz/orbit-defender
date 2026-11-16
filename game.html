@@ -1,29 +1,51 @@
 <!doctype html>
 <html lang="th">
 <head>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="theme-color" content="#050b14">
   <title>Orbit Defender: Starfall Route · Flight</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="assets/orbit-interface.css">
 </head>
-<body>
+<body class="game-page">
+  <div id="orientation-notice" class="orientation-notice" role="status" aria-live="polite"><div><span aria-hidden="true">↻</span><b>หมุนหน้าจอเป็นแนวนอน</b><small>เพื่อเล่น Orbit Defender ได้เต็มหน้าจอ</small></div></div>
+  <section id="sound-prompt" class="sound-prompt" role="dialog" aria-modal="true" aria-labelledby="sound-prompt-title">
+    <div class="sound-prompt-card"><span class="sound-prompt-icon" aria-hidden="true">♫</span><small>STARFALL ROUTE · FLIGHT SETUP</small><h2 id="sound-prompt-title">เตรียมออกเดินทาง</h2><p id="sound-prompt-copy">กดปุ่มลำโพงเพื่อสลับเสียง จากนั้นเริ่มภารกิจ</p><div id="resume-options" class="resume-options" hidden><small>พบเที่ยวบินที่ยังไม่จบ</small><div><button id="resume-campaign" type="button">เล่นต่อ</button><button id="restart-campaign" type="button">เริ่มแคมเปญใหม่</button></div></div><div id="sound-options" class="sound-options"><small>เสียงเกม</small><div><button id="sound-toggle" class="muted" type="button" aria-label="เปิดเสียง" title="เปิดเสียง" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6l-5 4H4Z"/><path class="sound-waves" d="M16 9a5 5 0 0 1 0 6m2-9a9 9 0 0 1 0 12"/><path class="sound-muted" d="M6 19 19 5"/></svg></button><span id="sound-toggle-state">ปิดเสียง</span></div></div><button id="launch-session" type="button">เริ่มภารกิจ ↗</button></div>
+  </section>
   <main id="game" class="game-shell">
     <canvas id="arena" aria-label="สนามรบ Orbit Defender"></canvas>
     <div class="vignette"></div>
     <header class="hud-top">
       <div class="brand-lockup"><span class="sigil">◎</span><div><b>ORBIT DEFENDER</b><small>DEGREE PROTOCOL</small></div></div>
       <div class="mission-readout"><span class="live-dot"></span><span id="stage-name">ACADEMY</span><i>/</i><span id="stage-phase">SYSTEM READY</span><i>/</i><span id="difficulty-label">PILOT</span></div>
-      <div class="hud-actions"><div class="score-box"><small>SCORE</small><b id="score">000000</b></div><div class="pilot-box"><div class="pilot-hp-head"><small>PILOT HP</small><b id="pilot-health">3 / 3</b></div><i><u id="pilot-health-fill"></u></i></div><div class="energy-box"><div><small>WEAPON ENERGY</small><b id="pilot-energy-text">100%</b></div><i><u id="pilot-energy-fill"></u></i></div><div class="hull-box"><small>CORE HP</small><b id="hull">◆ ◆ ◆</b></div><button class="hud-icon" id="sound" title="เพลงและเสียงเปิด/ปิด" aria-label="เปิดหรือปิดเพลงและเสียง">♫<span id="sound-state">ON</span></button><button class="hud-icon pause-button" id="pause" title="พักเกม">Ⅱ</button></div>
+      <div class="hud-actions"><div class="score-box"><small id="score-label">SCORE</small><b id="score">000000</b></div><div class="pilot-box"><small>HP</small><div class="health-stat"><span class="health-icon" aria-hidden="true">♥</span><b id="pilot-health">3 / 3</b></div></div><div class="energy-box"><div><small>SHOT CHARGE</small><b id="pilot-energy-text">100%</b></div><i><u id="pilot-energy-fill"></u></i></div><div class="shield-box"><small>ARMOR</small><div id="shield-meter" aria-label="เกราะ 0 จาก 3"><svg class="armor-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.5 20 5v6.1c0 5.2-3.4 8.4-8 10.4-4.6-2-8-5.2-8-10.4V5l8-2.5Z"/></svg><b id="shield-count">0 / 3</b></div></div><button class="hud-icon flight-reference-toggle" id="flight-reference-toggle" type="button" hidden aria-pressed="true" aria-label="ซ่อนค่ามุมและพิกัดอ้างอิง">◎</button><button id="training-ready" class="training-ready" type="button" hidden>พร้อมรบ ✓</button><button class="hud-icon settings-button" id="settings-open" title="ตั้งค่า" aria-label="เปิดตั้งค่า">⚙</button><button class="hud-icon pause-button" id="pause" title="พักเกม">Ⅱ</button></div>
     </header>
-    <aside class="mission-panel panel">
+    <section class="flight-settings" id="flight-settings" hidden aria-labelledby="flight-settings-title">
+      <div class="flight-settings-card"><header><div><small>ORBIT DEFENDER</small><h2 id="flight-settings-title">ตั้งค่าเกม</h2></div><button id="settings-close" type="button" aria-label="ปิดตั้งค่า">×</button></header>
+        <label class="settings-audio-toggle"><span>เสียงทั้งหมด</span><button id="settings-sound-toggle" type="button" aria-pressed="false">ปิดเสียง</button></label>
+        <label class="settings-slider"><span>เพลง <b id="music-value"></b></span><input id="music-volume" type="range" min="0" max="100" step="5"></label>
+        <label class="settings-slider"><span>เสียงเอฟเฟกต์ <b id="effects-value"></b></span><input id="effects-volume" type="range" min="0" max="100" step="5"></label>
+        <label class="settings-motion"><input id="reduced-motion" type="checkbox"><span>ลดการเคลื่อนไหว</span></label>
+      </div>
+    </section>
+    <aside id="dev-tools" class="dev-tools" hidden aria-label="เครื่องมือทดสอบสำหรับนักพัฒนา">
+      <header><b>DEV TOOLS</b><button id="dev-tools-close" type="button" aria-label="ปิดเครื่องมือทดสอบ">×</button></header>
+      <small id="dev-tools-status">F2 · เปิด/ปิดแผง</small>
+      <button id="dev-clear-stage" type="button">ผ่านด่านปัจจุบันทันที</button>
+      <label>มินิเกมสำหรับทดสอบ<select id="dev-minigame"><option value="trigo_combat.html">Orbital Intercept</option><option value="wiring.html">Wiring</option><option value="radar.html">Radar</option><option value="matching.html">Card Matching</option><option value="satellite_radar.html">Satellite Alignment</option></select></label>
+      <button id="dev-launch-minigame" type="button">เปิดมินิเกมที่เลือก</button>
+      <div class="dev-result-actions"><button id="dev-minigame-pass" type="button">จำลองว่าผ่าน</button><button id="dev-minigame-fail" type="button">จำลองว่าไม่ผ่าน</button></div>
+    </aside>
+    <aside class="mission-panel panel" id="mission-panel">
       <div class="panel-heading"><span class="tiny-mark">✦</span> MISSION BRIEF</div>
       <div class="mission-kicker" id="mission-kicker">TRAINING</div>
       <h1 id="mission-title">สถานีวงโคจร</h1>
       <p id="mission-copy">เตรียมยานให้พร้อม นักบิน</p>
       <div class="panel-rule"></div>
       <div class="mission-objective"><span class="objective-glyph">⌖</span><div><small>OBJECTIVE</small><b id="objective">เตรียมพร้อมปฏิบัติการ</b></div></div>
-      <div class="wave-line"><span>WAVE PROGRESS</span><b id="progress-text">—</b></div>
+      <div class="wave-line"><span id="progress-label">WAVE PROGRESS</span><b id="progress-text">—</b></div>
       <div class="progress-track"><i id="progress-fill"></i></div>
       <div class="combo-readout"><small>COMBO</small><b id="combo">×0</b><span id="combo-label">BUILD YOUR STREAK</span></div>
       <section id="mission-completion" class="mission-completion" hidden aria-live="polite">
@@ -33,14 +55,9 @@
         <div class="run-actions" id="run-actions" hidden><button id="continue-run">LEAVE MISSION ↗</button><button id="extract-run">EXTRACT WITH LOOT</button></div>
       </section>
     </aside>
-    <aside class="learning-panel panel">
-      <div class="panel-heading"><span class="tiny-mark">⌖</span> LEARNING GOAL</div>
-      <div class="learn-goal"><b>✓</b><span>อ่านมุมและพิกัดเพื่อจดจำค่าตรีโกณมิติ</span></div>
-      <div class="learn-goal"><b>✓</b><span>เชื่อม x = cos θ และ y = sin θ</span></div>
-      <div class="learn-goal"><b>✓</b><span>เลือกอาวุธจากค่าที่ตรงกับสัญญาณของศัตรู</span></div>
-    </aside>
-    <aside class="telemetry-panel panel">
-      <div class="panel-heading"><span class="tiny-mark">π</span> TRIGONOMETRY INFO</div>
+    <aside class="telemetry-panel panel" id="telemetry-panel">
+      <div class="panel-heading"><span><span class="tiny-mark">π</span> TRIGONOMETRY INFO</span><button id="telemetry-toggle" type="button" aria-expanded="false">DETAILS ＋</button></div>
+      <div class="compact-readout"><b id="compact-angle">000°</b><span>x <i id="compact-x">1</i></span><span>y <i id="compact-y">0</i></span><strong id="compact-quadrant">AXIS</strong></div>
       <div class="telemetry-label" id="telemetry-label">YOUR BEARING / THETA</div>
       <div class="angle-readout"><strong id="angle">000°</strong><span id="angle-unit">BEARING</span></div>
       <div class="coord-readout"><div><small>X / COS θ</small><b id="coord-x">1.00</b></div><div><small>Y / SIN θ</small><b id="coord-y">0.00</b></div></div>
@@ -58,13 +75,6 @@
       <div class="bearing-bar"><span id="bearing-mark"></span></div>
       <div class="target-foot"><span id="target-angle">LOCKED TO ORBIT</span><span id="target-distance">—</span></div>
     </aside>
-    <aside class="reference-panel panel" id="reference-panel" hidden>
-      <div class="panel-heading"><span class="tiny-mark">⌗</span> UNIT CIRCLE REFERENCE</div>
-      <div class="ref-equation"><b>x = cos θ</b><span>horizontal coordinate</span></div>
-      <div class="ref-equation"><b>y = sin θ</b><span>vertical coordinate</span></div>
-      <div class="ref-quadrants"><span>I&nbsp; (+,+)</span><span>II&nbsp; (−,+)</span><span>III&nbsp; (−,−)</span><span>IV&nbsp; (+,−)</span></div>
-      <div class="ref-note">0° ≤ θ &lt; 360° · counter-clockwise from +x</div>
-    </aside>
     <div class="center-reticle" aria-hidden="true"><i></i><b></b></div>
     <div class="toast" id="toast"></div>
     <div class="weapon-rack" id="weapon-rack" aria-label="แถบเลือกอาวุธสองชนิด"><div class="weapon-strip angle-strip"><b>ANGLE<br>CANNON</b><div class="weapon-cards" id="angle-weapons"></div></div><div class="weapon-strip value-strip"><b>VALUE<br>CANNON</b><div class="weapon-cards" id="value-weapons"></div></div></div>
@@ -76,12 +86,21 @@
       <div><small>ACCURACY</small><b id="travel-accuracy">100%</b></div>
       <button id="resupply-open" type="button">RESUPPLY QUIZ <span>π</span></button>
     </aside>
-    <section id="zombie-break" class="zombie-break" hidden aria-label="ช่วงเกมยิงซอมบี้">
+    <section id="zombie-break" class="zombie-break" hidden aria-label="ช่วงมินิเกมระหว่างภารกิจ">
       <header class="zombie-break-header">
-        <span>RADIATED RADIANS · SURVIVE THE INTERMISSION</span>
+        <span class="minigame-brand"><i>◎</i><b>ORBIT DEFENDER<small>DEGREE PROTOCOL</small></b></span>
+        <span id="minigame-title">INTERMISSION · RESTORE OR SURVIVE</span>
         <b id="zombie-clock">00:30</b>
       </header>
-      <iframe id="zombie-game" title="เกมยิงซอมบี้ Radiated Radians"></iframe>
+      <iframe id="zombie-game" title="มินิเกมระหว่างภารกิจ"></iframe>
+    </section>
+    <section id="flight-cinematic" class="flight-cinematic" hidden aria-live="polite" aria-label="ฉากยานเดินทางระหว่างดาว">
+      <div class="flight-stars" aria-hidden="true"></div>
+      <div class="flight-warp-lines" aria-hidden="true"></div>
+      <div class="flight-orbit" aria-hidden="true"></div>
+      <div class="flight-destination"><img id="flight-planet" alt=""><span id="flight-planet-name"></span></div>
+      <div id="flight-ship" class="flight-ship" aria-hidden="true"><img src="assets/interceptor-player.webp" alt=""></div>
+      <div class="flight-caption"><small id="flight-caption-kicker">STARFALL ROUTE · FLIGHT TRANSIT</small><b id="flight-caption-title">ARRIVAL</b><span id="flight-caption-copy">กำลังเข้าสู่วงโคจร</span></div>
     </section>
     <section id="quiz-overlay" class="quiz-overlay" hidden aria-labelledby="quiz-title">
       <div class="quiz-card"><div class="quiz-kicker">RESUPPLY TERMINAL <span>FLIGHT PAUSED TO 18%</span></div><h2 id="quiz-title">คำนวณเพื่อเติมกระสุน</h2><p id="quiz-question"></p><div id="quiz-options" class="quiz-options"></div><div id="quiz-feedback" class="quiz-feedback" aria-live="polite"></div><button id="quiz-resume" type="button" disabled>เลือกคำตอบเพื่อกลับสู่การเดินทาง</button></div>
@@ -92,21 +111,77 @@
         <div class="brief-top"><span class="live-dot"></span> ORBITAL DEFENSE NETWORK <span class="brief-code">OD-07 / 360°</span></div>
         <div class="brief-emblem">◎<span>✦</span></div>
         <div class="eyebrow">STARFALL ROUTE · PRE-FLIGHT BRIEF</div>
+        <nav class="flight-flow" aria-label="ลำดับการเตรียมภารกิจ"><span data-flow-step="story">01 <b>STORY</b></span><i></i><span data-flow-step="learn">02 <b>LESSON + DRILLS</b></span><i></i><span data-flow-step="defense">03 <b>DEFENSE</b></span></nav>
         <h2 id="overlay-title">MISSION BRIEFING<span>PRE-FLIGHT CONFIGURATION</span></h2>
+        <section class="academy-story" id="academy-story" hidden aria-label="เนื้อเรื่องประจำเลเวล">
+          <div class="academy-story-heading"><span><i>◈</i> LEVEL STORY <small id="academy-story-speaker">NOVA</small></span><div class="academy-story-actions"><button id="story-replay" type="button">เล่นฉากเนื้อเรื่องซ้ำ ↗</button><button id="lesson-skip" type="button" hidden>ข้ามการสอน ↗</button><button id="practice-finish-story" type="button" hidden>จบการฝึก</button></div></div>
+          <p id="academy-story-line"></p>
+        </section>
+        <section class="lesson-stage" id="lesson-stage" hidden aria-label="บทเรียนแบบพูดพร้อมภาพวงกลมหนึ่งหน่วย">
+          <div class="lesson-circle-panel">
+            <small>UNIT CIRCLE · r = 1</small>
+            <svg id="lesson-circle" viewBox="0 0 320 260" role="img" aria-label="วงกลมหนึ่งหน่วยแสดงมุมและพิกัด">
+              <path id="lesson-quadrant-sector" class="quadrant-sector" d=""/><path class="circle-grid" d="M28 130H292M160 18V242"/><circle class="unit-circle" cx="160" cy="130" r="100"/>
+              <path id="lesson-angle-arc" class="angle-arc" d=""/><line id="lesson-radius" class="radius-line" x1="160" y1="130" x2="248" y2="130"/>
+              <line id="lesson-projection-x" class="coordinate-projection" x1="160" y1="130" x2="248" y2="130"/><line id="lesson-projection-y" class="coordinate-projection" x1="248" y1="130" x2="248" y2="130"/>
+              <circle class="circle-center" cx="160" cy="130" r="3"/><circle id="lesson-x-coordinate" class="coordinate-marker" cx="248" cy="130" r="3"/><circle id="lesson-y-coordinate" class="coordinate-marker" cx="160" cy="130" r="3"/><circle id="lesson-point" class="lesson-point" cx="248" cy="130" r="7"/>
+              <text class="axis-label" x="296" y="135">x</text><text class="axis-label" x="166" y="17">y</text>
+              <text id="lesson-angle-label" class="diagram-label" x="207" y="114">θ = 0°</text><text id="lesson-quadrant-label" class="quadrant-label" x="205" y="85"></text><text id="lesson-coordinate-label" class="diagram-label" x="160" y="250" text-anchor="middle">(x, y) = (1, 0)</text><g id="lesson-reference-labels" class="lesson-reference-labels" aria-hidden="true"></g>
+            </svg>
+            <div class="lesson-formula"><span>x = cos θ</span><span>y = sin θ</span></div>
+          </div>
+        </section>
+        <aside class="academy-astra" id="academy-astra" hidden aria-label="ผู้ช่วยสอน Astra">
+          <div class="academy-astra-portrait" role="img" aria-label="Astra ผู้ช่วย AI ประจำยาน"></div>
+          <div class="lesson-speaking-panel">
+            <div class="lesson-speaking-heading"><span>ASTRA · FLIGHT INSTRUCTOR</span><b id="lesson-step-count">ประโยค 1 / 3</b></div>
+            <p id="lesson-speaking-line" aria-live="polite"></p>
+            <div class="lesson-speaking-controls"><button id="lesson-prev" type="button">← ก่อนหน้า</button><button id="lesson-next" type="button">ประโยคถัดไป →</button></div>
+          </div>
+        </aside>
+        <section class="result-visual" id="result-visual" hidden aria-label="สรุปผลการเล่น">
+          <div class="result-hero"><img src="assets/degree-core-planet.png" alt="Degree Core"><div><small>FLIGHT REPORT</small><b id="result-status">RUN COMPLETE</b><span id="result-loot"></span></div></div>
+          <div class="result-metrics">
+            <article><span class="metric-icon score-icon">✦</span><small>SCORE</small><b id="result-score">0</b></article>
+            <article><span class="metric-icon mission-icon">◎</span><small>MISSIONS</small><b id="result-missions">0</b></article>
+            <article><span class="metric-icon accuracy-icon">⌖</span><small>WEAPON MATCH</small><b id="result-accuracy">0%</b></article>
+            <article><span class="metric-icon mini-icon">▣</span><small>MINIGAMES</small><b id="result-minigames">0 / 0</b></article>
+          </div>
+          <div class="result-feedback"><article class="strength-card"><b><span>✓</span> ทำได้ดี</b><p id="result-strength"></p></article><article class="improve-card"><b><span>↗</span> ควรปรับปรุง</b><p id="result-improve"></p></article></div>
+        </section>
         <div class="mission-art" id="mission-art" hidden></div>
+        <div class="tutorial-tools" id="tutorial-tools" hidden></div>
         <p id="overlay-copy">กำลังรับข้อมูลดาวและวัตถุประสงค์ภารกิจ...</p>
         <div class="lesson-art" id="lesson-art" hidden></div>
-        <div class="brief-controls"><span>ปกป้อง Degree Core</span><span>เลือกมุมและค่าที่ตรงกับสัญญาณ</span><span>เรียนรู้ก่อนแล้วค่อยปลดล็อกปืน</span></div>
+        <div class="brief-controls"><span>ปกป้อง Degree Core</span><span>เป้าใกล้ที่สุดถูกเลือกอัตโนมัติ · คลิกยานเพื่อล็อกเป้าอื่น</span><span>เลือกมุมหรือค่าที่ตรงกับสัญญาณเพื่อยิง</span></div>
         <button id="retry-wave" class="retry-button" hidden>เล่น Wave นี้อีกครั้ง</button>
-        <button id="launch" class="launch-button"><span>เริ่มแคมเปญ</span><b>↗</b></button>
+        <button id="cancel-mission" class="cancel-mission-button" type="button" hidden>ยกเลิกภารกิจ</button>
+        <button id="training-continue" class="training-continue" type="button" hidden>ฝึกสุ่มต่อ ↻</button><button id="launch" class="launch-button"><span>เริ่มแคมเปญ</span><b>↗</b></button>
         <div class="brief-foot">STARFALL ROUTE &nbsp;·&nbsp; QUADRANT FLIGHT SYSTEMS</div>
       </div>
     </div>
-    <div class="bottom-hud">
-      <div class="controls-legend"><span class="legend-title">FLIGHT CONTROLS</span><span>CENTER DEFENSE</span><span><kbd>SPACE</kbd> FIRE SELECTED</span><span><kbd>1–9</kbd> VALUE WEAPONS</span><span><kbd>SHIFT</kbd> SHIELD ON CONTACT</span><span><kbd>E</kbd> SCAN</span><span><kbd>H</kbd> HINT</span><span><kbd>TAB</kbd> REF</span><span><kbd>ESC</kbd> PAUSE</span></div>
-      <div class="status-line"><span class="status-pip"></span><b id="status-text">FLIGHT SYSTEM STANDBY</b><span id="feedback">UNIT CIRCLE ONLINE</span><button id="deploy-button" hidden>LAUNCH MISSION ↗</button></div>
-      <div class="touch-controls"><button data-control="fire">FIRE</button><button data-action="hint">HINT</button><button data-action="scan">SCAN</button><button data-control="shield">SHIELD</button></div>
-    </div>
+    <div id="auto-hint" class="auto-hint" hidden aria-live="polite"></div>
+    <section id="story-dialog" class="story-dialog" hidden aria-modal="true" role="dialog" aria-labelledby="story-speaker">
+      <div class="story-backdrop" aria-hidden="true"></div>
+      <div class="story-stage">
+        <div class="story-console-frame" aria-hidden="true"></div>
+        <header class="story-console-heading"><span class="story-brand-mark">◎</span><b>ORBIT DEFENDER<small>DEGREE PROTOCOL</small></b><strong>STORY</strong><span class="story-console-code">STARFALL ROUTE · OD-07</span></header>
+        <div class="story-art" aria-hidden="true"></div>
+        <div class="story-cast" aria-hidden="true">
+          <div class="story-portrait pilot" data-character="NOVA"></div>
+          <div class="story-portrait ai" data-character="ASTRA"></div>
+          <div class="story-portrait overlord" data-character="NOX"></div>
+        </div>
+        <div class="story-tools"><button id="story-history-toggle" type="button" aria-label="ดูประวัติการสนทนา" title="ดูประวัติการสนทนา" aria-expanded="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5h16M4 10h16M4 15h10M4 20h8"/></svg></button><button id="story-home" type="button" aria-label="กลับหน้าเมนู" title="กลับหน้าเมนู"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 11 9-8 9 8M5 10v10h14V10M9 20v-6h6v6"/></svg></button><button id="story-sound-toggle" type="button" class="muted" aria-label="เปิดเสียง" title="เปิดเสียง" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 10v4h4l5 4V6l-5 4H4Z"/><path class="sound-waves" d="M16 9a5 5 0 0 1 0 6m2-9a9 9 0 0 1 0 12"/><path class="sound-muted" d="m17 9 5 6m0-6-5 6"/></svg></button></div>
+        <div class="story-dialogue">
+          <div class="story-speaker-row"><span class="story-speaker-mark">◈</span><b id="story-speaker">NOVA</b><small id="story-scene">STORY SCENE</small></div>
+          <p id="story-line" aria-live="polite"></p>
+          <button id="story-next" type="button">แตะเพื่อไปต่อ <span>↗</span></button>
+        </div>
+        <section id="story-history-popup" class="story-history-popup" hidden role="dialog" aria-modal="true" aria-labelledby="story-history-title"><div class="story-history-card"><header><b id="story-history-title">ประวัติการสนทนา</b><button id="story-history-close" class="story-history-close" type="button" aria-label="ปิดประวัติ">×</button></header><div id="story-history" class="story-history" aria-label="รายการบทสนทนาที่ผ่านมา"></div></div></section>
+        <nav class="story-route" aria-label="เส้นทางแคมเปญ"><span><img src="assets/planet-helios-outpost.webp" alt=""><b>01</b></span><i></i><span><img src="assets/planet-mirror-belt.webp" alt=""><b>02</b></span><i></i><span><img src="assets/planet-shattered-meridian.webp" alt=""><b>03</b></span><i></i><span class="route-boss"><img src="assets/nox-command-base.png" alt=""><b>NOX</b></span></nav>
+      </div>
+    </section>
   </main>
   <script src="game.js"></script>
 </body>

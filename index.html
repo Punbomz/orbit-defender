@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="th">
 <head>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#061022">
@@ -19,6 +20,7 @@
       <div class="hero-copy">
         <h1>STARFALL<br><em>ROUTE</em></h1>
         <p class="intro">ปกป้อง <b>Degree Core</b> เพื่อรักษาเสถียรภาพของวงโคจร</p>
+        <a class="start-button hero-start" id="campaign-link" href="game.html?mode=campaign&amp;unit=degree&amp;difficulty=pilot"><span><small id="launch-mode-label">STORY CAMPAIGN</small><b id="launch-label">START MISSION</b></span><i>»</i></a>
       </div>
 
       <div class="planet-art" role="img" aria-label="ยานผู้เล่นกำลังมุ่งหน้าเข้าปกป้อง Degree Core จากยานศัตรู">
@@ -36,40 +38,73 @@
     </section>
 
     <section class="launch-panel" aria-label="ตั้งค่าก่อนออกบิน">
-      <div class="panel-heading"><span>FLIGHT CONFIGURATION</span><span>HELIOS SYSTEM · ROUTE 01</span></div>
-      <nav class="mode-tabs" aria-label="โหมดเกม">
-        <button class="mode-tab active" type="button" data-mode="campaign" aria-pressed="true"><span>◈</span> CAMPAIGN</button>
-        <button class="mode-tab" type="button" data-mode="academy" aria-pressed="false"><span>✦</span> ACADEMY</button>
-        <small>เลือกภารกิจและตั้งค่าการบิน</small>
-      </nav>
+      <div class="panel-heading"><span>FLIGHT CONFIGURATION</span><span id="route-context">HELIOS SYSTEM · ROUTE 01</span></div>
+      <div class="mode-tabs"><small>เลือกโหมดการบิน หน่วยองศาหรือเรเดียน และความยากก่อนออกเดินทาง</small></div>
 
       <div class="panel-main">
         <div class="choices">
-          <fieldset><legend>LEARNING UNIT</legend>
+          <fieldset><legend>GAME MODE</legend>
+            <button class="choice active" type="button" data-group="mode" data-value="campaign" aria-pressed="true"><i></i><span><b>STORY CAMPAIGN</b><small>เนื้อเรื่อง · บทเรียน · เส้นทางหลัก</small></span></button>
+            <button class="choice" type="button" data-group="mode" data-value="practice" aria-pressed="false"><i></i><span><b>LEVEL PRACTICE</b><small>เลือกด่าน · Tutorial · ทดลองเล่น</small></span></button>
+            <button class="choice" type="button" data-group="mode" data-value="daily" aria-pressed="false"><i></i><span><b>DAILY CHALLENGE</b><small>ภารกิจประจำวัน · เล่นด่านที่ปลดล็อกสูงสุด</small></span></button>
+            <button class="choice endless-mode locked" type="button" data-group="mode" data-value="endless" aria-pressed="false" disabled><i></i><span><b>ENDLESS</b><small>ปลดล็อกเมื่อชนะบอส</small></span></button>
+          </fieldset>
+          <fieldset><legend>ANGLE UNIT</legend>
             <button class="choice active" type="button" data-group="unit" data-value="degree" aria-pressed="true"><i></i><span>DEGREES</span></button>
             <button class="choice" type="button" data-group="unit" data-value="radian" aria-pressed="false"><i></i><span>RADIANS</span></button>
           </fieldset>
           <fieldset><legend>THREAT LEVEL</legend>
-            <button class="choice" type="button" data-group="difficulty" data-value="cadet" aria-pressed="false"><i></i><span>CADET<small>ฝึกฝน</small></span></button>
-            <button class="choice active" type="button" data-group="difficulty" data-value="pilot" aria-pressed="true"><i></i><span>PILOT<small>สมดุล</small></span></button>
-            <button class="choice" type="button" data-group="difficulty" data-value="ace" aria-pressed="false"><i></i><span>ACE<small>ท้าทาย</small></span></button>
+            <button class="choice" type="button" data-group="difficulty" data-value="cadet" aria-pressed="false"><i></i><span><b class="difficulty-name">CADET</b><small>ศัตรูช้าลง · ♥ 5 HP<br>ชาร์จไว · ยิงพลาด −4%<br>เลือกอาวุธพลาดได้ · Hint ×1</small></span></button>
+            <button class="choice active" type="button" data-group="difficulty" data-value="pilot" aria-pressed="true"><i></i><span><b class="difficulty-name">PILOT</b><small>ความเร็วปกติ · ♥ 3 HP<br>ชาร์จสมดุล · ยิงพลาด −8%<br>เลือกอาวุธให้ตรงคำตอบ · Hint ×3</small></span></button>
+            <button class="choice" type="button" data-group="difficulty" data-value="ace" aria-pressed="false"><i></i><span><b class="difficulty-name">ACE</b><small>ศัตรูเร็วขึ้น · ♥ 2 HP<br>ชาร์จช้า · ยิงพลาด −12%<br>เลือกอาวุธให้ตรงคำตอบ · Hint ×5</small></span></button>
           </fieldset>
         </div>
         <div class="launch-actions">
-          <a class="start-button" id="campaign-link" href="game.html?mode=campaign&amp;unit=degree&amp;difficulty=pilot"><span><b id="launch-label">LAUNCH CAMPAIGN</b></span><i>»</i></a>
-          <button class="academy-quick" type="button"><span aria-hidden="true">♧</span> FLIGHT SCHOOL</button>
+          <button id="leaderboard-open" class="leaderboard-button" type="button" aria-haspopup="dialog">🏆 HALL OF ACES</button>
           <details class="options-menu">
-            <summary><span>⚙</span> OPTIONS</summary>
-            <div class="options-popover"><b>FLIGHT MANUAL</b><p>เลือกอาวุธให้ตรงสัญญาณ แล้วคลิกเพื่อเล็งและยิง</p><p><kbd>Space</kbd> ยิง　<kbd>Shift</kbd> กางโล่</p><p><kbd>E</kbd> สแกน　<kbd>H</kbd> คำใบ้　<kbd>Esc</kbd> พักเกม</p></div>
+            <summary><span>⚙</span> ตั้งค่า</summary>
+            <div class="options-popover" aria-label="ตั้งค่าเสียงและการแสดงผล">
+              <b>เสียงและการแสดงผล</b>
+              <label class="setting-range" for="music-volume"><span>เพลงประกอบ <output id="music-volume-value">45%</output></span><input id="music-volume" type="range" min="0" max="100" value="45"></label>
+              <label class="setting-range" for="effects-volume"><span>เสียงเอฟเฟกต์ <output id="effects-volume-value">70%</output></span><input id="effects-volume" type="range" min="0" max="100" value="70"></label>
+              <label class="setting-range" for="voice-volume"><span>เสียงพูด <output id="voice-volume-value">80%</output></span><input id="voice-volume" type="range" min="0" max="100" value="80"></label>
+              <label class="setting-toggle"><span>ลดการเคลื่อนไหว</span><input id="reduce-motion" type="checkbox"><i aria-hidden="true"></i></label>
+              <button id="fullscreen-toggle" class="setting-fullscreen" type="button"><span>⛶</span> เต็มจอ</button>
+              <small class="settings-note">ตั้งค่าเสียงและการเคลื่อนไหวจะถูกบันทึกไว้ในเครื่องนี้</small>
+            </div>
           </details>
         </div>
       </div>
 
-      <div class="route-progress" aria-label="Route progression"><span class="route-title">ROUTE PROGRESSION</span><b class="route-stop current" data-route-stage="0" aria-label="ด่าน 1 ปลดล็อกแล้ว">01</b><i></i><b class="route-stop locked" data-route-stage="1" aria-label="ด่าน 2 ล็อกอยู่">02</b><i></i><b class="route-stop locked" data-route-stage="2" aria-label="ด่าน 3 ล็อกอยู่">03</b><i></i><b class="route-stop boss locked" data-route-stage="3" aria-label="บอสล็อกอยู่">★ BOSS</b><small>HELIOS OUTPOST　·　MIRROR BELT　·　MERIDIAN　·　HOMEWORLD</small></div>
+      <section class="route-progress" aria-label="เส้นทางแคมเปญ">
+        <div class="route-heading"><span class="route-title">ROUTE PROGRESSION</span><small id="route-help">เส้นทางความคืบหน้า · ระดับความคืบหน้าแคมเปญ</small></div>
+        <div class="route-track">
+          <i class="route-energy-line" aria-hidden="true"></i>
+          <article class="route-stop current" data-route-stage="0" data-route-name="Helios Outpost · Q1 Basics"><img class="route-planet-art route-q1" src="assets/planet-helios-outpost.webp" alt="ดาว Helios Outpost สำหรับบทเรียนพื้นฐาน Q1"><span class="route-step">01</span><span class="route-copy"><b>HELIOS OUTPOST</b><small>Q1 · พื้นฐาน</small></span></article>
+          <article class="route-stop locked" data-route-stage="1" data-route-name="Mirror Belt · Q2 Reflection"><img class="route-planet-art route-q2" src="assets/planet-mirror-belt.webp" alt="ดาวน้ำแข็งและวงแหวนสะท้อนสำหรับบทเรียน Q2"><span class="route-step">02</span><span class="route-copy"><b>MIRROR BELT</b><small>Q2 · การสะท้อน</small></span></article>
+          <article class="route-stop locked" data-route-stage="2" data-route-name="Shattered Meridian · Q3/Q4 Coordinates"><img class="route-planet-art route-q34" src="assets/planet-shattered-meridian.webp" alt="ดาวแยกสองซีกสำหรับบทเรียนพิกัด Q3 และ Q4"><span class="route-step">03</span><span class="route-copy"><b>MERIDIAN</b><small>Q3–Q4 · พิกัด</small></span></article>
+          <article class="route-stop boss locked" data-route-stage="3" data-route-name="NOX Command Base · Null Armada Final Boss"><img class="route-planet-art route-boss" src="assets/nox-command-base-menu.png" alt="ฐานบัญชาการ Null Armada ของ NOX"><span class="route-step">★</span><span class="route-copy"><b>NOX COMMAND BASE</b><small>NULL ARMADA · FINAL BOSS</small></span></article>
+        </div>
+      </section>
+    <dialog id="leaderboard-dialog" class="leaderboard-dialog" aria-labelledby="leaderboard-title">
+      <form method="dialog"><button class="leaderboard-close" aria-label="ปิด">×</button></form>
+      <p class="leaderboard-kicker">ENDLESS · FLIGHT RECORDS</p><h2 id="leaderboard-title">HALL OF ACES</h2>
+      <p class="leaderboard-note">สถิติตัวอย่างจากนักบินและตัวละครในจักรวาล Orbit Defender</p>
+      <section id="leaderboard-podium" class="leaderboard-podium" aria-label="อันดับเหรียญเกียรติยศ 1 ถึง 3"></section>
+      <ol id="leaderboard-list" class="leaderboard-list"></ol>
+      <div class="personal-best">สถิติสูงสุดของคุณ <b id="personal-best-score">0</b></div>
+    </dialog>
     </section>
 
-    <footer><span>ORBITAL DEFENSE NETWORK <b>OD-07</b></span><span><kbd>ENTER</kbd> เริ่มภารกิจ　 <kbd>O</kbd> ตั้งค่า　 <kbd>M</kbd> สลับโหมด</span></footer>
+    <footer><span>ORBITAL DEFENSE NETWORK <b>OD-07</b></span><span>คลิกปุ่มเพื่อเลือกค่า · ปรับหน่วยและความยากได้ก่อนเริ่ม</span></footer>
   </main>
+  <dialog id="flight-setup-modal" class="leaderboard-dialog flight-setup-modal" aria-labelledby="flight-setup-title">
+    <div class="flight-setup-card"><button id="flight-setup-close" class="flight-setup-close" type="button" aria-label="ปิดหน้าต่าง" title="ปิด">×</button><span class="flight-setup-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="10"/><circle cx="16" cy="16" r="3"/><path d="M16 1v6m0 18v6M1 16h6m18 0h6"/></svg></span><small>STARFALL ROUTE · FLIGHT SETUP</small><h2 id="flight-setup-title">เตรียมออกเดินทาง</h2><p id="flight-setup-copy">เลือกการตั้งค่าเสียงก่อนเริ่มภารกิจ</p>
+      <div id="menu-resume-options" class="menu-resume-options" hidden><small>พบเที่ยวบินที่ยังไม่จบ</small><button id="menu-resume" type="button">เล่นต่อ</button><button id="menu-restart" type="button">เริ่มแคมเปญใหม่</button></div>
+      <div class="menu-sound-option"><span>เสียงเกม</span><button id="menu-sound-toggle" type="button" aria-pressed="true">เปิดเสียง</button></div>
+      <button id="menu-launch-session" class="menu-launch-session" type="button">เริ่มภารกิจ ↗</button>
+    </div>
+  </dialog>
   <script src="menu.js"></script>
 </body>
 </html>

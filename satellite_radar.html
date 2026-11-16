@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="th">
+
+<head>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#061327">
+    <title>Satellite Alignment · Starfall Route</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --cyan: #42eaff;
+            --ink: #effaff;
+            --muted: #aac7dc;
+            --panel: #071a30
+        }
+
+        * {
+            box-sizing: border-box
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            color: var(--ink);
+            font: 500 16px/1.45 system-ui, "Segoe UI", sans-serif;
+            background: radial-gradient(ellipse at 70% 35%, #145078 0, transparent 43%), radial-gradient(ellipse at 15% 85%, #183e6c 0, transparent 40%), linear-gradient(135deg, #020812, #07172c 55%, #030914);
+            overflow-x: hidden
+        }
+
+        body:before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            background-image: radial-gradient(#d9f8ff 1px, transparent 1px), radial-gradient(#49dfff 1px, transparent 1px);
+            background-size: 83px 83px, 137px 137px;
+            background-position: 0 0, 37px 51px;
+            opacity: .4
+        }
+
+        .shell {
+            position: relative;
+            width: min(1120px, 100%);
+            min-height: 100vh;
+            margin: auto;
+            padding: 20px;
+            display: grid;
+            grid-template-columns: 205px 1fr;
+            grid-template-rows: auto 1fr;
+            gap: 18px
+        }
+
+        .top {
+            grid-column: 1/-1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            border: 1px solid #42eaffaa;
+            background: #051321df;
+            box-shadow: 0 0 24px #1ebdff36;
+            clip-path: polygon(0 0, 96% 0, 100% 25%, 100% 100%, 4% 100%, 0 72%)
+        }
+
+        .brand {
+            font-weight: 900;
+            font-style: italic;
+            letter-spacing: .1em
+        }
+
+        .brand small {
+            display: block;
+            color: var(--cyan);
+            font-size: 11px;
+            letter-spacing: .3em
+        }
+
+        .route,
+        .clock {
+            border: 1px solid var(--cyan);
+            padding: 7px 13px;
+            color: var(--cyan);
+            font-weight: 800;
+            letter-spacing: .1em
+        }
+
+        .mission {
+            align-self: center;
+            padding: 18px;
+            border: 1px solid #27dfff99;
+            background: #041422e8;
+            box-shadow: 0 0 20px #22d7ff20
+        }
+
+        .mission h2 {
+            margin: 0 0 10px;
+            color: var(--cyan);
+            font-size: 16px;
+            letter-spacing: .1em
+        }
+
+        .mission p {
+            margin: 0
+        }
+
+        .mission .hint {
+            margin-top: 18px;
+            padding-top: 14px;
+            border-top: 1px solid #36d9ff77;
+            color: var(--muted);
+            font-size: 14px
+        }
+
+        .board {
+            position: relative;
+            align-self: center;
+            padding: 28px;
+            border: 2px solid #36dfff;
+            background: linear-gradient(145deg, #06172bed, #061021ef);
+            box-shadow: 0 0 0 7px #24c9ff19, 0 0 38px #17d8ff35;
+            clip-path: polygon(4% 0, 96% 0, 100% 5%, 100% 95%, 96% 100%, 4% 100%, 0 95%, 0 5%)
+        }
+
+        .board h1 {
+            margin: -43px auto 16px;
+            width: max-content;
+            max-width: 90%;
+            padding: 8px 22px;
+            text-align: center;
+            color: white;
+            font-size: clamp(19px, 3vw, 28px);
+            letter-spacing: .1em;
+            background: #062036;
+            border: 2px solid var(--cyan);
+            box-shadow: 0 0 18px #42eaff88
+        }
+
+        .progress {
+            display: flex;
+            justify-content: space-between;
+            max-width: 720px;
+            margin: 0 auto 15px;
+            color: var(--muted);
+            font-size: 13px;
+            letter-spacing: .1em
+        }
+
+        .progress b {
+            color: var(--cyan)
+        }
+
+        .challenge {
+            display: grid;
+            grid-template-columns: minmax(170px, .8fr) minmax(220px, 1fr);
+            gap: 20px;
+            align-items: center;
+            max-width: 740px;
+            margin: auto
+        }
+
+        .orbit {
+            width: min(100%, 290px);
+            aspect-ratio: 1;
+            justify-self: center;
+            position: relative;
+            border: 1px solid #42cfff88;
+            border-radius: 50%;
+            background: radial-gradient(circle, #092743dd, #04172bdc 72%, #07182b);
+            box-shadow: inset 0 0 30px #2bc9ff15, 0 0 20px #28cfff21
+        }
+
+        .orbit:before,
+        .orbit:after {
+            content: "";
+            position: absolute;
+            inset: 12%;
+            border: 1px dashed #56cfff55;
+            border-radius: 50%
+        }
+
+        .orbit:after {
+            inset: 28%;
+            border-color: #56cfff33
+        }
+
+        .radar-sweep {
+            position: absolute;
+            z-index: 0;
+            inset: 1%;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, transparent 0 300deg, #2beaff08 320deg, #2beaff4a 360deg);
+            animation: radar-sweep 4s linear infinite;
+            pointer-events: none
+        }
+
+        @keyframes radar-sweep {
+            to { transform: rotate(360deg) }
+        }
+
+        .axis {
+            position: absolute;
+            color: var(--cyan);
+            font-weight: 900
+        }
+
+        .axis.x {
+            right: 5%;
+            top: 51%
+        }
+
+        .axis.y {
+            left: 50%;
+            top: 3%
+        }
+
+        .satellite {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            font-size: 29px;
+            filter: drop-shadow(0 0 8px var(--cyan));
+            transform: translate(-50%, -50%);
+            transition: left .7s cubic-bezier(.2, .8, .2, 1), top .7s cubic-bezier(.2, .8, .2, 1), rotate .7s
+        }
+
+        .coords {
+            align-self: center;
+            padding: 20px 16px;
+            text-align: center;
+            border: 1px solid #55ccff99;
+            background: #06182ce8;
+            box-shadow: 0 0 20px #29cfff2a
+        }
+
+        .coords small {
+            display: block;
+            color: var(--muted);
+            letter-spacing: .12em
+        }
+
+        .xy {
+            display: block;
+            margin: 5px 0;
+            color: var(--cyan);
+            font-size: clamp(25px, 5vw, 42px);
+            font-weight: 900;
+            text-shadow: 0 0 12px #42eaff77
+        }
+
+        .answers {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            max-width: 700px;
+            margin: 20px auto 0
+        }
+
+        .answer {
+            min-height: 64px;
+            border: 2px solid #36dfff;
+            background: linear-gradient(145deg, #092744, #061324);
+            color: white;
+            font-size: clamp(20px, 4vw, 30px);
+            font-weight: 900;
+            box-shadow: inset 0 0 15px #1889bd27;
+            transition: transform .2s, box-shadow .2s, border-color .2s;
+            cursor: pointer
+        }
+
+        .answer:hover:not(:disabled),
+        .answer:focus-visible {
+            transform: translateY(-4px);
+            border-color: #9df7ff;
+            box-shadow: 0 0 22px #24dcff77
+        }
+
+        .answer:disabled {
+            cursor: default
+        }
+
+        .answer.good {
+            border-color: #6af0c1;
+            color: #baffdd;
+            background: #075342;
+            animation: lock .45s ease
+        }
+
+        .answer.bad {
+            border-color: #ff7185;
+            animation: shake .3s
+        }
+
+        .status {
+            min-height: 26px;
+            text-align: center;
+            color: #c2ecf8;
+            margin: 12px 0 0
+        }
+
+        .status.good {
+            color: #9fffd4
+        }
+
+        .status.bad {
+            color: #ff9dac
+        }
+
+        .action {
+            display: block;
+            margin: 10px auto 0;
+            min-height: 44px;
+            padding: 8px 22px;
+            border: 1px solid var(--cyan);
+            background: #07334a;
+            color: white;
+            font-weight: 800;
+            cursor: pointer
+        }
+
+        .action:hover {
+            background: #0a5269
+        }
+
+        .overlay {
+            position: fixed;
+            z-index: 3;
+            inset: 0;
+            display: grid;
+            place-items: center;
+            padding: 20px;
+            background: #010714d9;
+            backdrop-filter: blur(5px)
+        }
+
+        .overlay[hidden] {
+            display: none
+        }
+
+        #intro.briefing, #result.briefing { position: fixed; z-index: 10; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 14px; padding: 24px 24px 5vh; background: #0208142a; backdrop-filter: none; isolation: isolate; overflow: hidden }
+        #intro.briefing[hidden], #result.briefing[hidden] { display: none }
+        .brief-art { position: absolute; z-index: -1; inset: 0; background-image: linear-gradient(180deg,#02081438 0%,#02081408 38%,#02081438 60%,#020814a8 100%),var(--brief-art); background-position: center; background-size: cover }
+        .briefing:after { content: ""; position: absolute; z-index: 1; inset: 0; pointer-events: none; background: url("assets/ui-console-frame.png") center/100% 100% no-repeat }
+        .brief-brand, .brief-route, .brief-card, .briefing .story-next { position: relative; z-index: 4 }
+        .brief-brand { position: absolute; top: 3.5%; left: 3.5%; display: flex; align-items: center; gap: 9px; color: #f1fbff; text-shadow: 0 2px 8px #001 }
+        .brief-brand img { width: 32px; height: 32px }
+        .brief-brand span { display: grid; gap: 3px }
+        .brief-brand b { font: 900 11px Consolas,monospace; letter-spacing: .1em }
+        .brief-brand small { color: #ffc64d; font: 700 7px Consolas,monospace; letter-spacing: .2em }
+        .brief-route { position: absolute; top: 4.5%; right: 4%; color: #bdeaf4; font: 800 9px Consolas,monospace; letter-spacing: .12em; text-shadow: 0 2px 8px #001 }
+        .brief-card { width: min(1120px,82vw); display: flex; align-items: center; gap: 20px; padding: 17px 24px; border: 1px solid #40e9ff; background: linear-gradient(100deg,#041525f2,#08283bf0 52%,#041525f2); box-shadow: 0 0 0 5px #062338b8,inset 0 0 26px #2deaff19,0 0 30px #20dfff36 }
+        .brief-mark { flex: 0 0 62px; display: grid; place-items: center; height: 58px; border-right: 1px solid #49e8f77a; color: #55efff; font: 44px/1 Consolas,monospace }
+        .brief-copy { min-width: 0 }
+        .brief-copy small { color: #ffc64d; font: 800 9px Consolas,monospace; letter-spacing: .14em }
+        .brief-card h2 { margin: 4px 0; color: #f1fbff; font-size: clamp(18px,2vw,27px); line-height: 1.2 }
+        .brief-card p { margin: 0; color: #d4eaf1; font-size: clamp(14px,1.15vw,18px); line-height: 1.5 }
+        .briefing .story-next { width: min(290px,70vw); min-height: 58px; font-size: clamp(15px,1.5vw,20px); letter-spacing: .04em }
+        .briefing .story-next:focus-visible { outline: 3px solid white; outline-offset: 4px }
+        @media(max-width:650px) { #intro.briefing,#result.briefing { gap: 10px; padding: 20px 12px 7vh } .brief-brand { top: 3%; left: 6%; gap: 6px } .brief-brand img { width: 25px; height: 25px } .brief-brand b { font-size: 9px } .brief-brand small { font-size: 6px } .brief-route { top: 4%; right: 7%; max-width: 40vw; text-align: right; font-size: 7px; line-height: 1.5 } .brief-card { width: calc(100vw - 34px); align-items: flex-start; gap: 11px; padding: 12px 13px } .brief-mark { flex-basis: 38px; height: 46px; font-size: 30px } .brief-copy small { font-size: 7px } .brief-card h2 { font-size: 16px } .brief-card p { font-size: 12px; line-height: 1.45 } .briefing .story-next { width: min(250px,68vw); min-height: 48px; font-size: 15px } }
+
+        .dialog {
+            width: min(520px, 100%);
+            padding: 28px;
+            border: 1px solid var(--cyan);
+            background: linear-gradient(145deg, #0a2036, #06101f);
+            box-shadow: 0 0 38px #22d7ff55;
+            text-align: center
+        }
+
+        .dialog h2 {
+            color: var(--cyan);
+            margin: 0 0 10px
+        }
+
+        .dialog p {
+            color: #d9eefa
+        }
+
+        .spark {
+            position: absolute;
+            pointer-events: none;
+            color: var(--cyan);
+            animation: float 1.4s ease-out forwards;
+            text-shadow: 0 0 12px var(--cyan)
+        }
+
+        @keyframes float {
+            to {
+                transform: translateY(-50px) scale(.4);
+                opacity: 0
+            }
+        }
+
+        @keyframes lock {
+            50% {
+                transform: scale(1.08)
+            }
+        }
+
+        @keyframes shake {
+            25% {
+                transform: translateX(-6px)
+            }
+
+            75% {
+                transform: translateX(6px)
+            }
+        }
+
+        @media(max-width:700px) {
+            .shell {
+                padding: 13px;
+                grid-template-columns: 1fr;
+                grid-template-rows: auto auto 1fr;
+                gap: 12px
+            }
+
+            .top {
+                grid-column: 1
+            }
+
+            .mission {
+                align-self: auto;
+                padding: 12px 14px
+            }
+
+            .mission .hint {
+                display: none
+            }
+
+            .board {
+                padding: 22px 13px;
+                margin-top: 7px
+            }
+
+            .board h1 {
+                margin-top: -37px;
+                margin-bottom: 15px
+            }
+
+            .challenge {
+                grid-template-columns: minmax(125px, .75fr) minmax(155px, 1fr);
+                gap: 10px
+            }
+
+            .orbit {
+                width: min(100%, 220px)
+            }
+
+            .coords {
+                padding: 14px 8px
+            }
+
+            .answers {
+                gap: 7px;
+                margin-top: 14px
+            }
+
+            .answer {
+                min-height: 56px
+            }
+        }
+
+        @media(max-width:420px) {
+            .shell {
+                padding: 9px
+            }
+
+            .challenge {
+                grid-template-columns: 1fr
+            }
+
+            .orbit {
+                width: min(60vw, 190px)
+            }
+
+            .mission {
+                display: flex;
+                gap: 10px
+            }
+
+            .mission h2 {
+                white-space: nowrap
+            }
+
+            .mission p {
+                font-size: 13px
+            }
+
+            .clock,
+            .route {
+                font-size: 12px;
+                padding: 6px 8px
+            }
+        }
+
+        @media(prefers-reduced-motion:reduce) {
+
+            *,
+            *:before,
+            *:after {
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important
+            }
+        }
+    </style>
+<link rel="stylesheet" href="assets/orbit-interface.css"><style>
+.shell{width:min(1450px,100%);grid-template-columns:minmax(210px,270px) minmax(0,1fr);gap:22px;padding:clamp(14px,2vw,28px)}
+.top{border:1px solid #39eaff8a;background:linear-gradient(90deg,#061b2bef,#082940ed 50%,#061827f2);box-shadow:0 5px 24px #00dfff20,inset 0 -1px #27eaff39;clip-path:none}
+.mission,.coords{border:1px solid #36dff17a;background:linear-gradient(145deg,#071e30f2,#061523f5);box-shadow:inset 0 0 24px #22c8e911,0 8px 28px #0008,0 0 16px #29dff20d}
+.board{border:0;background:#06182bf2 url("assets/satellite-console-frame.svg") center/100% 100% no-repeat;box-shadow:0 0 28px #19d9ff33;clip-path:none;padding:clamp(34px,4vw,56px)}
+.board h1{background:#062036;border-color:#27eaff;box-shadow:0 0 18px #42eaff55}
+.orbit{border-color:#23eaff;box-shadow:0 0 15px #20eaff,0 0 38px #008cf055,inset 0 0 34px #008cd433}
+.answers{gap:10px}.answer,.action{background:url("assets/satellite-button.svg") center/100% 100% no-repeat!important;border:0!important;border-radius:0!important;box-shadow:0 0 13px #17dfff29!important;min-height:58px}.answer:hover:not(:disabled),.action:hover{filter:brightness(1.18);box-shadow:inset 0 0 18px #b4fbff55,0 0 22px #17dfff55!important}.answer.good{color:#baffdd!important;filter:drop-shadow(0 0 12px #6af0c1)}.answer.bad{filter:drop-shadow(0 0 12px #ff7185)}
+@media(max-width:700px){.shell{grid-template-columns:1fr;grid-template-rows:auto auto 1fr;gap:12px}.top{grid-column:1}.board{padding:34px 26px}.mission{padding:13px 15px}}
+</style>
+</head>
+
+<body>
+    <main class="shell">
+        <header class="top">
+            <div class="brand">✦ STARFALL<small>SATELLITE ALIGNMENT</small></div>
+            <div class="route" id="route">LEVEL 01</div>
+            <div class="clock" id="timer">01:30</div>
+        </header>
+        <aside class="mission">
+            <h2>✦ MISSION</h2>
+            <p>ดาวเทียมคลาดเคลื่อน! อ่านค่า x และ y แล้วเลือกมุมเพื่อปรับแนวให้ตรง</p>
+            <p class="hint">เลือกมุมที่สร้างพิกัดนี้จากเนื้อหาด่านที่ผ่านแล้ว</p>
+        </aside>
+        <section class="board" id="board">
+            <h1>จัดแนวดาวเทียม</h1>
+            <div class="progress"><span>สัญญาณ <b id="round">01 / 05</b></span><span>ถูกต้อง <b id="score">0</b></span>
+            </div>
+            <div class="challenge">
+                <div class="orbit" aria-label="แผนภาพวงกลมพิกัด"><span class="radar-sweep" aria-hidden="true"></span><span class="axis x">X</span><span
+                        class="axis y">Y</span><span class="satellite" id="satellite" aria-hidden="true"></span></div>
+                <div class="coords"><small>ตำแหน่งบนแกน (X, Y)</small><span class="xy" id="xy">(√3/2,
+                        1/2)</span><small>เลือกมุมที่ถูกต้องเพื่อปรับแนว</small></div>
+            </div>
+            <div class="answers" id="answers" aria-label="ตัวเลือกมุม"></div>
+            <p class="status" id="status" aria-live="polite">รอรับข้อมูลตำแหน่งจากดาวเทียม</p><button class="action"
+                id="next" hidden>สัญญาณถัดไป →</button>
+        </section>
+    </main>
+    <div class="briefing story-screen" id="intro" role="dialog" aria-modal="true" aria-labelledby="introTitle">
+        <div class="brief-art" id="introArt" aria-hidden="true"></div><div class="brief-brand"><img src="assets/favicon.svg" alt=""><span><b>ORBIT DEFENDER</b><small>DEGREE PROTOCOL</small></span></div><small class="brief-route" id="introRoute"></small>
+        <section class="brief-card"><span class="brief-mark" aria-hidden="true">⌖</span><div class="brief-copy"><small>SATELLITE ALERT · NAVIGATION RECOVERY</small><h2 id="introTitle">ดาวเทียมนำทางเบี่ยงออกจากแนว</h2><p id="introText">ASTRA: “Zero Lock รบกวนวงโคจรของดาวเทียมนำทางค่ะ อ่านค่า X และ Y แล้วเลือกมุมที่ตรงกับพิกัด เพื่อปรับแนวกลับเข้าสู่วงโคจรและกู้ระบบสื่อสารกับเรดาร์ระยะไกล”</p></div></section>
+        <button class="action story-next" id="start">ถัดไป »</button>
+    </div>
+    <div class="briefing story-screen" id="result" hidden role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+        <div class="brief-art" id="resultArt" aria-hidden="true"></div><div class="brief-brand"><img src="assets/favicon.svg" alt=""><span><b>ORBIT DEFENDER</b><small>DEGREE PROTOCOL</small></span></div><small class="brief-route" id="resultRoute"></small>
+        <section class="brief-card"><span class="brief-mark" aria-hidden="true">⌖</span><div class="brief-copy"><small id="resultKicker">ROUTE RESTORED · SYSTEM ONLINE</small><h2 id="resultTitle">ดาวเทียมกลับเข้าสู่วงโคจร</h2><p id="resultText"></p></div></section>
+        <button class="action story-next" id="done">ไปยังด่านถัดไป »</button>
+    </div>
+    <script>
+        (() => {
+            'use strict'; const params = new URLSearchParams(location.search), level = Math.max(1, Math.min(5, Number(params.get('level')) || 1)), unit = params.get('unit') === 'radian' ? 'radian' : 'degree', content = params.get('content') || 'basic', radian = { 30: 'π/6', 45: 'π/4', 60: 'π/3', 120: '2π/3', 135: '3π/4', 150: '5π/6', 210: '7π/6', 225: '5π/4', 240: '4π/3', 270: '3π/2', 300: '5π/3', 315: '7π/4', 330: '11π/6' }, baseAngles = [[0, 30, 45, 60, 90], [120, 135, 150], [210, 225, 240, 270, 300, 315, 330], [180], [0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 315, 330]].slice(0, level).flat(), pool = baseAngles.map(a => ({ a, x: Math.cos(a * Math.PI / 180), y: Math.sin(a * Math.PI / 180) })); const fmt = n => { if (Math.abs(n) < 1e-8) return '0'; if (Math.abs(n - 1) < 1e-8) return '1'; if (Math.abs(n + 1) < 1e-8) return '−1'; for (const [v, s] of [[.5, '1/2'], [Math.SQRT1_2, '√2/2'], [Math.sqrt(3) / 2, '√3/2']]) if (Math.abs(Math.abs(n) - v) < 1e-8) return (n < 0 ? '−' : '') + s; return n.toFixed(2) }; const angle = a => unit === 'degree' ? `${a}°` : ({ 0: '0', 90: 'π/2', 180: 'π', ...radian }[a] || `${a}°`), shuffle = a => { const out = [...a]; for (let i = out.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [out[i], out[j]] = [out[j], out[i]]; } return out; }, questions = shuffle(pool).slice(0, Math.min(5, pool.length)), $ = id => document.getElementById(id); let index = 0, correct = 0, seconds = 90, ended = false, busy = false, timer, outcome = false; const sendResult = () => { if (window.parent !== window) parent.postMessage({ type: 'orbit-minigame-result', success: outcome, score: correct * 20, level, quizAccuracy: Math.round(correct / 5 * 100) }, '*'); else result.hidden = true }; const report = success => { if (ended) return; ended = true; outcome = success; clearInterval(timer); const accuracy = Math.round(correct / 5 * 100); $('resultTitle').textContent = success ? 'ดาวเทียมกลับเข้าสู่วงโคจร' : 'สัญญาณดาวเทียมยังคลาดเคลื่อน'; $('resultKicker').textContent = success ? 'ROUTE RESTORED · SYSTEM ONLINE' : 'SIGNAL PARTIAL · BACKUP ACTIVE'; $('resultText').textContent = success ? `ปรับแนวถูกต้อง ${correct} จาก 5 จุด · ระบบสื่อสารและเรดาร์ระยะไกลกลับมาออนไลน์แล้ว` : `ปรับแนวถูกต้อง ${correct} จาก 5 จุด · สัญญาณยังไม่เสถียร ASTRA กำลังชดเชยเส้นทางให้ STARFALL`; $('resultRoute').textContent = `STARFALL ROUTE · LEVEL ${String(level).padStart(2, '0')} · SATELLITE ALIGNMENT`; $('resultArt').style.setProperty('--brief-art', `url("assets/satellite-alignment-${success ? 'outro' : 'intro'}.webp")`); $('done').textContent = window.parent !== window ? 'ไปยังด่านถัดไป ↗' : 'ดูผลภารกิจ ↗'; $('result').hidden = false; if (window.parent !== window) parent.postMessage({ type: 'orbit-minigame-story-wait' }, '*') }; function draw() { if (index >= questions.length) { report(correct >= 4); return } const q = questions[index]; $('round').textContent = `${String(index + 1).padStart(2, '0')} / 05`; $('xy').textContent = `(${fmt(q.x)}, ${fmt(q.y)})`; $('satellite').style.left = `${50 + q.x * 31}%`; $('satellite').style.top = `${50 - q.y * 31}%`; $('satellite').style.rotate = `${q.a}deg`; $('status').textContent = 'เลือกมุมที่สอดคล้องกับพิกัดทั้งสอง'; $('status').className = 'status'; $('next').hidden = true; const choices = shuffle([q.a, ...shuffle(baseAngles.filter(a => a !== q.a)).slice(0, 2)]); $('answers').replaceChildren(...choices.map(a => { const b = document.createElement('button'); b.className = 'answer'; b.type = 'button'; b.textContent = angle(a); b.addEventListener('click', () => answer(b, a, q)); return b })) } function answer(button, value, q) { if (busy || ended) return; busy = true; const ok = value === q.a; button.classList.add(ok ? 'good' : 'bad'); document.querySelectorAll('.answer').forEach(b => b.disabled = true); if (ok) { correct++; $('score').textContent = correct; $('status').textContent = 'ปรับแนวสำเร็จ · สัญญาณสื่อสารกลับมาแล้ว ✓'; $('status').className = 'status good'; for (let i = 0; i < 7; i++) { const s = document.createElement('i'); s.className = 'spark'; s.textContent = '✦'; s.style.left = `${40 + Math.random() * 20}%`; s.style.top = `${40 + Math.random() * 20}%`; document.querySelector('.board').append(s); setTimeout(() => s.remove(), 1500) } } else { $('status').textContent = `คลาดเคลื่อน · คำตอบ ${angle(q.a)}`; $('status').className = 'status bad' } $('next').hidden = false; busy = false } function advance() { index++; if (index === questions.length) report(correct >= 4); else draw() } $('route').textContent = `LEVEL ${String(level).padStart(2, '0')} · ${({ 'basic': 'QUADRANT I', 'reflection': 'QUADRANT I–II', 'quadrants': 'ALL QUADRANTS', 'special-angle': 'SPECIAL ANGLES', 'boss': 'FINAL ROUTE' }[content] || 'QUADRANT I')}`; $('introRoute').textContent = $('resultRoute').textContent = `STARFALL ROUTE · LEVEL ${String(level).padStart(2, '0')} · SATELLITE ALIGNMENT`; $('introArt').style.setProperty('--brief-art', 'url("assets/satellite-alignment-intro.webp")'); $('next').addEventListener('click', advance); $('done').addEventListener('click', sendResult); $('start').addEventListener('click', () => { $('intro').hidden = true; draw(); if (window.parent !== window) parent.postMessage({ type: 'orbit-minigame-start' }, '*'); timer = setInterval(() => { seconds--; $('timer').textContent = `${String(Math.floor(seconds / 60)).padStart(2, '0')}:${String(seconds % 60).padStart(2, '0')}`; if (seconds <= 0) report(false) }, 1000) });
+        })();
+    </script>
+</body>
+
+</html>
