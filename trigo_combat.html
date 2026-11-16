@@ -137,14 +137,14 @@
   .target-count{ font-size: 26px; color: var(--toxic); text-shadow:0 0 8px rgba(32,234,255,0.6); }
 
   .attack-prompt-wrap{
-    position:absolute; bottom: 4vh; left:50%; transform:translateX(-50%);
+    position:absolute; bottom: 4vh; left:50%; transform:translateX(-50%); width:min(92vw,700px); text-align:center;
     pointer-events:all;
     display:flex; flex-direction:column; align-items:center; gap:6px;
   }
   .attack-prompt{pointer-events:none;font:700 12px 'Share Tech Mono',monospace;letter-spacing:.12em;color:#bceeff;padding:10px 16px;border:1px solid #20eaff66;background:#041327dd;box-shadow:0 0 18px #008ec033;}
 
   .flash-msg{
-    position:absolute; top: 38%; left:50%; transform:translate(-50%,-50%);
+    position:absolute; top: 38%; left:50%; transform:translate(-50%,-50%); width:min(90vw,640px); text-align:center;
     font-family:'Orbitron',sans-serif; font-weight:800; font-size: 1.6rem;
     color: var(--blood); text-shadow:0 0 16px rgba(217,51,63,0.8);
     opacity:0; pointer-events:none; letter-spacing:0.05em;
@@ -226,9 +226,11 @@
     clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
   }
   #resumeBtn:hover{ filter:brightness(1.1); }
-  .quiz-feedback{ text-align:center; font-size:13px; height:16px; margin-top:8px; font-family:'Share Tech Mono',monospace;}
+  .quiz-feedback{ text-align:center; font-size:13px; height:auto; min-height:16px; margin-top:8px; font-family:'Share Tech Mono',monospace;}
   .quiz-feedback.ok{ color: var(--toxic); }
   .quiz-feedback.bad{ color: var(--blood); }
+  .thai-ui{font-family:'Leelawadee UI',Tahoma,sans-serif;letter-spacing:normal}
+  .quiz-feedback,.quiz-question,.flash-msg,.go-title,.stat-k{font-family:'Leelawadee UI',Tahoma,sans-serif;letter-spacing:normal}
 
   /* ---------- GAME OVER ---------- */
   #screen-gameover{
@@ -259,6 +261,22 @@
   }
   .retry-btn:hover{ filter:brightness(1.1); }
 
+  .story-screen{isolation:isolate;color:#effaff;background:#020814;overflow:hidden}
+  .story-art{position:absolute;z-index:-1;inset:0;background-image:linear-gradient(180deg,#02081455 0%,#02081412 36%,#02081450 62%,#020814dc 100%),var(--story-art);background-position:center;background-size:cover}
+  .story-screen::after{content:"";position:absolute;z-index:1;inset:0;pointer-events:none;background:url("assets/ui-console-frame.png") center/100% 100% no-repeat}
+  .story-brand,.story-route,.story-caption,.story-next{position:absolute;z-index:4}
+  .story-brand{top:4%;left:4%;display:flex;align-items:center;gap:10px;text-shadow:0 2px 8px #001}
+  .story-brand img{width:34px;height:34px;filter:drop-shadow(0 0 8px #27eaff88)}
+  .story-brand span{display:grid;gap:3px}.story-brand b{font:900 12px 'Share Tech Mono',monospace;letter-spacing:.1em}.story-brand small{color:#ffc64d;font:700 7px 'Share Tech Mono',monospace;letter-spacing:.22em}
+  .story-route{top:5%;right:5%;color:#bdeaf4;font:800 9px 'Share Tech Mono',monospace;letter-spacing:.14em;text-shadow:0 2px 8px #001}
+  .story-caption{left:50%;bottom:23%;transform:translateX(-50%);width:min(1120px,82vw);display:flex;align-items:center;gap:22px;padding:17px 24px;border:1px solid #40e9ff;background:linear-gradient(100deg,#041525f2,#08283bf0 52%,#041525f2);box-shadow:0 0 0 5px #062338b8,inset 0 0 26px #2deaff19,0 0 30px #20dfff36}
+  .story-caption::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:#ffc64d;box-shadow:0 0 14px #ffd27b99}
+  .story-mark{flex:0 0 72px;display:grid;place-items:center;height:62px;border-right:1px solid #49e8f77a;color:#55efff;font:48px/1 'Share Tech Mono',monospace;text-shadow:0 0 16px #27eaffaa}
+  .story-caption>div{min-width:0}.story-caption small{color:#ffc64d;font:800 8px 'Share Tech Mono',monospace;letter-spacing:.18em}.story-caption h2{margin:4px 0;color:#f1fbff;font:900 clamp(16px,1.7vw,24px) 'Orbitron',sans-serif;letter-spacing:.03em}.story-caption p{margin:0;color:#d4eaf1;font:600 clamp(13px,1.1vw,17px)/1.55 'Rajdhani',sans-serif}
+  .story-next{left:50%;bottom:16%;transform:translateX(-50%);width:min(290px,70vw);min-height:60px;border:1px solid #69f5ff;background:linear-gradient(100deg,#087d94,#09c8d5 50%,#087d94);box-shadow:0 0 0 5px #062338b8,0 0 24px #27d9ed88,inset 0 0 14px #a4ffff30;color:#f4fdff;font:900 18px 'Orbitron',sans-serif;letter-spacing:.08em;cursor:pointer}
+  .story-next:hover{filter:brightness(1.16)}.story-next:focus-visible{outline:3px solid #fff;outline-offset:5px}
+  @media(max-width:650px){.story-brand{top:3%;left:6%;gap:6px}.story-brand img{width:26px;height:26px}.story-brand b{font-size:9px}.story-brand small{font-size:6px}.story-route{top:4%;right:7%;max-width:38vw;text-align:right;font-size:7px;line-height:1.6}.story-caption{bottom:25%;width:calc(100vw - 34px);align-items:flex-start;gap:12px;padding:12px 13px}.story-mark{flex-basis:38px;height:46px;font-size:30px}.story-caption small{font-size:7px}.story-caption h2{font-size:15px}.story-caption p{font-size:12px;line-height:1.45}.story-next{bottom:16%;min-height:48px;width:min(250px,68vw);font-size:15px}}
+
   ::-webkit-scrollbar{ width:8px; }
   ::-webkit-scrollbar-thumb{ background: var(--toxic-dim); }
 </style>
@@ -283,6 +301,14 @@
     </div>
   </div>
 
+  <div id="screen-story" class="screen story-screen hidden" role="dialog" aria-modal="true" aria-labelledby="storyTitle">
+    <div id="storyArt" class="story-art" aria-hidden="true"></div>
+    <div class="story-brand"><img src="assets/favicon.svg" alt=""><span><b>ORBIT DEFENDER</b><small>DEGREE PROTOCOL</small></span></div>
+    <small id="storyRoute" class="story-route"></small>
+    <div class="story-caption"><span class="story-mark" aria-hidden="true">⌖</span><div><small id="storyKicker"></small><h2 id="storyTitle"></h2><p id="storyCopy"></p></div></div>
+    <button id="storyNext" class="story-next" type="button">NEXT »</button>
+  </div>
+
   <!-- ================= GAME ================= -->
   <div id="screen-game" class="screen hidden">
     <canvas id="gameCanvas"></canvas>
@@ -293,19 +319,19 @@
         <div class="hearts" id="heartsRow"></div>
         <div class="hud-center-top">
           <div class="hud-score" id="scoreVal">0</div>
-          <div class="hud-timer" id="timerVal">00:00 ELAPSED</div>
+          <div class="hud-timer thai-ui" id="timerVal">เวลา 00:00</div>
         </div>
         <div class="target-box">
-          <div class="target-label">HOSTILES CLEARED</div>
+          <div class="target-label thai-ui">กำจัดศัตรู</div>
           <div class="target-count" id="targetVal">—</div>
         </div>
       </div>
 
-      <div class="attack-prompt-wrap attack-prompt">CLICK ENEMY TO LOCK · ANSWER TO FIRE</div>
+      <div class="attack-prompt-wrap attack-prompt thai-ui">คลิกยานศัตรูเพื่อล็อกเป้า · ตอบถูกเพื่อยิง</div>
 
       <div class="flash-msg" id="flashMsg"></div>
     </div>
-    <div class="briefing-toast hidden" id="briefingToast"><strong>ASTRA · INCOMING HOSTILES</strong>Answer each trig lock to fire. Protect your three hull points and clear all five targets.</div>
+    <div class="briefing-toast hidden thai-ui" id="briefingToast"><strong>ASTRA · ตรวจพบยานศัตรู</strong>ตอบโจทย์ตรีโกณมิติเพื่อยิงสกัด รักษาความทนทานของยาน 3 หน่วย และกำจัดเป้าหมายทั้ง 5 ลำให้ครบ</div>
 
     <div id="crosshair">
       <svg viewBox="0 0 54 54">
@@ -321,10 +347,10 @@
     <div id="targetOverlay" class="hidden">
       <div class="quiz-panel">
         <div class="quiz-head">
-          <div class="quiz-title" id="quizTitle">TARGET LOCKED</div>
-          <div class="quiz-sub">ASTRA · ANSWER TO FIRE</div>
+          <div class="quiz-title thai-ui" id="quizTitle">ล็อกเป้าหมายแล้ว</div>
+          <div class="quiz-sub thai-ui">ASTRA · เลือกคำตอบเพื่อยิง</div>
         </div>
-        <div class="quiz-question" id="quizQuestion">θ = <span class="theta">π/4</span> — select (cos θ, sin θ)</div>
+        <div class="quiz-question thai-ui" id="quizQuestion">เมื่อ θ = <span class="theta">π/4</span> เลือก (cos θ, sin θ) ที่ถูกต้อง</div>
 
         <div class="quiz-canvas-wrap hidden" id="quizCanvasWrap">
           <canvas id="quizCanvas" width="260" height="260"></canvas>
@@ -334,8 +360,8 @@
         <div class="quiz-options" id="quizOptions"></div>
         <div class="quiz-feedback" id="quizFeedback"></div>
         <div class="quiz-footer">
-          <div class="quiz-stats" id="quizStats">0/0 correct this run</div>
-          <button id="resumeBtn">CANCEL TARGET</button>
+          <div class="quiz-stats thai-ui" id="quizStats">ตอบถูก 0/0 ข้อ</div>
+          <button id="resumeBtn" class="thai-ui">ยกเลิกการล็อกเป้า</button>
         </div>
       </div>
     </div>
@@ -343,16 +369,16 @@
 
   <!-- ================= GAME OVER ================= -->
   <div id="screen-gameover" class="screen hidden">
-    <div class="go-title" id="goTitle">MISSION FAILED</div>
+    <div class="go-title thai-ui" id="goTitle">ภารกิจล้มเหลว</div>
     <div class="stats-panel">
-        <div class="stat-line"><div class="stat-k">TIME TO CLEAR</div><div class="stat-v" id="goTime">00:00</div></div>
-      <div class="stat-line"><div class="stat-k">INTERCEPTORS CLEARED</div><div class="stat-v" id="goKills">0 / 5</div></div>
-      <div class="stat-line"><div class="stat-k">SCORE</div><div class="stat-v" id="goScore">0</div></div>
-      <div class="stat-line"><div class="stat-k">SHOT ACCURACY</div><div class="stat-v" id="goAcc">0%</div></div>
-      <div class="stat-line"><div class="stat-k">TRIG ACCURACY</div><div class="stat-v" id="goQuiz">0%</div></div>
-      <div class="stat-line"><div class="stat-k">BEST RUN</div><div class="stat-v" id="goBest">00:00</div></div>
+        <div class="stat-line"><div class="stat-k">เวลาที่ใช้</div><div class="stat-v" id="goTime">00:00</div></div>
+      <div class="stat-line"><div class="stat-k">ยานที่สกัดได้</div><div class="stat-v" id="goKills">0 / 5</div></div>
+      <div class="stat-line"><div class="stat-k">คะแนน</div><div class="stat-v" id="goScore">0</div></div>
+      <div class="stat-line"><div class="stat-k">ความแม่นยำการยิง</div><div class="stat-v" id="goAcc">0%</div></div>
+      <div class="stat-line"><div class="stat-k">ความแม่นยำตรีโกณมิติ</div><div class="stat-v" id="goQuiz">0%</div></div>
+      <div class="stat-line"><div class="stat-k">สถิติดีที่สุด</div><div class="stat-v" id="goBest">00:00</div></div>
     </div>
-    <button class="retry-btn" id="retryBtn">FLY AGAIN</button>
+    <button class="retry-btn thai-ui" id="retryBtn">เล่นอีกครั้ง</button>
   </div>
 
 </div>
@@ -533,6 +559,13 @@
   const screenMenu = document.getElementById('screen-menu');
   const screenGame = document.getElementById('screen-game');
   const screenOver = document.getElementById('screen-gameover');
+  const screenStory = document.getElementById('screen-story');
+  const storyArt = document.getElementById('storyArt');
+  const storyRoute = document.getElementById('storyRoute');
+  const storyKicker = document.getElementById('storyKicker');
+  const storyTitle = document.getElementById('storyTitle');
+  const storyCopy = document.getElementById('storyCopy');
+  const storyNext = document.getElementById('storyNext');
   const canvas = document.getElementById('gameCanvas');
   const ctx = canvas.getContext('2d');
   const sceneArt = new Image(); sceneArt.src='assets/orbital-intercept-bg.webp';
@@ -558,6 +591,19 @@
   const resumeBtn = document.getElementById('resumeBtn');
   const startBtn = document.getElementById('startBtn');
   const retryBtn = document.getElementById('retryBtn');
+
+  function showCampaignStory(result=null){
+    const intro=!result,success=result?.success,passedAll=result?.score>=0&&state.kills===ENEMY_TOTAL;
+    storyArt.style.setProperty('--story-art',`url("assets/minigame-intercept-${intro?'intro':'outro'}.webp")`);
+    storyRoute.textContent=`STARFALL ROUTE · LEVEL ${String(Number(params.get('level'))||1).padStart(2,'0')} · ORBITAL INTERCEPT`;
+    storyKicker.textContent=intro?'ENEMY INCOMING · FIVE HOSTILES':success?'INTERCEPT COMPLETE · ROUTE CLEAR':'INTERCEPT REPORT · ROUTE NOT SECURED';
+    storyTitle.textContent=intro?'ฝูงยานศัตรูปิดเส้นทาง':success?'เส้นทางข้างหน้าเปิดแล้ว':'การสกัดกั้นยังไม่สมบูรณ์';
+    storyCopy.textContent=intro?'ระหว่างเดินทาง ยานลาดตระเวน Null Armada เข้ามาขัดขวางเส้นทางของ STARFALL เลือกคำตอบตรีโกณมิติให้ถูกต้องเพื่อยิงสกัดพวกมันให้ครบทั้งห้าลำ':success?'ยานลาดตระเวน Null Armada ถูกกำจัดแล้ว เส้นทางข้างหน้าเปิดโล่งสำหรับการเดินทางต่อ':'ยังมียานศัตรูหลบหนีไปได้ค่ะ เราจะเดินทางต่อโดยเปิดระบบเฝ้าระวังไว้';
+    if(!intro&&!success&&passedAll)storyCopy.textContent='เรากำจัดยานศัตรูได้ครบแล้ว แต่ความแม่นยำของคำตอบยังไม่ถึงเกณฑ์ยืนยันเส้นทาง เราจะเดินทางต่อโดยเปิดระบบเฝ้าระวังไว้';
+    storyNext.textContent=intro?'เริ่มสกัดยานศัตรู ↗':window.parent===window?'ดูผลภารกิจ ↗':'ไปยังด่านถัดไป ↗';
+    storyNext.onclick=()=>{if(intro){screenStory.classList.add('hidden');if(window.parent!==window)parent.postMessage({type:'orbit-minigame-start'},'*');startGame();}else if(window.parent!==window){parent.postMessage(result,'*');}else{screenStory.classList.add('hidden');screenOver.classList.remove('hidden');}};
+    screenMenu.classList.add('hidden');screenGame.classList.add('hidden');screenOver.classList.add('hidden');screenStory.classList.remove('hidden');storyNext.focus();
+  }
 
   const HEART_SVG = `<svg class="heart" viewBox="0 0 32 29" xmlns="http://www.w3.org/2000/svg"><path d="M16 28.5S1 19 1 9.6C1 4.6 4.9 1 9.4 1c2.9 0 5.4 1.5 6.6 3.9C17.2 2.5 19.7 1 22.6 1 27.1 1 31 4.6 31 9.6 31 19 16 28.5 16 28.5Z" fill="__COLOR__" stroke="#3a0507" stroke-width="1.3"/></svg>`;
 
@@ -696,7 +742,7 @@
   function updateHud(){
     heartsRow.innerHTML = heartsMarkup(state.hearts);
     scoreVal.textContent = Math.floor(state.score);
-    timerVal.textContent = `${fmtTime(state.simTime)} ELAPSED`;
+    timerVal.textContent = `เวลา ${fmtTime(state.simTime)}`;
     targetVal.textContent = `${state.kills} / 5`;
   }
 
@@ -822,8 +868,8 @@
     state.targetId = target.id;
     state.quizOpen = true;
     targetOverlay.classList.remove('hidden');
-    document.getElementById('quizTitle').textContent = `TARGET #${target.id}`;
-    quizFeedback.textContent = 'ASTRA: Select the correct signal to fire.';
+    document.getElementById('quizTitle').textContent = `ล็อกเป้าหมาย #${target.id}`;
+    quizFeedback.textContent = 'ASTRA: เลือกคำตอบที่ถูกต้องเพื่อยิง';
     quizFeedback.className = 'quiz-feedback';
     nextQuestion(target.problem);
   }
@@ -850,7 +896,7 @@
         sfx.hit(); triggerHitFlash(); shakeMag=Math.min(shakeMag+14,22); hitStopT=.06;
         spawnParticles(shot.x,shot.y,'#20eaff',18); spawnParticles(shot.x,shot.y,'#ff426d',8);
         state.projectiles.splice(i,1); state.firing=false; state.targetId=null;
-        showFlash('TARGET DESTROYED'); updateHud();
+        showFlash('กำจัดยานศัตรูแล้ว'); updateHud();
       }
     }
   }
@@ -954,7 +1000,7 @@
       quizCanvasHint.textContent = '';
     } else {
       // FIX: Hide hint while dragging so the answer isn't leaked
-      quizCanvasHint.textContent = 'Drag the point around the circle…';
+      quizCanvasHint.textContent = 'ลากจุดไปรอบวงกลมเพื่อเลือกมุม';
     }
   }
 
@@ -1009,26 +1055,26 @@
     state.lastQuestion = q;
     quizFeedback.textContent = '';
     quizFeedback.className = 'quiz-feedback';
-    quizStats.textContent = `${state.quizCorrect}/${state.quizTotal} correct this run`;
+    quizStats.textContent = `ตอบถูก ${state.quizCorrect}/${state.quizTotal} ข้อ`;
 
     quizCanvasWrap.classList.add('hidden');
     quizOptions.classList.remove('hidden');
     quizOptions.innerHTML = '';
 
     if(q.type==='pair'){
-      quizQuestion.innerHTML = `θ = <span class="theta">${q.angleLabel}</span> — select (cos θ, sin θ)`;
+      quizQuestion.innerHTML = `เมื่อ θ = <span class="theta">${q.angleLabel}</span> เลือก (cos θ, sin θ) ที่ถูกต้อง`;
       renderMCOptions(q.options, q.correctStr);
     } else if(q.type==='single'){
-      quizQuestion.innerHTML = `θ = <span class="theta">${q.angleLabel}</span> — what is ${q.askCos?'cos':'sin'} θ?`;
+      quizQuestion.innerHTML = `${q.askCos?'cos':'sin'} θ เมื่อ θ = <span class="theta">${q.angleLabel}</span> มีค่าเท่าใด?`;
       renderMCOptions(q.options, q.correctStr);
     } else if(q.type==='diagram'){
-      quizQuestion.innerHTML = `Which angle is the marked point?`;
+      quizQuestion.innerHTML = 'จุดที่ทำเครื่องหมายตรงกับมุมใด?';
       quizCanvasWrap.classList.remove('hidden');
       quizCanvas.style.cursor = 'default';
       drawDiagramCanvas(q.angleRad);
       renderMCOptions(q.options, q.correctLabel);
     } else if(q.type==='drag'){
-      quizQuestion.innerHTML = `Drag the point to θ = <span class="theta">${q.displayLabel}</span>`;
+      quizQuestion.innerHTML = `ลากจุดไปยังมุม θ = <span class="theta">${q.displayLabel}</span>`;
       quizCanvasWrap.classList.remove('hidden');
       quizOptions.classList.add('hidden');
       quizCanvas.style.cursor = 'grab';
@@ -1042,17 +1088,17 @@
     state.shotsFired++;
     if(correct){
       state.quizCorrect++;
-      quizFeedback.textContent = 'CORRECT — WEAPON FIRED';
+      quizFeedback.textContent = 'ตอบถูก · ยิงสกัดแล้ว';
       quizFeedback.className = 'quiz-feedback ok';
       sfx.correct();
       const target=state.enemies.find(z=>z.id===state.targetId && z.dying===0);
       setTimeout(()=>{if(target && target.alive){closeTargetQuestion();shootTarget(target);}},280);
     } else {
-      quizFeedback.textContent = `WRONG — correct: ${correctDisplay}`;
+      quizFeedback.textContent = `ยังไม่ถูก · คำตอบที่ถูกคือ ${correctDisplay}`;
       quizFeedback.className = 'quiz-feedback bad';
       sfx.wrong();
     }
-    quizStats.textContent = `${state.quizCorrect}/${state.quizTotal} correct this run`;
+    quizStats.textContent = `ตอบถูก ${state.quizCorrect}/${state.quizTotal} ข้อ`;
     updateHud();
     setTimeout(()=>{
       if(!state.quizOpen || correct) return;
@@ -1105,7 +1151,7 @@
         state.hearts--;
         redFlash();
         sfx.heartLoss();
-        showFlash('BREACHED!');
+        showFlash('ศัตรูฝ่าแนวป้องกันแล้ว!');
       }
     }
     state.enemies = state.enemies.filter(zb => zb.alive && zb.dying < 1);
@@ -1143,7 +1189,7 @@
   function endGame(victory){
     state.running = false;
     closeTargetQuestion();
-    document.getElementById('goTitle').textContent = victory ? 'SECTOR SECURED' : 'MISSION FAILED';
+    document.getElementById('goTitle').textContent = victory ? 'สกัดกั้นสำเร็จ' : 'ภารกิจล้มเหลว';
     document.getElementById('goTitle').classList.toggle('success', victory);
     bestTime = Math.max(bestTime, state.simTime);
     document.getElementById('goTime').textContent = fmtTime(state.simTime);
@@ -1155,19 +1201,18 @@
     document.getElementById('goQuiz').textContent = qacc+'%';
     document.getElementById('goBest').textContent = fmtTime(bestTime);
 
-    if (window.parent !== window) {
-      const quizAccuracy = state.quizTotal ? Math.round(100 * state.quizCorrect / state.quizTotal) : 0;
-      window.parent.postMessage({
+    const quizAccuracy = state.quizTotal ? Math.round(100 * state.quizCorrect / state.quizTotal) : 0;
+    const result = {
         type: 'orbit-minigame-result',
         success: victory && quizAccuracy >= 70,
         score: Math.floor(state.score),
         level: Number(new URLSearchParams(location.search).get('level')) || 1,
         quizAccuracy,
-      }, '*');
-    }
-
+      };
+    if(timedIntermission&&window.parent!==window)parent.postMessage({type:'orbit-minigame-story-wait'},'*');
     screenGame.classList.add('hidden');
-    screenOver.classList.remove('hidden');
+    if(storyFlow)showCampaignStory(result);
+    else{if(window.parent!==window)window.parent.postMessage(result,'*');screenOver.classList.remove('hidden');}
   }
 
   function startGame(){
@@ -1189,6 +1234,7 @@
     startGame();
   });
   const timedIntermission = params.get('autostart') === '1';
+  const storyFlow = timedIntermission || window.parent === window;
   retryBtn.addEventListener('click', ()=>{
     if(timedIntermission){ startGame(); return; }
     screenOver.classList.add('hidden');
@@ -1196,7 +1242,7 @@
   });
 
   resize();
-  if(timedIntermission){if(window.parent!==window)parent.postMessage({type:'orbit-minigame-start'},'*');startGame();}
+  if(storyFlow)showCampaignStory();
 })();
 </script>
 </body>

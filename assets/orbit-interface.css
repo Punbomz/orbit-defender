@@ -23,15 +23,34 @@ html, body {
 body::after {
   content: "";
   position: fixed;
-  z-index: 900;
+  z-index: 1;
   inset: 0;
   pointer-events: none;
   background: url("ui-console-frame.png") center / 100% 100% no-repeat;
   filter: drop-shadow(0 0 14px #00dcff20);
 }
 
-body > .shell, body > .wrap, body > #app {
+/* Keep the combat frame between the arena canvas and its HUD. */
+#screen-game::after {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  pointer-events: none;
+  background: url("ui-console-frame.png") center / 100% 100% no-repeat;
+}
+
+body > .shell, body > .wrap, body > #app, body > .screen-game, body > .game-shell, body > .top {
   isolation: isolate;
+  position: relative;
+  z-index: 2;
+}
+
+#app .hud-top > * {
+  padding: 5px 9px;
+  border: 1px solid #27eaff55;
+  background: linear-gradient(110deg, #041327f2, #071b31ed);
+  box-shadow: 0 0 12px #008ec044;
 }
 
 .top, .boardhead, .board-header, .board-heading {
@@ -173,7 +192,6 @@ button:disabled { filter: grayscale(.75) brightness(.68) !important; }
   display: none !important;
 }
 .brief-box.is-academy::before { filter:blur(1.5px) brightness(1.02) !important; }
-.brief-box.is-academy > .academy-story,
 .brief-box.is-academy > .tutorial-tools { display:none !important; }
 .brief-box.is-academy > #overlay-title { text-shadow: 0 0 18px #45eaff48; }
 .brief-box.is-academy > #overlay-copy {
@@ -205,27 +223,6 @@ button:disabled { filter: grayscale(.75) brightness(.68) !important; }
   box-shadow:0 0 24px #27d9ed55,inset 0 0 15px #a4ffff30 !important;
 }
 .brief-box.is-academy > #launch:hover { filter:brightness(1.16) !important; }
-
-/* Distinct illustrated story card before each level's learning screen. */
-.level-story-screen:not(.is-active), .level-story-screen[hidden] { display:none !important; }
-.level-story-screen.is-active:not([hidden]) { display:block !important; }
-.level-story-screen { position:fixed; z-index:1180; inset:0; overflow:hidden; color:#effaff; background:#020713; }
-.level-story-art { position:absolute; inset:0; background-image:var(--level-story-art),url("space-bg.png"); background-size:cover,cover; background-position:center; filter:saturate(1.1) brightness(.78); transform:scale(1.015); }
-.level-story-shade { position:absolute; inset:0; background:linear-gradient(180deg,#0207137a 0%,#02071308 24%,#02071314 46%,#020713d9 75%,#020713f5 100%),linear-gradient(90deg,#02071355,transparent 55%,#02071344); }
-.level-story-frame { position:absolute; z-index:1; inset:0; pointer-events:none; background:url("ui-console-frame.png") center/100% 100% no-repeat; }
-.level-story-header { position:absolute; z-index:2; inset:5.5% 7% auto; display:flex; align-items:center; gap:10px; color:#effaff; font:800 11px var(--mono,Consolas,monospace); letter-spacing:.12em; text-shadow:0 2px 8px #001; }
-.level-story-header b { display:grid; gap:4px; }
-.level-story-header b small { color:var(--od-gold); font-size:7px; letter-spacing:.3em; }
-.level-story-header #level-story-code { margin-left:auto; color:var(--od-gold); font-size:8px; }
-.level-story-content { position:absolute; z-index:2; inset:auto 12% 11%; display:flex; flex-direction:column; gap:12px; padding:clamp(18px,3vw,34px); border:1px solid #44e7ff9c; background:linear-gradient(115deg,#03111fef,#061928f2 60%,#04131fef); box-shadow:0 0 0 5px #09283b,inset 0 0 34px #19dfff15,0 16px 55px #000b; }
-.level-story-content::before { content:""; position:absolute; left:18px; top:-1px; width:110px; height:2px; background:#68efff; box-shadow:0 0 14px #5deaff; }
-.level-story-content>small { color:var(--od-gold); font:800 9px var(--mono,Consolas,monospace); letter-spacing:.2em; }
-.level-story-content h2 { margin:0; color:#f2fbff; font:900 clamp(22px,3vw,40px) var(--mono,Consolas,monospace); letter-spacing:.04em; text-shadow:0 0 18px #22dfff40; }
-.level-story-copy { color:#e0f1f6; font:clamp(13px,1.1vw,17px)/1.85 var(--sans,"Segoe UI",sans-serif); white-space:pre-line; }
-.level-story-copy p { margin:0 0 5px; }
-.level-story-copy b { color:#68edff; font:800 .78em var(--mono,Consolas,monospace); letter-spacing:.1em; }
-.level-story-content #level-story-next { align-self:flex-end; min-width:190px; min-height:54px; border:1px solid #67f4ff !important; background:linear-gradient(100deg,#087d94,#09c8d5 50%,#087d94) !important; box-shadow:0 0 22px #27d9ed55,inset 0 0 14px #a4ffff30 !important; font-weight:800; }
-.level-story-content #level-story-next:hover { filter:brightness(1.16); }
 
 /* Arrival and departure interludes between campaign stages. */
 .flight-cinematic[hidden] { display: none !important; }
@@ -281,12 +278,6 @@ button:disabled { filter: grayscale(.75) brightness(.68) !important; }
   .story-dialogue { inset:auto 7% 14% !important; width:auto; min-height:155px !important; padding:12px 14px !important; }
   #story-line { min-height:55px !important; font-size:12px !important; }
   .brief-box.is-academy > #launch { align-self:stretch; width:100% !important; margin-bottom:42px !important; }
-  .level-story-header { inset:4% 7% auto; font-size:8px; }
-  .level-story-header .story-brand-mark { font-size:20px; }
-  .level-story-content { inset:auto 8% 9%; gap:8px; padding:14px; }
-  .level-story-content h2 { font-size:clamp(18px,5vw,26px); }
-  .level-story-copy { max-height:34vh; overflow:auto; font-size:12px; line-height:1.65; }
-  .level-story-content #level-story-next { min-height:44px; }
   .flight-caption { bottom:6%; padding:12px; }
   .flight-caption span { font-size:10px; }
   .flight-destination { left:67%; width:40vw; }
