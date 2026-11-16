@@ -46,18 +46,21 @@
           <fieldset><legend>GAME MODE</legend>
             <button class="choice active" type="button" data-group="mode" data-value="campaign" aria-pressed="true"><i></i><span><b>STORY CAMPAIGN</b><small>เนื้อเรื่อง · บทเรียน · เส้นทางหลัก</small></span></button>
             <button class="choice" type="button" data-group="mode" data-value="practice" aria-pressed="false"><i></i><span><b>LEVEL PRACTICE</b><small>เลือกด่าน · Tutorial · ทดลองเล่น</small></span></button>
+            <button class="choice" type="button" data-group="mode" data-value="daily" aria-pressed="false"><i></i><span><b>DAILY CHALLENGE</b><small>ภารกิจประจำวัน · เล่นด่านที่ปลดล็อกสูงสุด</small></span></button>
+            <button class="choice endless-mode locked" type="button" data-group="mode" data-value="endless" aria-pressed="false" disabled><i></i><span><b>ENDLESS</b><small>ปลดล็อกเมื่อชนะบอส</small></span></button>
           </fieldset>
           <fieldset><legend>ANGLE UNIT</legend>
             <button class="choice active" type="button" data-group="unit" data-value="degree" aria-pressed="true"><i></i><span>DEGREES</span></button>
             <button class="choice" type="button" data-group="unit" data-value="radian" aria-pressed="false"><i></i><span>RADIANS</span></button>
           </fieldset>
           <fieldset><legend>THREAT LEVEL</legend>
-            <button class="choice" type="button" data-group="difficulty" data-value="cadet" aria-pressed="false"><i></i><span><b class="difficulty-name">CADET</b><small>ศัตรูช้าลง · ♥ 5 HP<br>ชาร์จไว · ยิงพลาด −4%<br>จับคู่ผ่อนปรน · Hint ×1</small></span></button>
-            <button class="choice active" type="button" data-group="difficulty" data-value="pilot" aria-pressed="true"><i></i><span><b class="difficulty-name">PILOT</b><small>ความเร็วปกติ · ♥ 3 HP<br>ชาร์จสมดุล · ยิงพลาด −8%<br>จับคู่ตรงโจทย์ · Hint ×3</small></span></button>
-            <button class="choice" type="button" data-group="difficulty" data-value="ace" aria-pressed="false"><i></i><span><b class="difficulty-name">ACE</b><small>ศัตรูเร็วขึ้น · ♥ 2 HP<br>ชาร์จช้า · ยิงพลาด −12%<br>จับคู่ตรงโจทย์ · Hint ×5</small></span></button>
+            <button class="choice" type="button" data-group="difficulty" data-value="cadet" aria-pressed="false"><i></i><span><b class="difficulty-name">CADET</b><small>ศัตรูช้าลง · ♥ 5 HP<br>ชาร์จไว · ยิงพลาด −4%<br>เลือกอาวุธพลาดได้ · Hint ×1</small></span></button>
+            <button class="choice active" type="button" data-group="difficulty" data-value="pilot" aria-pressed="true"><i></i><span><b class="difficulty-name">PILOT</b><small>ความเร็วปกติ · ♥ 3 HP<br>ชาร์จสมดุล · ยิงพลาด −8%<br>เลือกอาวุธให้ตรงคำตอบ · Hint ×3</small></span></button>
+            <button class="choice" type="button" data-group="difficulty" data-value="ace" aria-pressed="false"><i></i><span><b class="difficulty-name">ACE</b><small>ศัตรูเร็วขึ้น · ♥ 2 HP<br>ชาร์จช้า · ยิงพลาด −12%<br>เลือกอาวุธให้ตรงคำตอบ · Hint ×5</small></span></button>
           </fieldset>
         </div>
         <div class="launch-actions">
+          <button id="leaderboard-open" class="leaderboard-button" type="button" aria-haspopup="dialog">🏆 HALL OF ACES</button>
           <details class="options-menu">
             <summary><span>⚙</span> ตั้งค่า</summary>
             <div class="options-popover" aria-label="ตั้งค่าเสียงและการแสดงผล">
@@ -80,10 +83,16 @@
           <article class="route-stop current" data-route-stage="0" data-route-name="Helios Outpost · Q1 Basics"><img class="route-planet-art route-q1" src="assets/planet-helios-outpost.webp" alt="ดาว Helios Outpost สำหรับบทเรียนพื้นฐาน Q1"><span class="route-step">01</span><span class="route-copy"><b>HELIOS OUTPOST</b><small>Q1 · พื้นฐาน</small></span></article>
           <article class="route-stop locked" data-route-stage="1" data-route-name="Mirror Belt · Q2 Reflection"><img class="route-planet-art route-q2" src="assets/planet-mirror-belt.webp" alt="ดาวน้ำแข็งและวงแหวนสะท้อนสำหรับบทเรียน Q2"><span class="route-step">02</span><span class="route-copy"><b>MIRROR BELT</b><small>Q2 · การสะท้อน</small></span></article>
           <article class="route-stop locked" data-route-stage="2" data-route-name="Shattered Meridian · Q3/Q4 Coordinates"><img class="route-planet-art route-q34" src="assets/planet-shattered-meridian.webp" alt="ดาวแยกสองซีกสำหรับบทเรียนพิกัด Q3 และ Q4"><span class="route-step">03</span><span class="route-copy"><b>MERIDIAN</b><small>Q3–Q4 · พิกัด</small></span></article>
-          <article class="route-stop locked" data-route-stage="3" data-route-name="Special Angle"><img class="route-planet-art route-special" src="assets/planet-special-angle.webp" alt="ดาวม่วงและวงโคจรมุมพิเศษ"><span class="route-step">04</span><span class="route-copy"><b>SPECIAL ANGLE</b><small>มุมพิเศษ</small></span></article>
-          <article class="route-stop boss locked" data-route-stage="4" data-route-name="Degree Overlord · Boss"><img class="route-planet-art route-boss" src="assets/planet-degree-overlord.webp" alt="ดาวบอส Degree Overlord ที่มีแกนพลังงานสีทอง"><span class="route-step">★</span><span class="route-copy"><b>HOMEWORLD</b><small>BOSS · DEGREE OVERLORD</small></span></article>
+          <article class="route-stop boss locked" data-route-stage="3" data-route-name="NOX Command Base · Null Armada Final Boss"><img class="route-planet-art route-boss" src="assets/nox-command-base-menu.png" alt="ฐานบัญชาการ Null Armada ของ NOX"><span class="route-step">★</span><span class="route-copy"><b>NOX COMMAND BASE</b><small>NULL ARMADA · FINAL BOSS</small></span></article>
         </div>
       </section>
+    <dialog id="leaderboard-dialog" class="leaderboard-dialog" aria-labelledby="leaderboard-title">
+      <form method="dialog"><button class="leaderboard-close" aria-label="ปิด">×</button></form>
+      <p class="leaderboard-kicker">ENDLESS · FLIGHT RECORDS</p><h2 id="leaderboard-title">HALL OF ACES</h2>
+      <p class="leaderboard-note">สถิติตัวอย่างจากนักบินและตัวละครในจักรวาล Orbit Defender</p>
+      <ol id="leaderboard-list" class="leaderboard-list"></ol>
+      <div class="personal-best">สถิติสูงสุดของคุณ <b id="personal-best-score">0</b></div>
+    </dialog>
     </section>
 
     <footer><span>ORBITAL DEFENSE NETWORK <b>OD-07</b></span><span>คลิกปุ่มเพื่อเลือกค่า · ปรับหน่วยและความยากได้ก่อนเริ่ม</span></footer>
