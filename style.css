@@ -149,7 +149,7 @@
 @media(max-width:1200px) and (min-width:651px){.pilot-box{width:84px}}
 @media(max-width:650px){.pilot-box{width:58px;display:flex;text-align:left;gap:3px}.pilot-hp-head small{font-size:5px}.pilot-hp-head b{font-size:7px}.pilot-box>i{height:4px}}
 /* High-visibility combat notification centered in the playfield */
-.toast{z-index:6;top:50%;left:50%;transform:translate(-50%,-42%);width:max-content;max-width:min(820px,86vw);padding:16px 24px;border:1px solid #72edffbb;background:linear-gradient(110deg,#061522f5,#09263af2);box-shadow:0 12px 42px #000b,0 0 30px #4bdfff42,inset 0 0 20px #31bce51b;color:#eafcff;font:700 clamp(14px,1.15vw,19px)/1.45 var(--mono);letter-spacing:.07em;text-align:center;white-space:normal;overflow-wrap:anywhere;backdrop-filter:blur(8px);text-shadow:0 0 12px #5deaff55;transition:opacity .22s,transform .22s}
+.toast{z-index:3;top:50%;left:50%;transform:translate(-50%,-42%);width:max-content;max-width:min(820px,86vw);padding:16px 24px;border:1px solid #72edffbb;background:linear-gradient(110deg,#061522f5,#09263af2);box-shadow:0 12px 42px #000b,0 0 30px #4bdfff42,inset 0 0 20px #31bce51b;color:#eafcff;font:700 clamp(14px,1.15vw,19px)/1.45 var(--mono);letter-spacing:.07em;text-align:center;white-space:normal;overflow-wrap:anywhere;backdrop-filter:blur(8px);text-shadow:0 0 12px #5deaff55;transition:opacity .22s,transform .22s}
 .toast.show{opacity:1;transform:translate(-50%,-50%)}
 .toast[style*="--red"]{border-color:#ff7180;background:linear-gradient(110deg,#25121ef5,#341621f2)}
 @media(max-width:650px){.toast{top:50%;max-width:88vw;padding:12px 15px;font-size:13px;line-height:1.45;white-space:normal}}
@@ -775,7 +775,7 @@ body:has(#overlay.academy-screen)::after{display:none!important}
 #overlay.academy-screen{padding-top:clamp(175px,21vh,235px);padding-bottom:clamp(145px,18vh,190px)}
 #overlay.academy-screen .brief-box.is-academy>.brief-top,#overlay.academy-screen .brief-box.is-academy>.brief-foot{display:none!important}
 #overlay.academy-screen .brief-box.is-academy>.academy-astra{grid-template-columns:minmax(270px,322px) minmax(320px,1fr)}
-#overlay.academy-screen .brief-box.is-academy>.academy-astra>.academy-astra-portrait{background-size:auto 128%;background-position:center 20%}
+#overlay.academy-screen .brief-box.is-academy>.academy-astra>.academy-astra-portrait{background-size:auto 128%;background-position:53% 20%}
 #overlay.academy-screen .brief-box.is-academy>.academy-astra>.lesson-speaking-panel{border:0!important;background:linear-gradient(100deg,#071522dc,#071522af 82%,transparent);box-shadow:none;padding:clamp(22px,2.5vw,34px);min-height:clamp(330px,38vh,410px)}
 #overlay.academy-screen .brief-box.is-academy>.brief-top{border:0!important}
 #overlay.academy-screen .brief-box.is-academy>.academy-astra>.lesson-speaking-panel .lesson-speaking-heading{border:0!important;padding-bottom:0}
@@ -787,8 +787,8 @@ body:has(#overlay.academy-screen)::after{display:none!important}
 #overlay.academy-screen .brief-box.is-academy .lesson-speaking-controls button{height:48px;min-height:48px;padding:9px 15px}
 #overlay.academy-screen .brief-box.is-academy>#launch{position:absolute;right:9%;bottom:21%;width:min(310px,28vw);min-height:54px;height:54px;margin:0}
 @media(max-width:1500px) and (min-width:901px){#overlay.academy-screen{padding-top:clamp(150px,19vh,210px);padding-bottom:clamp(130px,16vh,175px)}#overlay.academy-screen .brief-box.is-academy>.academy-astra{grid-template-columns:minmax(260px,315px) minmax(280px,1fr)}#overlay.academy-screen .brief-box.is-academy>.academy-astra>.lesson-speaking-panel{min-height:clamp(330px,38vh,390px)}#overlay.academy-screen .brief-box.is-academy>#launch{right:5%;width:min(290px,30vw)}}
-@media(max-width:900px) and (min-width:651px){#overlay.academy-screen{padding:clamp(125px,16vh,170px) 4vw clamp(125px,16vh,170px)}#overlay.academy-screen .brief-box.is-academy>.academy-astra{bottom:16%;grid-template-columns:minmax(120px,38%) minmax(0,62%)}#overlay.academy-screen .brief-box.is-academy>.academy-astra>.academy-astra-portrait{background-size:auto 125%;background-position:center 18%}#overlay.academy-screen .brief-box.is-academy>.academy-astra>.lesson-speaking-panel{min-height:260px;padding:14px}#overlay.academy-screen .brief-box.is-academy>#launch{right:5%;bottom:16%;width:270px}}
-@media(max-width:650px){#overlay.academy-screen{padding:110px 12px 120px}#overlay.academy-screen::after{inset:0}#overlay.academy-screen .brief-box.is-academy>.academy-astra{grid-template-columns:minmax(110px,32%) minmax(0,68%)}#overlay.academy-screen .brief-box.is-academy>.academy-astra>.academy-astra-portrait{background-size:auto 118%;background-position:center 16%}#overlay.academy-screen .brief-box.is-academy>.academy-astra>.lesson-speaking-panel{min-height:210px;padding:12px}#overlay.academy-screen .brief-box.is-academy .lesson-speaking-controls button{height:42px;min-height:42px}#overlay.academy-screen .brief-box.is-academy>#launch{position:relative;right:auto;bottom:auto;width:min(280px,68vw);margin:0 auto}}
+@media(max-width:900px) and (min-width:651px){#overlay.academy-screen{padding:clamp(125px,16vh,170px) 4vw clamp(125px,16vh,170px)}#overlay.academy-screen .brief-box.is-academy>.academy-astra{bottom:16%;grid-template-columns:minmax(120px,38%) minmax(0,62%)}#overlay.academy-screen .brief-box.is-academy>.academy-astra>.academy-astra-portrait{background-size:auto 125%;background-position:53% 18%}#overlay.academy-screen .brief-box.is-academy>.academy-astra>.lesson-speaking-panel{min-height:260px;padding:14px}#overlay.academy-screen .brief-box.is-academy>#launch{right:5%;bottom:16%;width:270px}}
+@media(max-width:650px){#overlay.academy-screen{padding:110px 12px 120px}#overlay.academy-screen::after{inset:0}#overlay.academy-screen .brief-box.is-academy>.academy-astra{grid-template-columns:minmax(110px,32%) minmax(0,68%)}#overlay.academy-screen .brief-box.is-academy>.academy-astra>.academy-astra-portrait{background-size:auto 118%;background-position:53% 16%}#overlay.academy-screen .brief-box.is-academy>.academy-astra>.lesson-speaking-panel{min-height:210px;padding:12px}#overlay.academy-screen .brief-box.is-academy .lesson-speaking-controls button{height:42px;min-height:42px}#overlay.academy-screen .brief-box.is-academy>#launch{position:relative;right:auto;bottom:auto;width:min(280px,68vw);margin:0 auto}}
 
 /* Academy polish: clear character lighting, rounded speech, and sentence-synced diagram. */
 #overlay.academy-screen .academy-astra-portrait{filter:none!important;animation:astra-idle 3.2s ease-in-out infinite!important}
@@ -918,9 +918,81 @@ body:has(#overlay.academy-screen)::after{display:none!important}
 .lesson-circle-panel .quadrant-signs text{font-size:10px}
 @media(max-width:650px){.lesson-circle-panel .quadrant-signs text{font-size:8px}}
 
+.dev-tools{position:fixed;z-index:80;top:82px;left:50%;transform:translateX(-50%);width:min(340px,calc(100vw - 24px));padding:12px;display:grid;gap:8px;border:1px solid #54dcf0;border-radius:10px;background:rgba(4,15,27,.96);box-shadow:0 10px 36px #000b;color:#e8fbff;font:12px var(--mono,monospace)}
+.dev-tools[hidden]{display:none}.dev-tools.is-collapsed{width:auto;padding:7px 10px}.dev-tools.is-collapsed>*:not(header){display:none}.dev-tools header{display:flex;align-items:center;justify-content:space-between;color:#65e5f6;letter-spacing:.12em}.dev-tools button,.dev-tools select{min-height:34px;padding:6px 9px;border:1px solid #338ba1;border-radius:5px;background:#102b3c;color:#e8fbff;font:inherit;cursor:pointer}.dev-tools button:hover{background:#17445a}.dev-tools header button{min-height:26px;padding:0 8px}.dev-tools label{display:grid;gap:5px;color:#a9c7d1}.dev-result-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.dev-tools small{color:#8daab5}
+
 .academy-story-actions{display:flex;align-items:center;gap:8px}.academy-story-actions button#lesson-skip{border-color:#80f1c5;background:linear-gradient(145deg,#155e51,#092a2b);color:#d3ffed}.academy-story-actions button#lesson-skip:hover{background:#176b5c}
 #overlay.academy-screen .brief-box.is-academy>.academy-story .academy-story-heading .academy-story-actions{position:fixed;z-index:5;top:18%;right:7%;left:auto;display:flex;gap:8px}
 #overlay.academy-screen .brief-box.is-academy>.academy-story .academy-story-heading .academy-story-actions button{position:static;min-height:42px;height:42px;padding:7px 14px;border-radius:7px;background-size:100% 220%!important;background-position:center!important}
 #overlay.academy-screen .brief-box.is-academy>.academy-story .academy-story-heading .academy-story-actions button#story-replay{position:static;top:auto;right:auto;left:auto}
 @media(max-width:900px) and (min-width:651px){#overlay.academy-screen .brief-box.is-academy>.academy-story .academy-story-heading .academy-story-actions{top:18%;right:5%}}
 @media(max-width:650px){#overlay.academy-screen .brief-box.is-academy>.academy-story .academy-story-heading .academy-story-actions{top:17%;right:5%;gap:4px}#overlay.academy-screen .brief-box.is-academy>.academy-story .academy-story-heading .academy-story-actions button{height:36px;min-height:36px;padding:5px 8px}}
+
+/* Final boss briefing: clear the emblem and feature the transparent command base. */
+.brief-box.is-boss-brief .brief-emblem{display:none!important}
+.brief-box.is-boss-brief::after{content:'';position:absolute;z-index:0;left:-4%;top:50%;width:32%;height:78%;transform:translateY(-50%);background:url('assets/nox-command-base-menu.png') center/contain no-repeat;filter:drop-shadow(0 0 18px #39dff477);pointer-events:none}
+.brief-box.is-boss-brief .launch-button{width:min(360px,70vw);height:auto;min-height:0;aspect-ratio:4/1;margin:8px auto 0;padding:0 26px;background:url('assets/ui-button-small.png') center/100% 100% no-repeat!important;border:0;box-shadow:none;text-shadow:0 1px 4px #001923}
+.brief-box.is-boss-brief .launch-button:hover{filter:brightness(1.2);transform:translateY(-1px)}
+@media(max-width:650px){.brief-box.is-boss-brief::after{left:-2%;width:30%;height:52%;top:20%;transform:none}.brief-box.is-boss-brief .launch-button{width:min(300px,76vw)}}
+
+/* The NOX command base fills the entire boss story scene. */
+.story-dialog[data-art-type="boss"]{padding:0;background:#020611}
+.story-dialog[data-art-type="boss"] .story-backdrop{display:none}
+.story-dialog[data-art-type="boss"] .story-stage{width:100vw;height:100dvh;min-height:0;max-width:none;max-height:none;border:0;border-radius:0;box-shadow:none}
+.story-dialog[data-art-type="boss"] .story-art{background-size:cover,cover;background-position:center,center}
+
+
+/* Boss briefing: use the command-base menu art as the full-screen scene. */
+.start-overlay.boss-brief-screen{background:linear-gradient(180deg,#02081244,#020812aa),url('assets/nox-command-base.png') center/cover no-repeat;backdrop-filter:none}
+.start-overlay.boss-brief-screen>.overlay-grid{display:none}
+.start-overlay.boss-brief-screen .brief-box.is-boss-brief::after{display:none!important}
+.start-overlay.boss-brief-screen .brief-box.is-boss-brief{background:linear-gradient(145deg,#071522e8,#081522dd);border-color:#55eaff88;box-shadow:0 20px 70px #000a,0 0 36px #29d9ff20}
+
+
+/* Boss briefing popup uses the command base art without the shared dialog frame. */
+.brief-box.is-boss-brief::before{display:none!important}
+.start-overlay.boss-brief-screen .brief-box.is-boss-brief::after{display:block!important;left:auto;right:-4%;top:50%;width:42%;height:86%;transform:translateY(-50%);background:url('assets/nox-command-base-menu.png') center/contain no-repeat;filter:drop-shadow(0 0 18px #39dff477);opacity:.92}
+.brief-box.is-boss-brief{background:linear-gradient(90deg,#071522f2 0%,#081522eb 52%,#081522c9 100%)}
+@media(max-width:650px){.start-overlay.boss-brief-screen .brief-box.is-boss-brief::after{right:-2%;width:38%;height:56%;top:20%;transform:none}}
+
+
+/* Keep the boss launch control text only and give the command base a slow breathing zoom. */
+.start-overlay.boss-brief-screen{position:absolute;isolation:isolate;background:linear-gradient(180deg,#02081244,#020812aa)!important;overflow:hidden}
+.start-overlay.boss-brief-screen::before{content:'';position:absolute;z-index:-1;inset:-4%;background:url('assets/nox-command-base.png') center/cover no-repeat;animation:boss-backdrop-breathe 24s ease-in-out infinite alternate;will-change:transform}
+.start-overlay.boss-brief-screen .brief-box.is-boss-brief{z-index:1}
+.brief-box.is-boss-brief .launch-button{width:auto;min-width:220px;min-height:0;height:auto;aspect-ratio:auto;margin:18px auto 0;padding:10px 4px;background:none!important;background-color:transparent!important;border:0!important;box-shadow:none!important;color:#c9fbff;text-shadow:0 0 10px #42eaff88}
+.brief-box.is-boss-brief .launch-button:hover{background:none!important;box-shadow:none!important;color:#fff;filter:none;transform:translateY(-1px);text-shadow:0 0 16px #42eaff}
+@keyframes boss-backdrop-breathe{from{transform:scale(1)}to{transform:scale(1.09)}}
+@media(prefers-reduced-motion:reduce){.start-overlay.boss-brief-screen::before{animation:none}}
+
+
+/* Fit the transparent compact button frame exactly to the boss launch control. */
+.brief-box.is-boss-brief .launch-button{width:min(360px,70vw);min-width:0;height:auto;min-height:0;aspect-ratio:4/1;margin:8px auto 0;padding:0 26px;background-color:transparent!important;background-image:url('assets/ui-button-small.png')!important;background-repeat:no-repeat!important;background-position:center!important;background-size:100% 100%!important;border:0!important;box-shadow:none!important;color:#eaffff;text-shadow:0 1px 4px #001923}
+.brief-box.is-boss-brief .launch-button:hover{background-color:transparent!important;box-shadow:none!important;filter:brightness(1.12);transform:translateY(-1px)}
+@media(max-width:650px){.brief-box.is-boss-brief .launch-button{width:min(300px,76vw)}}
+
+
+.brief-box.is-boss-brief .launch-button:hover{background-image:url('assets/ui-button-small.png')!important;background-repeat:no-repeat!important;background-position:center!important;background-size:100% 100%!important}
+
+
+/* Size the compact sci-fi button art to each Dev Tools control. */
+.dev-tools button:not(#dev-tools-close){min-height:40px;padding:4px 12px;border:12px solid transparent;border-radius:0;background:transparent!important;border-image-source:url('assets/ui-button-small.png');border-image-slice:28% 5% fill;border-image-width:12px 24px;border-image-repeat:stretch;text-shadow:0 1px 4px #001923}
+.dev-tools button:not(#dev-tools-close):hover{background:transparent!important;filter:brightness(1.15)}
+.dev-result-actions button{min-width:0}
+
+
+/* Remove stray console-frame strokes from the post-flight results popup. */
+.brief-box.has-results::before,.brief-box.has-results::after{display:none!important;background:none!important;border:0!important;box-shadow:none!important;}
+
+
+/* Make the boss remaining-health count easy to spot in its mission panel. */
+.boss-health-value{color:#ff879b!important;font-size:12px!important;text-shadow:0 0 10px #ff536966;letter-spacing:.06em}
+
+
+/* Boss HP is remaining health, shown as a prominent red meter. */
+.boss-health-panel .wave-line{align-items:center;margin-top:12px}
+.boss-health-panel .wave-line span{color:#ffb1bc;font-weight:700;letter-spacing:.14em}
+.boss-health-panel .wave-line b{color:#fff;font-size:12px;text-shadow:0 0 10px #ff5369aa}
+.boss-health-panel .progress-track{height:10px;margin-top:7px;border:1px solid #ff718088;background:#270c18;box-shadow:inset 0 0 7px #000}
+.boss-health-panel .progress-track i{background:linear-gradient(90deg,#ff264d,#ff8a72);box-shadow:0 0 13px #ff3b5c;transition:width .35s ease}
+

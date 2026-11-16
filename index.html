@@ -90,6 +90,7 @@
       <form method="dialog"><button class="leaderboard-close" aria-label="ปิด">×</button></form>
       <p class="leaderboard-kicker">ENDLESS · FLIGHT RECORDS</p><h2 id="leaderboard-title">HALL OF ACES</h2>
       <p class="leaderboard-note">สถิติตัวอย่างจากนักบินและตัวละครในจักรวาล Orbit Defender</p>
+      <section id="leaderboard-podium" class="leaderboard-podium" aria-label="อันดับเหรียญเกียรติยศ 1 ถึง 3"></section>
       <ol id="leaderboard-list" class="leaderboard-list"></ol>
       <div class="personal-best">สถิติสูงสุดของคุณ <b id="personal-best-score">0</b></div>
     </dialog>
@@ -97,6 +98,13 @@
 
     <footer><span>ORBITAL DEFENSE NETWORK <b>OD-07</b></span><span>คลิกปุ่มเพื่อเลือกค่า · ปรับหน่วยและความยากได้ก่อนเริ่ม</span></footer>
   </main>
+  <dialog id="flight-setup-modal" class="leaderboard-dialog flight-setup-modal" aria-labelledby="flight-setup-title">
+    <div class="flight-setup-card"><button id="flight-setup-close" class="flight-setup-close" type="button" aria-label="ปิดหน้าต่าง" title="ปิด">×</button><span class="flight-setup-icon" aria-hidden="true"><svg viewBox="0 0 32 32"><circle cx="16" cy="16" r="10"/><circle cx="16" cy="16" r="3"/><path d="M16 1v6m0 18v6M1 16h6m18 0h6"/></svg></span><small>STARFALL ROUTE · FLIGHT SETUP</small><h2 id="flight-setup-title">เตรียมออกเดินทาง</h2><p id="flight-setup-copy">เลือกการตั้งค่าเสียงก่อนเริ่มภารกิจ</p>
+      <div id="menu-resume-options" class="menu-resume-options" hidden><small>พบเที่ยวบินที่ยังไม่จบ</small><button id="menu-resume" type="button">เล่นต่อ</button><button id="menu-restart" type="button">เริ่มแคมเปญใหม่</button></div>
+      <div class="menu-sound-option"><span>เสียงเกม</span><button id="menu-sound-toggle" type="button" aria-pressed="true">เปิดเสียง</button></div>
+      <button id="menu-launch-session" class="menu-launch-session" type="button">เริ่มภารกิจ ↗</button>
+    </div>
+  </dialog>
   <script src="menu.js"></script>
 </body>
 </html>

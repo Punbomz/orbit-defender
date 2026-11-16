@@ -30,14 +30,22 @@
         <label class="settings-motion"><input id="reduced-motion" type="checkbox"><span>ลดการเคลื่อนไหว</span></label>
       </div>
     </section>
-    <aside class="mission-panel panel">
+    <aside id="dev-tools" class="dev-tools" hidden aria-label="เครื่องมือทดสอบสำหรับนักพัฒนา">
+      <header><b>DEV TOOLS</b><button id="dev-tools-close" type="button" aria-label="ปิดเครื่องมือทดสอบ">×</button></header>
+      <small id="dev-tools-status">F2 · เปิด/ปิดแผง</small>
+      <button id="dev-clear-stage" type="button">ผ่านด่านปัจจุบันทันที</button>
+      <label>มินิเกมสำหรับทดสอบ<select id="dev-minigame"><option value="trigo_combat.html">Orbital Intercept</option><option value="wiring.html">Wiring</option><option value="radar.html">Radar</option><option value="matching.html">Card Matching</option><option value="satellite_radar.html">Satellite Alignment</option></select></label>
+      <button id="dev-launch-minigame" type="button">เปิดมินิเกมที่เลือก</button>
+      <div class="dev-result-actions"><button id="dev-minigame-pass" type="button">จำลองว่าผ่าน</button><button id="dev-minigame-fail" type="button">จำลองว่าไม่ผ่าน</button></div>
+    </aside>
+    <aside class="mission-panel panel" id="mission-panel">
       <div class="panel-heading"><span class="tiny-mark">✦</span> MISSION BRIEF</div>
       <div class="mission-kicker" id="mission-kicker">TRAINING</div>
       <h1 id="mission-title">สถานีวงโคจร</h1>
       <p id="mission-copy">เตรียมยานให้พร้อม นักบิน</p>
       <div class="panel-rule"></div>
       <div class="mission-objective"><span class="objective-glyph">⌖</span><div><small>OBJECTIVE</small><b id="objective">เตรียมพร้อมปฏิบัติการ</b></div></div>
-      <div class="wave-line"><span>WAVE PROGRESS</span><b id="progress-text">—</b></div>
+      <div class="wave-line"><span id="progress-label">WAVE PROGRESS</span><b id="progress-text">—</b></div>
       <div class="progress-track"><i id="progress-fill"></i></div>
       <div class="combo-readout"><small>COMBO</small><b id="combo">×0</b><span id="combo-label">BUILD YOUR STREAK</span></div>
       <section id="mission-completion" class="mission-completion" hidden aria-live="polite">

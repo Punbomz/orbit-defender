@@ -309,6 +309,11 @@ button:disabled { filter: grayscale(.75) brightness(.68) !important; }
 .flight-caption small { color:var(--od-gold); font:800 9px var(--mono,Consolas,monospace); letter-spacing:.2em; }
 .flight-caption b { font:900 clamp(20px,3vw,36px) var(--mono,Consolas,monospace); letter-spacing:.08em; text-shadow:0 0 15px #19dfff65; }
 .flight-caption span { color:#c8e4ed; font-size:13px; }
+.flight-cinematic.boss-flight { background:#020916 url("nox-command-base.png") center / cover no-repeat; }
+.flight-cinematic.boss-flight::before { background:linear-gradient(180deg,#02071224 35%,#02071255); }
+.flight-cinematic.boss-flight .flight-stars,
+.flight-cinematic.boss-flight .flight-orbit,
+.flight-cinematic.boss-flight .flight-destination { display:none; }
 .play-flight[data-direction="arrive"] .flight-ship { animation:ship-arrive 3.4s cubic-bezier(.18,.72,.24,1) both; }
 .play-flight[data-direction="depart"] .flight-destination { animation:planet-depart 3.4s cubic-bezier(.4,.02,.9,.35) both; }
 .play-flight[data-direction="depart"] .flight-ship { animation:ship-depart 3.4s cubic-bezier(.55,.02,.95,.35) both; }

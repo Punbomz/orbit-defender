@@ -1,6 +1,9 @@
 (() => {
   const config = { mode: 'campaign', level: 1, unit: 'degree', difficulty: 'pilot' };
   const launch = document.querySelector('#campaign-link');
+  const flightSetup = document.querySelector('#flight-setup-modal');
+  const menuSoundToggle = document.querySelector('#menu-sound-toggle');
+  let selectedSound = false;
   const routeStops = [...document.querySelectorAll('[data-route-stage]')];
   const getUnlockedThrough = () => {
     try { return Math.max(0, Math.min(3, Number(localStorage.getItem('orbit-defender-route-unlocked')) || 0)); }
@@ -64,6 +67,7 @@
       item.setAttribute('aria-pressed', String(active));
     });
     sync();
+    updateMenuMusic();
   }));
 
   routeStops.forEach((stop, index) => {
@@ -100,6 +104,7 @@
       output.textContent = `${slider.value}%`;
       persistSettings();
       sync();
+      updateMenuMusic();
     });
   });
   const motionToggle = document.getElementById('reduce-motion');
@@ -128,18 +133,82 @@
     { name: 'NOX · NULL ARMADA', score: 112700 },
     { name: 'ASTRA · NAVIGATION AI', score: 98750 },
     { name: 'CAPTAIN LYRA · HELIOS', score: 86300 },
-    { name: 'KAI · MIRROR SQUADRON', score: 72400 }
+    { name: 'KAI · MIRROR SQUADRON', score: 72400 },
+    { name: 'COMMANDER REN · OUTER RIM', score: 68120 },
+    { name: 'MIRA · STARFALL WING', score: 59300 },
+    { name: 'JUNO · ORBITAL GUARD', score: 51750 },
+    { name: 'TAL · HELIOS SCOUT', score: 43800 },
+    { name: 'VESPER · DEEP SPACE', score: 36120 }
   ];
   document.getElementById('leaderboard-open').addEventListener('click', () => {
     let personalBest = 0;
     try { personalBest = Number(localStorage.getItem('orbit-defender-endless-best')) || 0; } catch (_) {}
     document.getElementById('personal-best-score').textContent = personalBest.toLocaleString();
     const entries = [...mockPilots, ...(personalBest ? [{ name: 'YOU · DEGREE DEFENDER', score: personalBest, personal: true }] : [])]
-      .sort((a, b) => b.score - a.score).slice(0, 6);
-    document.getElementById('leaderboard-list').innerHTML = entries.map((entry, index) => `<li class="${entry.personal ? 'personal-entry' : ''}"><span class="leader-rank">${String(index + 1).padStart(2, '0')}</span><b>${entry.name}</b><strong>${entry.score.toLocaleString()}</strong></li>`).join('');
+      .sort((a, b) => b.score - a.score).slice(0, 10);
+    const medalAssets = ['hall-medal-gold.png', 'hall-medal-silver.png', 'hall-medal-bronze.png'];
+    document.getElementById('leaderboard-podium').innerHTML = entries.slice(0, 3).map((entry, index) => `<article class="podium-entry medal-${index + 1}${entry.personal ? ' personal-entry' : ''}" aria-label="อันดับ ${index + 1} ${entry.name} ${entry.score.toLocaleString()} คะแนน"><img class="podium-medal" src="assets/${medalAssets[index]}" alt="เหรียญอันดับ ${index + 1}"><small>อันดับ ${index + 1}</small><b>${entry.name}</b><strong>${entry.score.toLocaleString()}</strong></article>`).join('');
+    document.getElementById('leaderboard-list').innerHTML = entries.slice(3).map((entry, index) => `<li class="${entry.personal ? 'personal-entry' : ''}"><span class="leader-rank">${String(index + 4).padStart(2, '0')}</span><b>${entry.name}</b><strong>${entry.score.toLocaleString()}</strong></li>`).join('');
     leaderboardDialog.showModal();
   });
   leaderboardDialog.addEventListener('click', event => { if (event.target === leaderboardDialog) leaderboardDialog.close(); });
 
+  const menuMusic = new Audio();
+  menuMusic.loop = true;
+  menuMusic.preload = 'auto';
+  let menuTrack = '';
+  function updateMenuMusic() {
+    const track = ['practice', 'daily'].includes(config.mode) ? 'levelselect' : 'mainmenu';
+    if (track !== menuTrack) { menuTrack = track; menuMusic.src = `Music/${track}.ogg`; }
+    menuMusic.volume = Math.max(0, Math.min(1, Number(savedSettings.musicVolume) / 100));
+    menuMusic.play().catch(() => {});
+  }
+  // Carry the live menu audio state into the flight setup prompt before navigation unloads it.
+  const checkpointForMenu = () => {
+    if (config.mode !== 'campaign') return null;
+    try {
+      const saved = JSON.parse(localStorage.getItem('orbit-defender-campaign-checkpoint') || 'null');
+      return saved && Number.isInteger(saved.level) && saved.level > 1 && saved.level <= 5 ? saved : null;
+    } catch (_) { return null; }
+  };
+  const openFlightSetup = event => {
+    event?.preventDefault();
+    selectedSound = !menuMusic.paused && !menuMusic.muted && menuMusic.volume > 0;
+    menuSoundToggle.setAttribute('aria-pressed', String(selectedSound));
+    menuSoundToggle.textContent = selectedSound ? 'เปิดเสียงอยู่' : 'ปิดเสียงอยู่';
+    const checkpoint = config.mode === 'campaign' ? checkpointForMenu() : null;
+    document.querySelector('#menu-resume-options').hidden = !checkpoint;
+    document.querySelector('#menu-launch-session').hidden = Boolean(checkpoint);
+    if (checkpoint) {
+      document.querySelector('#flight-setup-title').textContent = 'จะเล่นต่อหรือเริ่มใหม่?';
+      document.querySelector('#flight-setup-copy').textContent = `พบความคืบหน้าที่เลเวล ${checkpoint.level} เลือกเล่นต่อจากเลเวลนี้หรือเริ่มแคมเปญใหม่`;
+      document.querySelector('#menu-resume').textContent = `เล่นต่อ · เลเวล ${String(checkpoint.level).padStart(2, '0')}`;
+    } else {
+      document.querySelector('#flight-setup-title').textContent = 'เตรียมออกเดินทาง';
+      document.querySelector('#flight-setup-copy').textContent = 'เลือกการตั้งค่าเสียงก่อนเริ่มภารกิจ';
+    }
+    flightSetup.showModal();
+  };
+  launch.addEventListener('click', openFlightSetup);
+  document.querySelector('#flight-setup-close').addEventListener('click', () => flightSetup.close());
+  menuSoundToggle.addEventListener('click', () => {
+    selectedSound = !selectedSound;
+    menuSoundToggle.setAttribute('aria-pressed', String(selectedSound));
+    menuSoundToggle.textContent = selectedSound ? 'เปิดเสียงอยู่' : 'ปิดเสียงอยู่';
+    if (selectedSound) updateMenuMusic(); else menuMusic.pause();
+  });
+  const launchFlight = resume => {
+    const url = new URL(launch.href, location.href);
+    url.searchParams.set('sound', selectedSound ? 'on' : 'off');
+    url.searchParams.set('autoLaunch', '1');
+    url.searchParams.set('resume', resume ? '1' : '0');
+    location.href = url.href;
+  };
+  document.querySelector('#menu-launch-session').addEventListener('click', () => launchFlight(false));
+  document.querySelector('#menu-resume').addEventListener('click', () => launchFlight(true));
+  document.querySelector('#menu-restart').addEventListener('click', () => launchFlight(false));
+  document.addEventListener('pointerdown', updateMenuMusic, { once: true });
+  document.addEventListener('keydown', updateMenuMusic, { once: true });
   sync();
+  updateMenuMusic();
 })();
