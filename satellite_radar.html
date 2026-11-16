@@ -506,7 +506,17 @@
             }
         }
     </style>
-<link rel="stylesheet" href="assets/orbit-interface.css"></head>
+<link rel="stylesheet" href="assets/orbit-interface.css"><style>
+.shell{width:min(1450px,100%);grid-template-columns:minmax(210px,270px) minmax(0,1fr);gap:22px;padding:clamp(14px,2vw,28px)}
+.top{border:1px solid #39eaff8a;background:linear-gradient(90deg,#061b2bef,#082940ed 50%,#061827f2);box-shadow:0 5px 24px #00dfff20,inset 0 -1px #27eaff39;clip-path:none}
+.mission,.coords{border:1px solid #36dff17a;background:linear-gradient(145deg,#071e30f2,#061523f5);box-shadow:inset 0 0 24px #22c8e911,0 8px 28px #0008,0 0 16px #29dff20d}
+.board{border:0;background:#06182bf2 url("assets/satellite-console-frame.svg") center/100% 100% no-repeat;box-shadow:0 0 28px #19d9ff33;clip-path:none;padding:clamp(34px,4vw,56px)}
+.board h1{background:#062036;border-color:#27eaff;box-shadow:0 0 18px #42eaff55}
+.orbit{border-color:#23eaff;box-shadow:0 0 15px #20eaff,0 0 38px #008cf055,inset 0 0 34px #008cd433}
+.answers{gap:10px}.answer,.action{background:url("assets/satellite-button.svg") center/100% 100% no-repeat!important;border:0!important;border-radius:0!important;box-shadow:0 0 13px #17dfff29!important;min-height:58px}.answer:hover:not(:disabled),.action:hover{filter:brightness(1.18);box-shadow:inset 0 0 18px #b4fbff55,0 0 22px #17dfff55!important}.answer.good{color:#baffdd!important;filter:drop-shadow(0 0 12px #6af0c1)}.answer.bad{filter:drop-shadow(0 0 12px #ff7185)}
+@media(max-width:700px){.shell{grid-template-columns:1fr;grid-template-rows:auto auto 1fr;gap:12px}.top{grid-column:1}.board{padding:34px 26px}.mission{padding:13px 15px}}
+</style>
+</head>
 
 <body>
     <main class="shell">
