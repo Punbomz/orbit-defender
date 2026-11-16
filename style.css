@@ -283,6 +283,7 @@
 #zombie-game{flex:1;width:100%;min-height:0;border:0}
 @media(max-width:650px){.game-shell.mission-complete .mission-panel{top:64px;left:8px;width:min(340px,calc(100vw - 16px));max-height:calc(100dvh - 145px);padding:10px}.mission-completion .upgrade-choice{min-height:40px}.zombie-break-header{height:54px;padding:6px 8px;gap:6px;font-size:7px}.zombie-break-header b{font-size:14px}}
 
+
 .tutorial-tools{display:flex;gap:10px;margin:12px 0}.tutorial-tools button{padding:9px 12px;border:1px solid #73d7d766;background:#0b202b;color:#b7f7eb;border-radius:5px;cursor:pointer;font:10px Consolas,monospace;letter-spacing:.06em}.tutorial-tools button:hover{background:#153847}
 
 /* Fixed quadrant sections for the angle and coordinate weapon racks. */

@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="assets/orbit-interface.css">
 </head>
-<body>
+<body class="game-page">
   <main id="game" class="game-shell">
     <canvas id="arena" aria-label="สนามรบ Orbit Defender"></canvas>
     <div class="vignette"></div>
@@ -117,18 +117,6 @@
       </div>
     </div>
     <div id="auto-hint" class="auto-hint" hidden aria-live="polite"></div>
-    <section id="level-story-screen" class="level-story-screen" hidden aria-modal="true" role="dialog" aria-labelledby="level-story-title">
-      <div class="level-story-art" aria-hidden="true"></div>
-      <div class="level-story-shade" aria-hidden="true"></div>
-      <header class="level-story-header"><span class="story-brand-mark">◎</span><b>ORBIT DEFENDER<small>DEGREE PROTOCOL</small></b><span id="level-story-code">STARFALL ROUTE · LEVEL 01</span></header>
-      <div class="level-story-content">
-        <small id="level-story-kicker">LEVEL STORY · HELIOS OUTPOST</small>
-        <h2 id="level-story-title">THE FIRST SIGNAL</h2>
-        <div id="level-story-copy" class="level-story-copy"></div>
-        <button id="level-story-next" type="button">อ่านบทเรียน ↗</button>
-      </div>
-      <div class="level-story-frame" aria-hidden="true"></div>
-    </section>
     <section id="story-dialog" class="story-dialog" hidden aria-modal="true" role="dialog" aria-labelledby="story-speaker">
       <div class="story-backdrop" aria-hidden="true"></div>
       <div class="story-stage">
