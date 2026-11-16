@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="th">
 <head>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <meta name="theme-color" content="#050b14">
   <title>Orbit Defender: Starfall Route · Flight</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="assets/orbit-interface.css">
 </head>
 <body>
   <main id="game" class="game-shell">
@@ -66,10 +68,18 @@
     </aside>
     <section id="zombie-break" class="zombie-break" hidden aria-label="ช่วงมินิเกมระหว่างภารกิจ">
       <header class="zombie-break-header">
-        <span>INTERMISSION · RESTORE OR SURVIVE</span>
+        <span class="minigame-brand"><i>◎</i><b>ORBIT DEFENDER<small>DEGREE PROTOCOL</small></b></span>
+        <span id="minigame-title">INTERMISSION · RESTORE OR SURVIVE</span>
         <b id="zombie-clock">00:30</b>
       </header>
       <iframe id="zombie-game" title="มินิเกมระหว่างภารกิจ"></iframe>
+    </section>
+    <section id="flight-cinematic" class="flight-cinematic" hidden aria-live="polite" aria-label="ฉากยานเดินทางระหว่างดาว">
+      <div class="flight-stars" aria-hidden="true"></div>
+      <div class="flight-orbit" aria-hidden="true"></div>
+      <div class="flight-destination"><img id="flight-planet" alt=""><span id="flight-planet-name"></span></div>
+      <div id="flight-ship" class="flight-ship" aria-hidden="true"><img src="assets/interceptor-player.webp" alt=""></div>
+      <div class="flight-caption"><small id="flight-caption-kicker">STARFALL ROUTE · FLIGHT TRANSIT</small><b id="flight-caption-title">ARRIVAL</b><span id="flight-caption-copy">กำลังเข้าสู่วงโคจร</span></div>
     </section>
     <section id="quiz-overlay" class="quiz-overlay" hidden aria-labelledby="quiz-title">
       <div class="quiz-card"><div class="quiz-kicker">RESUPPLY TERMINAL <span>FLIGHT PAUSED TO 18%</span></div><h2 id="quiz-title">คำนวณเพื่อเติมกระสุน</h2><p id="quiz-question"></p><div id="quiz-options" class="quiz-options"></div><div id="quiz-feedback" class="quiz-feedback" aria-live="polite"></div><button id="quiz-resume" type="button" disabled>เลือกคำตอบเพื่อกลับสู่การเดินทาง</button></div>
@@ -80,7 +90,12 @@
         <div class="brief-top"><span class="live-dot"></span> ORBITAL DEFENSE NETWORK <span class="brief-code">OD-07 / 360°</span></div>
         <div class="brief-emblem">◎<span>✦</span></div>
         <div class="eyebrow">STARFALL ROUTE · PRE-FLIGHT BRIEF</div>
+        <nav class="flight-flow" aria-label="ลำดับการเตรียมภารกิจ"><span data-flow-step="story">01 <b>STORY</b></span><i></i><span data-flow-step="learn">02 <b>LEARN</b></span><i></i><span data-flow-step="tutorial">03 <b>TUTORIAL</b></span><i></i><span data-flow-step="defense">04 <b>DEFENSE</b></span></nav>
         <h2 id="overlay-title">MISSION BRIEFING<span>PRE-FLIGHT CONFIGURATION</span></h2>
+        <section class="academy-story" id="academy-story" hidden aria-label="เนื้อเรื่องประจำเลเวล">
+          <div class="academy-story-heading"><span><i>◈</i> LEVEL STORY <small id="academy-story-speaker">NOVA</small></span><button id="story-replay" type="button">เล่นฉากเนื้อเรื่องซ้ำ ↗</button></div>
+          <p id="academy-story-line"></p>
+        </section>
         <section class="result-visual" id="result-visual" hidden aria-label="สรุปผลการเล่น">
           <div class="result-hero"><img src="assets/degree-core-planet.png" alt="Degree Core"><div><small>FLIGHT REPORT</small><b id="result-status">RUN COMPLETE</b><span id="result-loot"></span></div></div>
           <div class="result-metrics">
@@ -92,10 +107,7 @@
           <div class="result-feedback"><article class="strength-card"><b><span>✓</span> ทำได้ดี</b><p id="result-strength"></p></article><article class="improve-card"><b><span>↗</span> ควรปรับปรุง</b><p id="result-improve"></p></article></div>
         </section>
         <div class="mission-art" id="mission-art" hidden></div>
-        <div class="tutorial-tools" id="tutorial-tools" hidden>
-          <button id="edit-tutorial" type="button">แก้ไข Tutorial</button>
-          <button id="speak-dialog" type="button">▶ ฟังบทพูด</button>
-        </div>
+        <div class="tutorial-tools" id="tutorial-tools" hidden></div>
         <p id="overlay-copy">กำลังรับข้อมูลดาวและวัตถุประสงค์ภารกิจ...</p>
         <div class="lesson-art" id="lesson-art" hidden></div>
         <div class="brief-controls"><span>ปกป้อง Degree Core</span><span>เป้าใกล้ที่สุดถูกเลือกอัตโนมัติ · คลิกยานเพื่อล็อกเป้าอื่น</span><span>เลือกมุมหรือค่าที่ตรงกับสัญญาณเพื่อยิง</span></div>
@@ -105,6 +117,37 @@
       </div>
     </div>
     <div id="auto-hint" class="auto-hint" hidden aria-live="polite"></div>
+    <section id="level-story-screen" class="level-story-screen" hidden aria-modal="true" role="dialog" aria-labelledby="level-story-title">
+      <div class="level-story-art" aria-hidden="true"></div>
+      <div class="level-story-shade" aria-hidden="true"></div>
+      <header class="level-story-header"><span class="story-brand-mark">◎</span><b>ORBIT DEFENDER<small>DEGREE PROTOCOL</small></b><span id="level-story-code">STARFALL ROUTE · LEVEL 01</span></header>
+      <div class="level-story-content">
+        <small id="level-story-kicker">LEVEL STORY · HELIOS OUTPOST</small>
+        <h2 id="level-story-title">THE FIRST SIGNAL</h2>
+        <div id="level-story-copy" class="level-story-copy"></div>
+        <button id="level-story-next" type="button">อ่านบทเรียน ↗</button>
+      </div>
+      <div class="level-story-frame" aria-hidden="true"></div>
+    </section>
+    <section id="story-dialog" class="story-dialog" hidden aria-modal="true" role="dialog" aria-labelledby="story-speaker">
+      <div class="story-backdrop" aria-hidden="true"></div>
+      <div class="story-stage">
+        <div class="story-console-frame" aria-hidden="true"></div>
+        <header class="story-console-heading"><span class="story-brand-mark">◎</span><b>ORBIT DEFENDER<small>DEGREE PROTOCOL</small></b><strong>STORY</strong><span class="story-console-code">STARFALL ROUTE · OD-07</span></header>
+        <div class="story-art" aria-hidden="true"></div>
+        <div class="story-cast" aria-hidden="true">
+          <div class="story-portrait pilot" data-character="NOVA"></div>
+          <div class="story-portrait ai" data-character="ASTRA"></div>
+          <div class="story-portrait overlord" data-character="NOX"></div>
+        </div>
+        <div class="story-dialogue">
+          <div class="story-speaker-row"><span class="story-speaker-mark">◈</span><b id="story-speaker">NOVA</b><small id="story-scene">STORY SCENE</small></div>
+          <p id="story-line" aria-live="polite"></p>
+          <button id="story-next" type="button">แตะเพื่อไปต่อ <span>↗</span></button>
+        </div>
+        <nav class="story-route" aria-label="เส้นทางแคมเปญ"><span><img src="assets/planet-helios-outpost.webp" alt=""><b>01</b></span><i></i><span><img src="assets/planet-mirror-belt.webp" alt=""><b>02</b></span><i></i><span><img src="assets/planet-shattered-meridian.webp" alt=""><b>03</b></span><i></i><span><img src="assets/planet-special-angle.webp" alt=""><b>04</b></span><i></i><span class="route-boss"><img src="assets/planet-degree-overlord.webp" alt=""><b>NOX</b></span></nav>
+      </div>
+    </section>
   </main>
   <script src="game.js"></script>
 </body>
