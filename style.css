@@ -409,3 +409,140 @@
 #arena{cursor:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='6' fill='none' stroke='%237af7ff' stroke-width='1.6'/%3E%3Cpath d='M16 1v8m0 14v8M1 16h8m14 0h8' fill='none' stroke='%237af7ff' stroke-width='1.6'/%3E%3Ccircle cx='16' cy='16' r='1.4' fill='%23ffffff'/%3E%3C/svg%3E") 16 16,crosshair}
 .game-shell{cursor:crosshair}
 .game-shell button,.game-shell a,.game-shell summary{cursor:pointer}
+
+/* Story scenes: illustrated VN dialogue shared by stage and minigame intros. */
+.story-dialog{position:fixed;inset:0;z-index:1200;display:grid;place-items:center;padding:clamp(12px,3vw,42px);background:#020611d9;backdrop-filter:blur(8px);cursor:pointer}
+.story-backdrop{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 38%,#163f59a8,transparent 65%),linear-gradient(180deg,#060a17aa,#020611ee)}
+.story-stage{position:relative;isolation:isolate;width:min(100%,1000px);height:min(76dvh,650px);min-height:430px;overflow:hidden;border:1px solid #75eaf288;border-radius:16px;background:#081421;box-shadow:0 26px 90px #000b,0 0 42px #4ceaff20;cursor:default;animation:story-arrive .5s cubic-bezier(.2,.75,.2,1) both}
+.story-art{position:absolute;inset:0;background-color:#07101b;background-image:linear-gradient(180deg,#07101b10 25%,#06111b40 55%,#040a13ed 100%),var(--story-art-image,url("assets/visual-novel-character-trio.png"));background-size:cover;background-position:center 38%;background-repeat:no-repeat;transform:scale(1.015);animation:story-breathe 7s ease-in-out infinite alternate;transition:filter .35s,background-position .45s}
+.story-dialog[data-art-type="planet"] .story-art{background-size:100% 100%,auto 82%;background-position:center,right 8% center;background-repeat:no-repeat}
+.story-dialog[data-art-type="panel"] .story-art{background-size:100% 100%,200% 200%;background-position:center,100% 100%;background-repeat:no-repeat}
+.story-dialog[data-speaker="pilot"] .story-art{background-position:43% 38%;filter:saturate(1.06)}
+.story-dialog[data-speaker="ai"] .story-art{background-position:50% 34%;filter:hue-rotate(-4deg) saturate(1.12)}
+.story-dialog[data-speaker="overlord"] .story-art{background-position:70% 35%;filter:hue-rotate(110deg) saturate(1.25) brightness(.72)}
+.story-dialog[data-speaker="overlord"] .story-art{animation:story-threat 2.4s ease-in-out infinite alternate}
+.story-cast{position:absolute;inset:auto 5% 34% 5%;display:flex;justify-content:space-between;align-items:center;pointer-events:none}
+.story-actor{padding:6px 10px;border:1px solid #9eeeff26;border-radius:4px;background:#05121bbd;color:#b4d5df;font:700 9px/1 var(--mono);letter-spacing:.14em;opacity:.74;text-shadow:0 1px 4px #001}
+.story-actor.ai{margin-left:4%}.story-actor.overlord{margin-left:auto;border-color:#ff8b9d55;color:#ffc3cb}
+.story-dialog[data-speaker="pilot"] .story-actor.pilot,.story-dialog[data-speaker="ai"] .story-actor.ai{border-color:#66edffb8;background:#082b38e8;color:#e2fcff;opacity:1;box-shadow:0 0 22px #40dfff66;animation:story-talk .75s ease-in-out infinite alternate}
+.story-dialog[data-speaker="overlord"] .story-actor.overlord{border-color:#ff668c;background:#330f22ed;color:#fff0f4;opacity:1;box-shadow:0 0 23px #ff3a6966;animation:story-threat 1.3s ease-in-out infinite alternate}
+.story-dialog[data-speaker="overlord"] .story-speaker-mark{color:#ff678c}
+.story-dialogue{position:absolute;inset:auto clamp(12px,4vw,42px) clamp(12px,3vh,26px);min-height:180px;padding:clamp(15px,2.4vw,25px) clamp(17px,3vw,34px) 15px;border:1px solid #67dff36b;border-radius:9px;background:linear-gradient(112deg,#071522f5,#081929ee 68%,#091521f3);box-shadow:inset 0 0 30px #42dff50a,0 14px 38px #0009;cursor:pointer}
+.story-dialogue:before{content:"";position:absolute;top:-1px;left:18px;width:86px;height:2px;background:#68efff;box-shadow:0 0 14px #5deaff}
+.story-speaker-row{display:flex;align-items:center;gap:9px;color:#eaffff}
+.story-speaker-mark{font:18px var(--mono);color:#66efff;text-shadow:0 0 12px #5cefff}
+.story-speaker-row>b{font:700 11px/1.2 var(--mono);letter-spacing:.18em;color:#83edff}
+.story-speaker-row>small{margin-left:auto;color:#7594a5;font:8px var(--mono);letter-spacing:.12em}
+#story-line{min-height:65px;margin:13px 0 7px;color:#ecf6fb;font:clamp(14px,1.8vw,18px)/1.85 var(--sans);text-shadow:0 1px 2px #000}
+.story-dialog.is-typing #story-line:after{content:"▍";margin-left:2px;color:#78f2ff;animation:story-caret .65s steps(2,end) infinite}
+#story-next{display:flex;align-items:center;gap:10px;margin-left:auto;padding:8px 11px;border:1px solid #5ceaff71;border-radius:4px;background:#0a2635;color:#c9faff;font:10px var(--sans);cursor:pointer;transition:background .15s,transform .15s}
+#story-next:hover{transform:translateY(-1px);background:#104056}
+#story-next span{color:#7af4ff;font:14px var(--mono)}
+@keyframes story-arrive{from{opacity:0;transform:translateY(12px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes story-breathe{from{transform:scale(1.015) translateY(0)}to{transform:scale(1.045) translateY(-3px)}}
+@keyframes story-talk{from{transform:translateY(0);filter:brightness(1)}to{transform:translateY(-4px);filter:brightness(1.35)}}
+@keyframes story-threat{from{transform:scale(1.015) translate(0,0);filter:hue-rotate(105deg) saturate(1.1) brightness(.7)}to{transform:scale(1.06) translate(-2px,1px);filter:hue-rotate(120deg) saturate(1.45) brightness(.85)}}
+@keyframes story-caret{to{visibility:hidden}}
+@media(max-width:620px){.story-stage{height:min(82dvh,680px);min-height:420px}.story-art{background-position:center 30%}.story-cast{inset:auto 4% 42% 4%}.story-actor{padding:5px 6px;font-size:7px;letter-spacing:.07em}.story-dialogue{inset:auto 10px 10px;padding:15px 14px 12px;min-height:190px}.story-speaker-row>small{font-size:6px}.story-speaker-row>b{font-size:9px}#story-line{font-size:14px;min-height:83px;line-height:1.8}}
+
+/* Original generated portraits: the current speaker brightens while the others recede. */
+.story-cast{inset:auto 4% 31%;height:54%;display:flex;align-items:stretch;justify-content:space-between;gap:1.5%;}
+.story-portrait{position:relative;flex:1 1 0;min-width:0;height:100%;background-image:url("assets/visual-novel-character-trio.png");background-size:300% 100%;background-repeat:no-repeat;background-position:0% center;opacity:.34;filter:brightness(.58) saturate(.72);transform:translateY(9px) scale(.97);transition:opacity .4s,filter .4s,transform .4s;mask-image:linear-gradient(180deg,#000 0%,#000 72%,transparent 100%);}
+.story-portrait.ai{background-position:50% center}.story-portrait.overlord{background-position:100% center}
+.story-portrait span{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);padding:5px 7px;border:1px solid #8eeeff40;background:#06131ddd;color:#c2dce2;font:700 8px/1 var(--mono);letter-spacing:.1em;white-space:nowrap;transition:color .35s,border-color .35s,box-shadow .35s;}
+.story-dialog[data-speaker="pilot"] .story-portrait.pilot,.story-dialog[data-speaker="ai"] .story-portrait.ai{opacity:1;filter:brightness(1.12) saturate(1.08);transform:translateY(0) scale(1.015);}
+.story-dialog[data-speaker="overlord"] .story-portrait.overlord{opacity:1;filter:brightness(1.13) saturate(1.18);transform:translateY(0) scale(1.025);animation:story-threat 1.3s ease-in-out infinite alternate;}
+.story-dialog[data-speaker="pilot"] .story-portrait.pilot span,.story-dialog[data-speaker="ai"] .story-portrait.ai span{border-color:#66edffb8;color:#eaffff;box-shadow:0 0 18px #40dfff66;}
+.story-dialog[data-speaker="overlord"] .story-portrait.overlord span{border-color:#ff668c;color:#fff0f4;box-shadow:0 0 18px #ff3a6966;}
+@media(max-width:620px){.story-cast{inset:auto 2% 44%;height:38%;gap:1%}.story-portrait span{bottom:3px;padding:4px;font-size:6px;letter-spacing:.04em}}
+@media(prefers-reduced-motion:reduce){.story-stage,.story-art,.story-actor{animation:none!important;transition:none!important}}
+html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+.story-art{filter:brightness(.72)!important}
+.story-portrait{flex:0 0 auto;width:auto;aspect-ratio:2/3;background-size:auto 100%}
+@media(max-width:620px){.story-cast{inset:auto 0 44%;height:35%;justify-content:center}.story-portrait{display:none;height:100%;width:auto;aspect-ratio:2/3}.story-dialog[data-speaker="pilot"] .story-portrait.pilot,.story-dialog[data-speaker="ai"] .story-portrait.ai,.story-dialog[data-speaker="overlord"] .story-portrait.overlord{display:block;flex:0 0 auto}}
+.story-backdrop{inset:-20px;background:linear-gradient(180deg,#06132684,#020611b8),url("assets/space-bg.png") center/cover no-repeat;filter:blur(10px) saturate(.82);transform:scale(1.04);opacity:.96}
+.story-dialog[data-speaker="narration"] .story-portrait{opacity:.16;filter:brightness(.42) saturate(.5);transform:translateY(8px) scale(.97)}
+.story-portrait{visibility:hidden;opacity:0;transform:translateY(24px) scale(.94)}
+.story-dialog[data-seen-pilot="true"]:not([data-speaker="pilot"]) .story-portrait.pilot,.story-dialog[data-seen-ai="true"]:not([data-speaker="ai"]) .story-portrait.ai,.story-dialog[data-seen-overlord="true"]:not([data-speaker="overlord"]) .story-portrait.overlord{visibility:visible;opacity:.34;filter:brightness(.58) saturate(.72);transform:translateY(9px) scale(.97)}
+.story-dialog[data-speaker="pilot"] .story-portrait.pilot,.story-dialog[data-speaker="ai"] .story-portrait.ai,.story-dialog[data-speaker="overlord"] .story-portrait.overlord{visibility:visible}
+.story-dialog[data-speaker="narration"][data-seen-pilot="true"] .story-portrait.pilot,.story-dialog[data-speaker="narration"][data-seen-ai="true"] .story-portrait.ai,.story-dialog[data-speaker="narration"][data-seen-overlord="true"] .story-portrait.overlord{opacity:.16;filter:brightness(.42) saturate(.5)}
+.story-dialog[data-speaker="pilot"] .story-art,.story-dialog[data-speaker="ai"] .story-art,.story-dialog[data-speaker="overlord"] .story-art{filter:blur(5px) brightness(.72)!important}
+.story-portrait span{display:none}
+.story-portrait.overlord{position:relative;background-image:none}
+.story-portrait.overlord::before{content:"";position:absolute;inset:0;background-image:url("assets/visual-novel-character-trio.png");background-size:auto 100%;background-position:100% center;background-repeat:no-repeat;transform:scaleX(-1)}
+.story-dialog[data-speaker="overlord"] .story-portrait.overlord{transform:translateY(0) scale(1.025)}
+
+/* Flight brief and learning flow */
+.start-overlay{background:radial-gradient(ellipse at 50% 38%,#082b47a6,#020812e8 78%);backdrop-filter:blur(8px)}
+.brief-box{width:min(1040px,calc(100vw - 40px));max-height:calc(100dvh - 38px);overflow-y:auto;padding:22px clamp(24px,4vw,56px) 24px;border:1px solid #34d7f28c;border-radius:2px;background:linear-gradient(145deg,#071a2af5,#06111ff8 72%);box-shadow:0 22px 100px #000c,0 0 46px #24c9e921,inset 0 0 40px #24c9e910;clip-path:none;scrollbar-color:#21bed4 #06111f;scrollbar-width:thin}
+.brief-box::after{content:"";position:absolute;inset:8px;z-index:0;pointer-events:none;border:1px solid #77eeff17;clip-path:polygon(0 0,28px 0,28px 1px,1px 28px,1px calc(100% - 28px),28px calc(100% - 1px),28px 100%,0 100%,0 0,100% 0,100% 100%,calc(100% - 28px) 100%,calc(100% - 28px) calc(100% - 1px),calc(100% - 1px) calc(100% - 28px),calc(100% - 1px) 28px,calc(100% - 28px) 1px,calc(100% - 28px) 0)}
+.brief-box .brief-emblem{width:50px;height:50px;margin:12px auto 5px;font-size:33px}
+.brief-box .eyebrow{margin-top:5px;color:#ffd27b}
+.flight-flow{position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:10px;width:min(620px,100%);margin:12px auto 15px;color:#7693a4;font:8px/1 var(--mono);letter-spacing:.11em}
+.flight-flow>span{display:flex;align-items:center;gap:6px;padding:7px 10px;border:1px solid #3c708355;background:#071421;color:#7795a5;white-space:nowrap}
+.flight-flow>span b{font:inherit}.flight-flow>i{height:1px;flex:1;background:linear-gradient(90deg,#256074,#3d7b8a)}
+.flight-flow>span.active{border-color:#37e5f4;color:#aafaff;box-shadow:0 0 14px #19d7ea38,inset 0 0 12px #19d7ea18}
+.flight-flow>span.complete{color:#78e5ca;border-color:#44c7b475}
+.brief-box h2{font-size:clamp(20px,2.35vw,31px);line-height:1.2;letter-spacing:.035em}
+.brief-box h2 span{font-size:9px;letter-spacing:.16em}
+.brief-box #overlay-copy{max-width:900px;font-size:clamp(13px,1.15vw,16px);line-height:1.9;margin:12px auto 14px}
+.lesson-art{width:min(820px,100%);height:220px;margin:14px auto 15px;padding:0 18px;gap:22px}
+.lesson-art-scene{width:230px;height:218px;background-image:linear-gradient(0deg,#03101b35,#03101b08),var(--scene-image);background-size:cover;background-position:center;background-repeat:no-repeat}
+.mission-art{width:min(820px,100%);height:200px;margin:14px auto 16px;padding:0 18px;gap:22px}
+.mission-art-scene{width:220px;height:198px;background-image:linear-gradient(0deg,#03101b35,#03101b05),var(--mission-image);background-size:cover;background-position:center;background-repeat:no-repeat;border-right:1px solid #5edbf566}
+.brief-box .brief-controls{max-width:850px;gap:8px;margin:10px auto}
+.brief-box .brief-controls span{border-color:#247d9380;background:#061522;color:#bfe6ef}
+.brief-box .launch-button{max-width:820px;margin:12px auto 0;border:1px solid #74f2ff;background:linear-gradient(100deg,#087d94,#09c8d5 50%,#087d94);box-shadow:0 0 24px #27d9ed44,inset 0 0 15px #a4ffff30;color:#f2ffff;text-shadow:0 1px 4px #00313c}
+.brief-box .launch-button:hover{filter:brightness(1.16);transform:translateY(-1px)}
+.brief-box .brief-foot{margin-top:10px}
+
+/* Shared orbital flight HUD treatment */
+.hud-top{background:linear-gradient(180deg,#041725f5,#061422ed);border-bottom:1px solid #40d8ed70;box-shadow:0 8px 30px #0008,0 1px #b2fbff18 inset}
+.mission-readout{color:#bde7ef}.mission-readout i{color:#2bbace}
+.hud-icon{border-color:#38cfe577;border-radius:2px;background:linear-gradient(145deg,#0b2535,#07131f);box-shadow:inset 0 0 12px #36c4dc17}
+.panel{border-color:#36d4ec70;background:linear-gradient(145deg,#071b2aef,#06121ff2);box-shadow:0 12px 34px #0008,0 0 18px #22cde714,inset 0 0 18px #32d2e50c;backdrop-filter:blur(8px)}
+.panel-heading{color:#9cd9e5;border-color:#42d3e52e}
+.weapon-rack{border:1px solid #43d8ed99;border-radius:3px;background:linear-gradient(100deg,#041522f5,#082435f0);box-shadow:0 10px 36px #000b,0 0 25px #28d5ea25,inset 0 0 24px #32d4e312}
+.weapon-strip{border-color:#32cbe666}.weapon-card{border-color:#2ea4c088;background:linear-gradient(145deg,#0b2636,#071420)}
+@media(max-width:650px){.brief-box{width:calc(100vw - 20px);max-height:calc(100dvh - 20px);padding:18px 15px}.flight-flow{gap:4px;margin:8px auto 12px}.flight-flow>span{gap:3px;padding:6px 5px;font-size:6px}.flight-flow>i{min-width:5px}.brief-box .brief-emblem{width:38px;height:38px;font-size:25px;margin:7px auto 4px}.lesson-art{height:142px;padding:0 8px;gap:10px}.lesson-art-scene{width:125px;height:140px}.mission-art{height:140px;padding:0 8px;gap:10px}.mission-art-scene{width:125px;height:138px}.brief-box #overlay-copy{font-size:12px;line-height:1.7}}
+@media(max-height:760px) and (min-width:651px){.brief-box{padding-top:14px;padding-bottom:14px}.brief-box .brief-emblem{display:none}.flight-flow{margin:7px auto 9px}.lesson-art{height:165px}.lesson-art-scene{height:163px}.mission-art{height:150px}.mission-art-scene{height:148px}}
+
+/* Full scene composition for each level's lesson and interactive tutorial. */
+.start-overlay.academy-screen{padding:14px;background:#020812a8;backdrop-filter:blur(9px)}
+.start-overlay.academy-screen .overlay-grid{display:none}
+.brief-box.is-academy{isolation:isolate;display:flex;flex-direction:column;align-items:flex-end;width:min(1640px,calc(100vw - 30px));height:min(940px,calc(100dvh - 28px));max-height:none;padding:22px clamp(22px,4.2vw,72px) 20px;border:1px solid #48e4f3a8;border-radius:3px;background:linear-gradient(90deg,#03101b05 0%,#03101b30 27%,#041421d9 44%,#061522f2 100%);box-shadow:0 25px 95px #000c,0 0 40px #20d8ec23;clip-path:none;overflow-y:auto}
+.brief-box.is-academy::before{display:block;content:"";position:absolute;z-index:0;inset:-5px;background:linear-gradient(90deg,#03101b08 0%,#03101b48 27%,#041421d9 44%,#061522f3 100%),url("assets/flight-school-visual.png") center/cover no-repeat;filter:blur(3px) brightness(.9);pointer-events:none}
+.brief-box.is-academy::after{display:none}
+.brief-box.is-academy>*{position:relative;z-index:1}
+.brief-box.is-academy>.brief-top{align-self:stretch;margin:0 0 10px;color:#c6e5eb}
+.brief-box.is-academy>.brief-emblem{display:none}
+.brief-box.is-academy>.eyebrow,.brief-box.is-academy>.flight-flow,.brief-box.is-academy>#overlay-title,.brief-box.is-academy>.tutorial-tools,.brief-box.is-academy>#overlay-copy,.brief-box.is-academy>#lesson-art,.brief-box.is-academy>.brief-controls,.brief-box.is-academy>#launch,.brief-box.is-academy>.brief-foot{width:min(66%,980px);margin-left:auto;margin-right:0;text-align:left}
+.brief-box.is-academy>.eyebrow{margin-top:14px;text-align:left}
+.brief-box.is-academy>.flight-flow{margin-top:12px;margin-bottom:17px}
+.brief-box.is-academy>#overlay-title{font-size:clamp(23px,2.5vw,38px);margin:0;text-align:left}
+.brief-box.is-academy>#overlay-title span{margin-top:7px;text-align:left}
+.brief-box.is-academy>.tutorial-tools{justify-content:flex-start;margin-top:13px;margin-bottom:5px}
+.brief-box.is-academy>#overlay-copy{max-width:none;margin-top:9px;margin-bottom:9px;padding:15px 18px;border-left:2px solid #45e5ef;background:linear-gradient(90deg,#071927e8,#071927b8 82%,transparent);font-size:clamp(13px,1.05vw,16px);line-height:1.8}
+.brief-box.is-academy>#lesson-art{height:clamp(155px,23vh,225px);margin-top:8px;margin-bottom:12px;padding:0 14px;background:linear-gradient(110deg,#061725ed,#071b29e5);border-color:#49dff288;box-shadow:inset 0 0 30px #29d4e415,0 0 26px #13cce31a}
+.brief-box.is-academy .lesson-art-scene{width:clamp(145px,18vw,235px);height:100%;background-image:linear-gradient(0deg,#04101d20,#04101d05),var(--scene-image);background-position:center;background-size:cover;background-repeat:no-repeat}
+.brief-box.is-academy .lesson-art-caption{padding:12px 8px;gap:11px}
+.brief-box.is-academy .lesson-art-caption small{font-size:clamp(8px,.75vw,11px)}
+.brief-box.is-academy .lesson-art-caption b{font-size:clamp(16px,1.45vw,23px)}
+.brief-box.is-academy .lesson-art-caption span{font-size:clamp(8px,.7vw,10px)}
+.brief-box.is-academy>.brief-controls{justify-content:flex-start;margin-top:3px;margin-bottom:10px}
+.brief-box.is-academy>.brief-controls span{font-size:clamp(8px,.68vw,10px)}
+.brief-box.is-academy>.academy-story{position:relative;z-index:1;width:min(66%,980px);margin:0 0 7px auto;padding:9px 12px 10px;border:1px solid #50d9e775;border-left:3px solid #ffd27b;background:linear-gradient(105deg,#041522ed,#061825db 85%,#061825a8);box-shadow:inset 0 0 20px #25cfe315}
+.brief-box.is-academy>.academy-story[hidden]{display:none}
+.academy-story-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;color:#77f1ee;font:700 8px/1 var(--mono);letter-spacing:.12em}
+.academy-story-heading i{margin-right:5px;color:#ffd27b;font-style:normal;font-size:12px}
+.academy-story-heading small{margin-left:8px;color:#ffd27b;font:700 8px var(--mono)}
+.academy-story-heading button{flex:none;padding:5px 8px;border:1px solid #38d3e477;background:#092537;color:#bdfaff;font:8px var(--sans);cursor:pointer}
+.academy-story-heading button:hover{background:#0d3b4d}
+.academy-story p{margin:7px 0 0;color:#e4f4f8;font:clamp(11px,.85vw,13px)/1.6 var(--sans);text-align:left}
+.brief-box.is-academy>#launch{min-height:56px;margin-top:auto;margin-bottom:0;font-size:clamp(13px,1.05vw,17px)}
+.brief-box.is-academy>.brief-foot{margin-top:9px;text-align:center}
+.story-stage{width:min(1160px,100%);height:min(80dvh,720px);border-radius:4px;border-color:#35d9edaa;box-shadow:0 26px 95px #000c,0 0 42px #28d7ec2b}
+.story-stage:before{content:"";position:absolute;z-index:3;inset:7px;pointer-events:none;border:1px solid #8af6ff25;clip-path:polygon(0 0,36px 0,36px 1px,1px 36px,1px calc(100% - 36px),36px calc(100% - 1px),36px 100%,0 100%,0 0,100% 0,100% 100%,calc(100% - 36px) 100%,calc(100% - 36px) calc(100% - 1px),calc(100% - 1px) calc(100% - 36px),calc(100% - 1px) 36px,calc(100% - 36px) 1px,calc(100% - 36px) 0)}
+@media(max-width:900px){.brief-box.is-academy{background-position:35% center}.brief-box.is-academy>.eyebrow,.brief-box.is-academy>.flight-flow,.brief-box.is-academy>#overlay-title,.brief-box.is-academy>.tutorial-tools,.brief-box.is-academy>#overlay-copy,.brief-box.is-academy>#lesson-art,.brief-box.is-academy>.brief-controls,.brief-box.is-academy>#launch,.brief-box.is-academy>.brief-foot{width:72%}}
+@media(max-width:900px){.brief-box.is-academy>.academy-story{width:72%}}
+@media(max-width:650px){.start-overlay.academy-screen{padding:8px}.brief-box.is-academy{width:calc(100vw - 16px);height:calc(100dvh - 16px);padding:14px 11px}.brief-box.is-academy::before{background-size:auto 100%;background-position:18% center}.brief-box.is-academy>.brief-top{font-size:6px}.brief-box.is-academy>.eyebrow,.brief-box.is-academy>.flight-flow,.brief-box.is-academy>#overlay-title,.brief-box.is-academy>.tutorial-tools,.brief-box.is-academy>#overlay-copy,.brief-box.is-academy>#lesson-art,.brief-box.is-academy>.brief-controls,.brief-box.is-academy>#launch,.brief-box.is-academy>.brief-foot,.brief-box.is-academy>.academy-story{width:100%}.brief-box.is-academy>.eyebrow{margin-top:9px}.brief-box.is-academy>.flight-flow{margin:7px 0 10px}.brief-box.is-academy>#overlay-title{font-size:20px}.brief-box.is-academy>#overlay-copy{font-size:11px;padding:9px 10px}.brief-box.is-academy>.academy-story{padding:7px}.academy-story-heading{font-size:7px}.academy-story-heading button,.academy-story-heading small{font-size:6px}.academy-story p{font-size:10px;line-height:1.5}.brief-box.is-academy>#lesson-art{height:126px;padding:0 6px}.brief-box.is-academy .lesson-art-scene{width:98px}.brief-box.is-academy .lesson-art-caption{gap:5px;padding:5px}.brief-box.is-academy .lesson-art-caption small{font-size:6px}.brief-box.is-academy .lesson-art-caption b{font-size:11px}.brief-box.is-academy .lesson-art-caption span{font-size:6px}.brief-box.is-academy>.brief-controls{gap:4px;margin-bottom:6px}.brief-box.is-academy>.brief-controls span{padding:4px 5px;font-size:6px}.brief-box.is-academy>#launch{min-height:42px;font-size:11px}.brief-box.is-academy>.brief-foot{font-size:6px}.story-stage{height:min(82dvh,700px);min-height:420px}}

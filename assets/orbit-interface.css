@@ -1,0 +1,298 @@
+/* Shared Orbit Defender console language, based on the Story2 PDF screens. */
+:root {
+  --od-space: #030a16;
+  --od-panel: #061a2a;
+  --od-panel-raised: #092339;
+  --od-cyan: #27eaff;
+  --od-gold: #ffc64d;
+  --od-white: #edf8ff;
+  --od-muted: #98b8c8;
+  --od-red: #ff536e;
+}
+
+html, body {
+  background-color: var(--od-space) !important;
+  background-image: linear-gradient(180deg, #0209169c, #020916b8), url("space-bg.png") !important;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color: var(--od-white);
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  z-index: 900;
+  inset: 0;
+  pointer-events: none;
+  background: url("ui-console-frame.png") center / 100% 100% no-repeat;
+  filter: drop-shadow(0 0 14px #00dcff20);
+}
+
+body > .shell, body > .wrap, body > #app {
+  isolation: isolate;
+}
+
+.top, .boardhead, .board-header, .board-heading {
+  color: var(--od-white) !important;
+  border-color: #39eaff8a !important;
+  background: linear-gradient(90deg, #061b2beF, #082940ed 50%, #061827f2) !important;
+  box-shadow: 0 5px 24px #00dfff20, inset 0 -1px #27eaff39 !important;
+}
+
+.brand, .brand small, .brand-lockup, .route, .level {
+  color: var(--od-cyan) !important;
+}
+
+.panel, .mission, .board, .side, .intro-card, .brief-card, .challenge,
+.task-card, .question-card, .result-card, .stats, .mission-facts {
+  color: var(--od-white) !important;
+  border: 1px solid #36dff17a !important;
+  border-radius: 2px !important;
+  background: linear-gradient(145deg, #071e30f2, #061523f5) !important;
+  box-shadow: inset 0 0 24px #22c8e911, 0 8px 28px #0008, 0 0 16px #29dff20d !important;
+}
+
+.panel h1, .panel h2, .board h1, .board h2, .mission h1, .mission h2,
+.side h1, .side h2, .intro-card h1, .intro-card h2 {
+  color: var(--od-white) !important;
+}
+
+.panel p, .mission p, .side p, .intro-card p, .brief-card p,
+.hint, .help, .instructions, .subtitle {
+  color: #c7dbe4 !important;
+}
+
+button, .action, .next, .start-btn, .launch-button, .brief-card button {
+  color: #edfcff !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: url("ui-button-small.png") center / 100% 100% no-repeat !important;
+  box-shadow: 0 0 13px #17dfff29 !important;
+  min-height: 36px;
+  padding: 8px 18px;
+  text-shadow: 0 1px 5px #001520;
+}
+
+button:hover, .action:hover, .next:hover, .start-btn:hover,
+.launch-button:hover, .brief-card button:hover {
+  filter: brightness(1.18) !important;
+  box-shadow: inset 0 0 18px #b4fbff55, 0 0 22px #17dfff55 !important;
+}
+
+button:disabled { filter: grayscale(.75) brightness(.68) !important; }
+
+.timer, .clock, .timerbox, .score, .score-box, .stats, .progress,
+.timer-display, .status, .task, .title, .sidehead, .boardhead {
+  font-variant-numeric: tabular-nums;
+}
+
+.status, .feedback, .status-line {
+  color: var(--od-cyan) !important;
+}
+
+.briefing, .dialog, .modal, .help-modal {
+  background: #020914d9 !important;
+  backdrop-filter: blur(8px);
+}
+
+.brief-card, .dialog-card, .modal-card {
+  border-color: var(--od-cyan) !important;
+  box-shadow: inset 0 0 30px #19dfff20, 0 0 32px #00dfff28 !important;
+}
+
+@media (max-width: 700px) {
+  body::after { inset: 0; background-size: 100% 100%; opacity: .76; }
+  .top { min-height: 54px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
+
+/* Character dialogue keeps its original centered visual-novel card. */
+.story-dialog { background: #020611d9 !important; backdrop-filter: blur(8px) !important; }
+.story-dialog[hidden] { display: none !important; }
+.story-stage {
+  width: min(100%, 1000px) !important;
+  height: min(76dvh, 650px) !important;
+  min-height: 430px !important;
+  border: 1px solid #75eaf288 !important;
+  border-radius: 16px !important;
+  background: #081421 !important;
+  box-shadow: 0 26px 90px #000b, 0 0 42px #4ceaff20 !important;
+}
+.story-console-frame, .story-console-heading, .story-route { display: none !important; }
+.story-art { inset: 0 !important; }
+.story-cast { inset: auto 4% 31% 4% !important; width:auto !important; height:54% !important; z-index:1; align-items:stretch !important; }
+.story-portrait { z-index:0; transform-origin:center bottom; }
+.story-dialog[data-speaker="pilot"] .story-portrait.pilot,
+.story-dialog[data-speaker="ai"] .story-portrait.ai,
+.story-dialog[data-speaker="overlord"] .story-portrait.overlord { z-index:1; transform:translateY(0) scale(1.015) !important; }
+.story-dialog[data-speaker="overlord"] .story-portrait.overlord { transform:translateY(0) scale(1.025) !important; }
+.story-dialogue {
+  z-index: 3;
+  inset: auto clamp(12px,4vw,42px) clamp(12px,3vh,26px) !important;
+  width:auto !important;
+  min-height:180px !important;
+  padding:clamp(15px,2.4vw,25px) clamp(17px,3vw,34px) 15px !important;
+  border:1px solid #67dff36b !important;
+  border-radius:9px !important;
+  background:linear-gradient(112deg,#071522f5,#081929ee 68%,#091521f3) !important;
+  box-shadow:inset 0 0 30px #42dff50a,0 14px 38px #0009 !important;
+}
+.story-dialogue::after { display:none; }
+.story-dialog #story-next {
+  min-height:0 !important;
+  padding:8px 11px !important;
+  border:1px solid #5ceaff71 !important;
+  border-radius:4px !important;
+  background:#0a2635 !important;
+  box-shadow:none !important;
+  text-shadow:none !important;
+}
+.story-dialog #story-next:hover { background:#104056 !important; box-shadow:none !important; }
+.story-dialog #story-next:focus:not(:focus-visible) { outline:none; }
+
+/* Level learning and tutorial: console border, module panels, lesson art. */
+.brief-box.is-academy {
+  z-index:1;
+  border: 2px solid #22dff2 !important;
+  box-shadow: 0 0 0 6px #082b41, 0 22px 100px #000d, 0 0 45px #1ddfff4a !important;
+}
+.start-overlay.academy-screen::after {
+  content:"";
+  position:fixed;
+  z-index:0;
+  inset:0;
+  pointer-events:none;
+  background:url("ui-console-frame.png") center / 100% 100% no-repeat;
+}
+.brief-box.is-academy::after {
+  display: none !important;
+}
+.brief-box.is-academy::before { filter:blur(1.5px) brightness(1.02) !important; }
+.brief-box.is-academy > .academy-story,
+.brief-box.is-academy > .tutorial-tools { display:none !important; }
+.brief-box.is-academy > #overlay-title { text-shadow: 0 0 18px #45eaff48; }
+.brief-box.is-academy > #overlay-copy {
+  border-left: 3px solid var(--od-gold);
+  background: linear-gradient(90deg, #071a29e8, #071a29a8);
+  padding: 14px 18px;
+}
+.lesson-art, .mission-art {
+  border: 1px solid #37dff2ad !important;
+  background: linear-gradient(90deg, #061523ee, #08283bea) !important;
+  box-shadow: inset 0 0 20px #29dff21c, 0 0 16px #27dfff24;
+}
+.lesson-art-scene, .mission-art-scene { filter: saturate(1.18) drop-shadow(0 0 12px #21dfff55); }
+.lesson-art-caption { border-left: 1px solid #27def3a6; }
+.brief-box.is-academy .brief-controls span { border-color: #27dff279 !important; background: #061a28ef !important; }
+.brief-box.is-academy > #launch {
+  display:flex !important;
+  position:relative;
+  z-index:2;
+  align-self:flex-end;
+  flex:0 0 auto;
+  margin-top:auto !important;
+  margin-bottom:clamp(70px,10vh,110px) !important;
+  min-height:58px !important;
+  border:1px solid #74f2ff !important;
+  background:linear-gradient(100deg,#087d94,#09c8d5 50%,#087d94) !important;
+  color:#f2ffff !important;
+  text-shadow:0 1px 4px #00313c !important;
+  box-shadow:0 0 24px #27d9ed55,inset 0 0 15px #a4ffff30 !important;
+}
+.brief-box.is-academy > #launch:hover { filter:brightness(1.16) !important; }
+
+/* Distinct illustrated story card before each level's learning screen. */
+.level-story-screen:not(.is-active), .level-story-screen[hidden] { display:none !important; }
+.level-story-screen.is-active:not([hidden]) { display:block !important; }
+.level-story-screen { position:fixed; z-index:1180; inset:0; overflow:hidden; color:#effaff; background:#020713; }
+.level-story-art { position:absolute; inset:0; background-image:var(--level-story-art),url("space-bg.png"); background-size:cover,cover; background-position:center; filter:saturate(1.1) brightness(.78); transform:scale(1.015); }
+.level-story-shade { position:absolute; inset:0; background:linear-gradient(180deg,#0207137a 0%,#02071308 24%,#02071314 46%,#020713d9 75%,#020713f5 100%),linear-gradient(90deg,#02071355,transparent 55%,#02071344); }
+.level-story-frame { position:absolute; z-index:1; inset:0; pointer-events:none; background:url("ui-console-frame.png") center/100% 100% no-repeat; }
+.level-story-header { position:absolute; z-index:2; inset:5.5% 7% auto; display:flex; align-items:center; gap:10px; color:#effaff; font:800 11px var(--mono,Consolas,monospace); letter-spacing:.12em; text-shadow:0 2px 8px #001; }
+.level-story-header b { display:grid; gap:4px; }
+.level-story-header b small { color:var(--od-gold); font-size:7px; letter-spacing:.3em; }
+.level-story-header #level-story-code { margin-left:auto; color:var(--od-gold); font-size:8px; }
+.level-story-content { position:absolute; z-index:2; inset:auto 12% 11%; display:flex; flex-direction:column; gap:12px; padding:clamp(18px,3vw,34px); border:1px solid #44e7ff9c; background:linear-gradient(115deg,#03111fef,#061928f2 60%,#04131fef); box-shadow:0 0 0 5px #09283b,inset 0 0 34px #19dfff15,0 16px 55px #000b; }
+.level-story-content::before { content:""; position:absolute; left:18px; top:-1px; width:110px; height:2px; background:#68efff; box-shadow:0 0 14px #5deaff; }
+.level-story-content>small { color:var(--od-gold); font:800 9px var(--mono,Consolas,monospace); letter-spacing:.2em; }
+.level-story-content h2 { margin:0; color:#f2fbff; font:900 clamp(22px,3vw,40px) var(--mono,Consolas,monospace); letter-spacing:.04em; text-shadow:0 0 18px #22dfff40; }
+.level-story-copy { color:#e0f1f6; font:clamp(13px,1.1vw,17px)/1.85 var(--sans,"Segoe UI",sans-serif); white-space:pre-line; }
+.level-story-copy p { margin:0 0 5px; }
+.level-story-copy b { color:#68edff; font:800 .78em var(--mono,Consolas,monospace); letter-spacing:.1em; }
+.level-story-content #level-story-next { align-self:flex-end; min-width:190px; min-height:54px; border:1px solid #67f4ff !important; background:linear-gradient(100deg,#087d94,#09c8d5 50%,#087d94) !important; box-shadow:0 0 22px #27d9ed55,inset 0 0 14px #a4ffff30 !important; font-weight:800; }
+.level-story-content #level-story-next:hover { filter:brightness(1.16); }
+
+/* Arrival and departure interludes between campaign stages. */
+.flight-cinematic[hidden] { display: none !important; }
+.flight-cinematic {
+  position: fixed;
+  z-index: 1150;
+  inset: 0;
+  overflow: hidden;
+  color: var(--od-white);
+  background: linear-gradient(180deg, #02091699, #020916ba), url("space-bg.png") center / cover no-repeat;
+  animation: flight-fade-in .35s ease both;
+}
+.flight-cinematic::before { content:""; position:absolute; inset:0; background:radial-gradient(ellipse at 72% 46%,#18a9dc2d,transparent 34%),linear-gradient(90deg,#02071240,#02071205 50%,#02071255); }
+.flight-stars { position:absolute; inset:-20%; opacity:.72; background-image:radial-gradient(#c8f7ff 1px,transparent 1.5px),radial-gradient(#35eaff 1px,transparent 1.5px); background-size:92px 92px,157px 157px; animation:flight-stars-drift 8s linear infinite; }
+.flight-orbit { position:absolute; left:52%; top:50%; width:min(58vw,82vh); aspect-ratio:1; border:1px solid #35dff344; border-radius:50%; transform:translate(-50%,-50%) rotate(-18deg) scaleY(.42); box-shadow:0 0 32px #1fdcff20,inset 0 0 36px #1fdcff14; }
+.flight-orbit::before,.flight-orbit::after { content:""; position:absolute; inset:12%; border:1px solid #2ae9ff36; border-radius:50%; transform:rotate(42deg) scaleY(.62); }
+.flight-orbit::after { inset:25%; transform:rotate(-55deg) scaleY(.75); }
+.flight-destination { position:absolute; z-index:2; top:50%; left:72%; width:clamp(170px,24vw,360px); display:grid; justify-items:center; gap:12px; transform:translate(-50%,-50%); animation:planet-arrival 2.7s ease-out both; }
+.flight-destination img { width:100%; max-height:42vh; object-fit:contain; filter:drop-shadow(0 0 28px #27dfff88); }
+.flight-destination span { color:#d5f8ff; font:800 11px var(--mono,Consolas,monospace); letter-spacing:.2em; text-align:center; text-shadow:0 0 12px #22dcff; }
+.flight-ship { position:absolute; z-index:3; top:48%; left:5%; width:clamp(120px,16vw,245px); filter:drop-shadow(0 0 20px #25dfff); }
+.flight-ship img { display:block; width:100%; height:auto; object-fit:contain; transform:rotate(90deg); filter:drop-shadow(0 0 12px #24dfff80); }
+.flight-caption { position:absolute; z-index:4; left:50%; bottom:10%; transform:translateX(-50%); display:grid; justify-items:center; gap:10px; width:min(740px,82vw); padding:18px 24px; border:1px solid #31dcf2a8; background:linear-gradient(90deg,#051625ee,#08263aef,#051625ee); box-shadow:inset 0 0 20px #20dfff17,0 0 22px #20dfff20; text-align:center; }
+.flight-caption small { color:var(--od-gold); font:800 9px var(--mono,Consolas,monospace); letter-spacing:.2em; }
+.flight-caption b { font:900 clamp(20px,3vw,36px) var(--mono,Consolas,monospace); letter-spacing:.08em; text-shadow:0 0 15px #19dfff65; }
+.flight-caption span { color:#c8e4ed; font-size:13px; }
+.play-flight[data-direction="arrive"] .flight-ship { animation:ship-arrive 2.7s cubic-bezier(.15,.72,.2,1) both; }
+.play-flight[data-direction="depart"] .flight-destination { left:27%; animation:planet-depart 2.7s ease-in both; }
+.play-flight[data-direction="depart"] .flight-ship { left:42%; animation:ship-depart 2.7s cubic-bezier(.55,.02,.95,.35) both; }
+@keyframes flight-fade-in { from{opacity:0}to{opacity:1} }
+@keyframes flight-stars-drift { to{transform:translate(-90px,45px)} }
+@keyframes ship-arrive { 0%{left:-24%;top:38%;transform:scale(.55);opacity:.3} 28%{opacity:1} 82%{left:57%;top:46%;transform:scale(.92)} 100%{left:57%;top:46%;transform:scale(.92)} }
+@keyframes ship-depart { 0%{left:42%;top:48%;transform:scale(.95)} 25%{transform:scale(1.06)} 100%{left:125%;top:33%;transform:scale(.32);opacity:0} }
+@keyframes planet-arrival { 0%{transform:translate(8%, -50%) scale(.8);opacity:.18} 100%{transform:translate(-50%,-50%) scale(1);opacity:1} }
+@keyframes planet-depart { to{transform:translate(-100%,-50%) scale(.78);opacity:.25} }
+
+.zombie-break { background:#020916 !important; }
+.zombie-break-header { height:68px !important; border-color:#35dff4 !important; background:linear-gradient(90deg,#041425,#09253a 50%,#041425) !important; color:#eafaff !important; box-shadow:0 5px 24px #0009,inset 0 -1px #3feaff38 !important; }
+.minigame-brand { display:flex; align-items:center; gap:8px; color:#ecfaff; font:800 10px var(--mono,Consolas,monospace); }
+.minigame-brand>i { color:var(--od-cyan); font-style:normal; font-size:25px; }
+.minigame-brand>b { display:grid; gap:3px; }
+.minigame-brand small { color:var(--od-gold); font-size:6px; letter-spacing:.28em; }
+#minigame-title { color:var(--od-cyan); font:800 9px var(--mono,Consolas,monospace); letter-spacing:.15em; }
+.zombie-break-header>b { min-width:90px; color:var(--od-gold) !important; font:900 20px var(--mono,Consolas,monospace) !important; text-align:right; }
+#zombie-game { background:#030a16; }
+
+@media (max-width: 700px) {
+  .story-stage { width:98vw !important; height:90dvh !important; min-height:440px !important; }
+  .story-art { inset:0 !important; }
+  .story-cast { inset:auto 2% 44% !important; width:auto !important; height:35% !important; justify-content:center !important; }
+  .story-portrait { display:none !important; }
+  .story-dialog[data-speaker="pilot"] .story-portrait.pilot,.story-dialog[data-speaker="ai"] .story-portrait.ai,.story-dialog[data-speaker="overlord"] .story-portrait.overlord { display:block !important; flex:0 0 auto !important; width:auto !important; height:100% !important; aspect-ratio:2/3 !important; }
+  .story-dialogue { inset:auto 7% 14% !important; width:auto; min-height:155px !important; padding:12px 14px !important; }
+  #story-line { min-height:55px !important; font-size:12px !important; }
+  .brief-box.is-academy > #launch { align-self:stretch; width:100% !important; margin-bottom:42px !important; }
+  .level-story-header { inset:4% 7% auto; font-size:8px; }
+  .level-story-header .story-brand-mark { font-size:20px; }
+  .level-story-content { inset:auto 8% 9%; gap:8px; padding:14px; }
+  .level-story-content h2 { font-size:clamp(18px,5vw,26px); }
+  .level-story-copy { max-height:34vh; overflow:auto; font-size:12px; line-height:1.65; }
+  .level-story-content #level-story-next { min-height:44px; }
+  .flight-caption { bottom:6%; padding:12px; }
+  .flight-caption span { font-size:10px; }
+  .flight-destination { left:67%; width:40vw; }
+  .flight-ship { width:30vw; }
+  .zombie-break-header { height:55px !important; padding:6px 8px !important; gap:5px !important; }
+  .minigame-brand { font-size:7px; }
+  #minigame-title { max-width:42vw; font-size:6px; text-align:center; }
+  .zombie-break-header>b { min-width:54px; font-size:13px !important; }
+}

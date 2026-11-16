@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="th">
 <head>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#061022">
@@ -19,6 +20,7 @@
       <div class="hero-copy">
         <h1>STARFALL<br><em>ROUTE</em></h1>
         <p class="intro">ปกป้อง <b>Degree Core</b> เพื่อรักษาเสถียรภาพของวงโคจร</p>
+        <a class="start-button hero-start" id="campaign-link" href="game.html?mode=campaign&amp;unit=degree&amp;difficulty=pilot"><span><small id="launch-mode-label">STORY CAMPAIGN</small><b id="launch-label">START MISSION</b></span><i>»</i></a>
       </div>
 
       <div class="planet-art" role="img" aria-label="ยานผู้เล่นกำลังมุ่งหน้าเข้าปกป้อง Degree Core จากยานศัตรู">
@@ -36,12 +38,16 @@
     </section>
 
     <section class="launch-panel" aria-label="ตั้งค่าก่อนออกบิน">
-      <div class="panel-heading"><span>FLIGHT CONFIGURATION</span><span>HELIOS SYSTEM · ROUTE 01</span></div>
-      <div class="mode-tabs"><small>ตั้งค่าหน่วยการเรียนรู้และระดับความยากก่อนออกเดินทาง</small></div>
+      <div class="panel-heading"><span>FLIGHT CONFIGURATION</span><span id="route-context">HELIOS SYSTEM · ROUTE 01</span></div>
+      <div class="mode-tabs"><small>เลือกโหมดการบิน หน่วยองศาหรือเรเดียน และความยากก่อนออกเดินทาง</small></div>
 
       <div class="panel-main">
         <div class="choices">
-          <fieldset><legend>LEARNING UNIT</legend>
+          <fieldset><legend>GAME MODE</legend>
+            <button class="choice active" type="button" data-group="mode" data-value="campaign" aria-pressed="true"><i></i><span><b>STORY CAMPAIGN</b><small>เนื้อเรื่อง · บทเรียน · เส้นทางหลัก</small></span></button>
+            <button class="choice" type="button" data-group="mode" data-value="practice" aria-pressed="false"><i></i><span><b>LEVEL PRACTICE</b><small>เลือกด่าน · Tutorial · ทดลองเล่น</small></span></button>
+          </fieldset>
+          <fieldset><legend>ANGLE UNIT</legend>
             <button class="choice active" type="button" data-group="unit" data-value="degree" aria-pressed="true"><i></i><span>DEGREES</span></button>
             <button class="choice" type="button" data-group="unit" data-value="radian" aria-pressed="false"><i></i><span>RADIANS</span></button>
           </fieldset>
@@ -52,16 +58,23 @@
           </fieldset>
         </div>
         <div class="launch-actions">
-          <a class="start-button" id="campaign-link" href="game.html?mode=campaign&amp;unit=degree&amp;difficulty=pilot"><span><b id="launch-label">START MISSION</b></span><i>»</i></a>
           <details class="options-menu">
-            <summary><span>⚙</span> ตั้งค่าและวิธีเล่น</summary>
-            <div class="options-popover"><b>ตั้งค่าการบิน</b><p>เลือกองศาหรือเรเดียนได้จาก Learning Unit</p><p>ระดับความยากกำหนดความเร็วศัตรู พลังชีวิต และเวลาที่ระบบจะแสดงคำใบ้</p><p>ระหว่างเล่น คลิกการ์ดมุมหรือค่าเพื่อเลือกอาวุธและยิง คำใบ้จะแสดงเมื่อพลาดซ้ำกับสัญญาณเดิม</p></div>
+            <summary><span>⚙</span> ตั้งค่า</summary>
+            <div class="options-popover" aria-label="ตั้งค่าเสียงและการแสดงผล">
+              <b>เสียงและการแสดงผล</b>
+              <label class="setting-range" for="music-volume"><span>เพลงประกอบ <output id="music-volume-value">45%</output></span><input id="music-volume" type="range" min="0" max="100" value="45"></label>
+              <label class="setting-range" for="effects-volume"><span>เสียงเอฟเฟกต์ <output id="effects-volume-value">70%</output></span><input id="effects-volume" type="range" min="0" max="100" value="70"></label>
+              <label class="setting-range" for="voice-volume"><span>เสียงพูด <output id="voice-volume-value">80%</output></span><input id="voice-volume" type="range" min="0" max="100" value="80"></label>
+              <label class="setting-toggle"><span>ลดการเคลื่อนไหว</span><input id="reduce-motion" type="checkbox"><i aria-hidden="true"></i></label>
+              <button id="fullscreen-toggle" class="setting-fullscreen" type="button"><span>⛶</span> เต็มจอ</button>
+              <small class="settings-note">ตั้งค่าเสียงและการเคลื่อนไหวจะถูกบันทึกไว้ในเครื่องนี้</small>
+            </div>
           </details>
         </div>
       </div>
 
       <section class="route-progress" aria-label="เส้นทางแคมเปญ">
-        <div class="route-heading"><span class="route-title">ROUTE PROGRESSION</span><small>เส้นทางความคืบหน้า · ระดับความคืบหน้าแคมเปญ</small></div>
+        <div class="route-heading"><span class="route-title">ROUTE PROGRESSION</span><small id="route-help">เส้นทางความคืบหน้า · ระดับความคืบหน้าแคมเปญ</small></div>
         <div class="route-track">
           <i class="route-energy-line" aria-hidden="true"></i>
           <article class="route-stop current" data-route-stage="0" data-route-name="Helios Outpost · Q1 Basics"><img class="route-planet-art route-q1" src="assets/planet-helios-outpost.webp" alt="ดาว Helios Outpost สำหรับบทเรียนพื้นฐาน Q1"><span class="route-step">01</span><span class="route-copy"><b>HELIOS OUTPOST</b><small>Q1 · พื้นฐาน</small></span></article>
