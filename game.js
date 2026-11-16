@@ -100,24 +100,8 @@
   ];
   const STORY_IMAGES={main:'assets/menu-cinematic-bg.png',crew:'assets/space-bg.png',enemy:'assets/orbital-intercept-bg.webp',level1:'assets/planet-helios-outpost.webp',level2:'assets/planet-mirror-belt.webp',level3:'assets/planet-shattered-meridian.webp',level4:'assets/planet-special-angle.webp',boss:'assets/planet-degree-overlord.webp',minigame:'assets/space-bg.png'};
   const MINIGAME_STORIES = {
-    'wiring.html': [
-      {speaker:'ASTRA', role:'ai', image:'crew', scene:'POWER RELAY · SYSTEM RESTORE', text:'Zero Lock ตัดสายส่งพลังงานของ Degree Core ออกห้าจุดค่ะ ต่อโจทย์แต่ละเส้นเข้ากับค่าตรีโกณมิติที่ถูกต้อง'},
-      {speaker:'NOVA', role:'pilot', image:'crew', scene:'POWER RELAY · SYSTEM RESTORE', text:'ต่อสายให้ครบทั้งห้าเส้น แล้วตรวจผลทุกจุดก่อนยืนยันการกู้คืนพลังงาน'}
-    ],
-    'radar.html': [
-      {speaker:'ASTRA', role:'ai', image:'level3', scene:'RADAR REPAIR · COORDINATE LOCK', text:'Zero Lock รบกวนพิกัดบนเรดาร์ห้าจุดค่ะ แต่ละจุดให้ระยะ r และมุม θ มา ใช้ x = r cos θ และ y = r sin θ หาตำแหน่ง'},
-      {speaker:'NOVA', role:'pilot', image:'level3', scene:'RADAR REPAIR · COORDINATE LOCK', text:'ลากเป้าหมายไปยังพิกัดที่คำนวณได้และยืนยันก่อนหมดเวลา ระวังสัญญาณของแต่ละจุดนะ'}
-    ],
   };
   const MINIGAME_TRANSFER_STORIES = {
-    'wiring.html': {
-      success:[{speaker:'ASTRA',role:'ai',image:'crew',scene:'SYSTEM RESTORED · ROUTE TRANSFER',text:'สายพลังงานกลับมาเชื่อมต่อแล้วค่ะ STARFALL พร้อมเดินทางต่อไปยังเป้าหมายถัดไป'}],
-      failure:[{speaker:'ASTRA',role:'ai',image:'crew',scene:'SYSTEM CHECK · ROUTE TRANSFER',text:'ระบบยังมีจุดที่ต้องซ่อม แต่ STARFALL ยังเดินทางต่อได้ เราจะเฝ้าระวังสัญญาณระหว่างทาง'}]
-    },
-    'radar.html': {
-      success:[{speaker:'NOVA',role:'pilot',image:'main',scene:'ZERO LOCK BYPASSED · ROUTE TRANSFER',text:'เราหลบ Zero Lock และล็อกพิกัดจุดหมายสำเร็จแล้ว เส้นทางถัดไปเปิดแล้ว!'}],
-      failure:[{speaker:'ASTRA',role:'ai',image:'main',scene:'ZERO LOCK INTERFERENCE · ROUTE TRANSFER',text:'Zero Lock ยังรบกวนเส้นทางอยู่ค่ะ แต่เราได้พิกัดบางส่วนแล้ว ฉันจะช่วยนำ STARFALL ฝ่าระบบรบกวนไป'}]
-    }
   };
   const storyDialog = $('story-dialog');
   let storyQueue = [], storyIndex = 0, storyTimer = 0, storyDone = null, storyTyping = false;
@@ -343,9 +327,9 @@
     try{localStorage.setItem('orbit-defender-minigame-current',JSON.stringify({level:state.stage+1,content:params.get('content'),startedAt:new Date().toISOString(),status:'in-progress'}));}catch(_){}
     const labels={'trigo_combat.html':'COMBAT QUIZ · ANSWER TO FIRE','wiring.html':'WIRING · RESTORE THE CORE','radar.html':'RADAR · POSITIONING','matching.html':'SIGNAL MATCH · NAVIGATION DATA','satellite_radar.html':'SATELLITE ALIGNMENT'};$('minigame-title').textContent=labels[selectedMiniGame]||'STARFALL ROUTE · MINIGAME';
     const launch=()=>{$('zombie-break').hidden=false;$('zombie-game').src=`${selectedMiniGame}?${params}`;};
-    if(['trigo_combat.html','matching.html','satellite_radar.html'].includes(selectedMiniGame))launch();else{$('zombie-break').hidden=false;startStoryDialog(MINIGAME_STORIES[selectedMiniGame],`LEVEL ${String(state.stage+1).padStart(2,'0')} · MINIGAME`,launch);}
+    if(['trigo_combat.html','matching.html','satellite_radar.html','radar.html','wiring.html'].includes(selectedMiniGame))launch();else{$('zombie-break').hidden=false;startStoryDialog(MINIGAME_STORIES[selectedMiniGame],`LEVEL ${String(state.stage+1).padStart(2,'0')} · MINIGAME`,launch);}
   }
-  function finishZombieIntermission(){if(state.mode!=='zombie'||!state.zombieStarted)return;state.zombieStarted=false;$('zombie-break').hidden=true;$('zombie-game').src='about:blank';let saved={};try{saved=JSON.parse(localStorage.getItem('orbit-defender-minigame-current')||'{}')}catch(_){}if(saved.status!=='complete')recordMinigame(false,'timeout');const outcome=saved.success?'success':'failure',continueCampaign=()=>playFlightCinematic('depart',state.travelNextStage,()=>playFlightCinematic('arrive',state.travelNextStage,()=>missionBrief(state.travelNextStage)));if(['trigo_combat.html','matching.html','satellite_radar.html'].includes(state.activeMinigame))continueCampaign();else{const lines=MINIGAME_TRANSFER_STORIES[state.activeMinigame]?.[outcome]||[];startStoryDialog(lines,'SYSTEM TRANSFER',continueCampaign);}}
+  function finishZombieIntermission(){if(state.mode!=='zombie'||!state.zombieStarted)return;state.zombieStarted=false;$('zombie-break').hidden=true;$('zombie-game').src='about:blank';let saved={};try{saved=JSON.parse(localStorage.getItem('orbit-defender-minigame-current')||'{}')}catch(_){}if(saved.status!=='complete')recordMinigame(false,'timeout');const outcome=saved.success?'success':'failure',continueCampaign=()=>playFlightCinematic('depart',state.travelNextStage,()=>playFlightCinematic('arrive',state.travelNextStage,()=>missionBrief(state.travelNextStage)));if(['trigo_combat.html','matching.html','satellite_radar.html','radar.html','wiring.html'].includes(state.activeMinigame))continueCampaign();else{const lines=MINIGAME_TRANSFER_STORIES[state.activeMinigame]?.[outcome]||[];startStoryDialog(lines,'SYSTEM TRANSFER',continueCampaign);}}
   function updateZombieIntermission(dt){if(!state.zombieStarted||state.zombieStoryWait)return;state.zombieTime=Math.max(0,state.zombieTime-dt);$('zombie-clock').textContent=`${String(Math.floor(state.zombieTime/60)).padStart(2,'0')}:${String(Math.ceil(state.zombieTime%60)).padStart(2,'0')}`;if(state.zombieTime<=0){if(state.zombieGraceTime>0){state.zombieGraceTime=Math.max(0,state.zombieGraceTime-dt);return;}finishZombieIntermission();}}
   function syncTravelHud(){if(!travelHud)return;$('game').classList.toggle('traveling',state.mode==='travel'||state.mode==='quiz');$('travel-clock').textContent=`00:${String(Math.ceil(state.travelTime)).padStart(2,'0')}`;$('travel-ammo').textContent=`${state.travelAmmo} / ${state.travelAmmoMax}`;$('travel-hull').textContent='◆ '.repeat(state.travelHull).trim()+'◇ '.repeat(3-state.travelHull).trim();$('travel-hostiles').textContent=String(state.travelEnemies.length);$('travel-accuracy').textContent=state.travelShots?`${Math.round(state.travelHits/state.travelShots*100)}%`:'100%';$('resupply-open').disabled=state.travelAmmo>=state.travelAmmoMax||state.travelCooldown>0;}
   function startTravel(nextStage){$('mission-completion').hidden=true;$('game').classList.remove('mission-complete');state.travelNextStage=nextStage;state.mode='travel';state.travelTime=28;state.travelAmmo=state.travelAmmoMax;state.travelHull=3;state.travelShots=0;state.travelHits=0;state.quizCorrectCount=0;state.quizWrongCount=0;state.travelEnemies=[];state.travelBullets=[];state.travelSpawn=.7;state.travelCooldown=0;state.enemies=[];state.bullets=[];overlay.classList.add('hidden');travelHud.hidden=false;quizOverlay.hidden=true;$('pause').style.visibility='hidden';feed('DEEP-SPACE INTERCEPT · CLICK TO AIM AND FIRE');syncTravelHud();updateHUD();}
