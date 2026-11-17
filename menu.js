@@ -19,7 +19,7 @@
       const unlocked = index <= unlockedThrough;
       const canSelect = selectingPractice && unlocked;
       stop.classList.toggle('locked', !unlocked);
-      stop.classList.toggle('current', selectingPractice || dailyMode ? (selectingPractice ? canSelect : unlocked && index === getUnlockedThrough()) && config.level === index + 1 : index === unlockedThrough);
+      stop.classList.toggle('current', selectingPractice || dailyMode ? (selectingPractice ? canSelect : unlocked) && config.level === index + 1 : index === unlockedThrough);
       stop.classList.toggle('practice-selected', (canSelect || dailyMode && unlocked) && config.level === index + 1);
       stop.tabIndex = canSelect ? 0 : -1;
       stop.setAttribute('role', canSelect ? 'button' : 'img');
@@ -36,12 +36,18 @@
     endlessChoice.querySelector('small').textContent = endlessUnlocked ? 'เอาตัวรอด · ศัตรูเพิ่มความยากต่อเนื่อง' : 'ปลดล็อกเมื่อชนะบอส';
     const dailyMode = config.mode === 'daily';
     const gameMode = dailyMode ? 'practice' : config.mode;
-    if (dailyMode) config.level = getUnlockedThrough() + 1;
+    const today = new Date();
+    const dailyDate = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+    if (dailyMode) {
+      const availableLevels = getUnlockedThrough() + 1;
+      let seed = 2166136261;
+      for (const char of `${dailyDate}:${availableLevels}`) seed = Math.imul(seed ^ char.charCodeAt(0), 16777619);
+      config.level = (seed >>> 0) % availableLevels + 1;
+    }
     const query = new URLSearchParams({ mode: gameMode, unit: config.unit, difficulty: config.difficulty });
     if (gameMode === 'practice') query.set('level', String(config.level));
     if (dailyMode) {
-      const today = new Date();
-      query.set('daily', `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`);
+      query.set('daily', dailyDate);
     }
     query.set('maxLevel', String(getUnlockedThrough() + 1));
     query.set('music', String(savedSettings.musicVolume));
@@ -52,7 +58,8 @@
     document.querySelector('#launch-mode-label').textContent = dailyMode ? `DAILY CHALLENGE · LEVEL ${String(config.level).padStart(2, '0')}` : config.mode === 'practice' ? `PRACTICE · LEVEL ${String(config.level).padStart(2, '0')}` : config.mode === 'endless' ? 'ENDLESS SURVIVAL' : 'STORY CAMPAIGN';
     document.querySelector('#launch-label').textContent = dailyMode ? 'START DAILY CHALLENGE' : config.mode === 'practice' ? 'START PRACTICE' : config.mode === 'endless' ? 'START ENDLESS' : 'START MISSION';
     document.querySelector('#route-context').textContent = dailyMode ? `DAILY FLIGHT · LEVEL ${String(config.level).padStart(2, '0')}` : config.mode === 'practice' ? `PRACTICE FLIGHT · LEVEL ${String(config.level).padStart(2, '0')}` : config.mode === 'endless' ? 'ENDLESS SURVIVAL · INFINITE WAVES' : 'HELIOS SYSTEM · ROUTE 01';
-    document.querySelector('#route-help').textContent = dailyMode ? 'ภารกิจวันนี้ใช้ด่านสูงสุดที่ปลดล็อก · ผลการเล่นไม่บันทึกทับแคมเปญ' : config.mode === 'practice' ? `เลือก Tutorial และทดลองเล่นได้ถึงด่าน ${String(getUnlockedThrough()+1).padStart(2,'0')} ที่ไปถึงแล้ว` : config.mode === 'endless' ? 'กำจัดศัตรูให้ได้นานที่สุด · ความเร็วและจำนวนศัตรูเพิ่มขึ้นทุกเวฟ' : 'เส้นทางความคืบหน้า · ด่านที่ยังล็อกจะแสดงเป็นเงาดำ';
+    document.querySelector('#route-help').textContent = dailyMode ? 'สุ่มด่านที่ปลดล็อกแล้วประจำวัน · ผลการเล่นไม่บันทึกทับแคมเปญ' : config.mode === 'practice' ? `เลือก Tutorial และทดลองเล่นได้ถึงด่าน ${String(getUnlockedThrough()+1).padStart(2,'0')} ที่ไปถึงแล้ว` : config.mode === 'endless' ? 'กำจัดศัตรูให้ได้นานที่สุด · ความเร็วและจำนวนศัตรูเพิ่มขึ้นทุกเวฟ' : 'เส้นทางความคืบหน้า · ด่านที่ยังล็อกจะแสดงเป็นเงาดำ';
+    renderRoute();
   };
 
   document.querySelectorAll('.choice').forEach(button => button.addEventListener('click', () => {
@@ -168,7 +175,14 @@
     if (config.mode !== 'campaign') return null;
     try {
       const saved = JSON.parse(localStorage.getItem('orbit-defender-campaign-checkpoint') || 'null');
-      return saved && Number.isInteger(saved.level) && saved.level > 1 && saved.level <= 5 ? saved : null;
+      if (!saved || !Number.isInteger(saved.level) || saved.level <= 1 || saved.level > 5) return null;
+      const lastRun = JSON.parse(localStorage.getItem('orbit-defender-last-run') || 'null');
+      const lastRunAt = Date.parse(lastRun?.when || '') || 0;
+      if (lastRunAt >= (Number(saved.updatedAt) || 0)) {
+        localStorage.removeItem('orbit-defender-campaign-checkpoint');
+        return null;
+      }
+      return saved;
     } catch (_) { return null; }
   };
   const openFlightSetup = event => {
