@@ -262,8 +262,9 @@
   const waveNumber=()=>state.stage===3?Math.floor(state.bossHits/5):state.wave;
   const currStage=()=>STAGES[state.stage];
 
-  function resize(){DPR=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=Math.floor(W*DPR);canvas.height=Math.floor(H*DPR);ctx.setTransform(DPR,0,0,DPR,0,0);cx=W/2;cy=H*.45;orbitR=Math.min(W,H)*(state.stage===3?.15:.26);}
-  addEventListener('resize',resize);resize();
+  function syncOrientation(){const portrait=matchMedia('(orientation: portrait)').matches||innerHeight>innerWidth;document.body.classList.toggle('is-portrait',portrait);}
+  function resize(){DPR=Math.min(devicePixelRatio||1,2);W=innerWidth;H=innerHeight;canvas.width=Math.floor(W*DPR);canvas.height=Math.floor(H*DPR);ctx.setTransform(DPR,0,0,DPR,0,0);cx=W/2;cy=H*.45;orbitR=Math.min(W,H)*(state.stage===3?.15:.26);syncOrientation();}
+  addEventListener('resize',resize);addEventListener('orientationchange',()=>setTimeout(resize,100));resize();
   for(let i=0;i<165;i++)state.stars.push({x:Math.random(),y:Math.random(),s:.35+Math.random()*1.5,p:Math.random()*TAU,a:.16+Math.random()*.55});
 
   // Web Audio handles effects; local music files are switched by scene and loop continuously.
