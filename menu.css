@@ -501,3 +501,19 @@ body{min-height:100svh;overflow-x:hidden;overflow-y:auto}
 .podium-entry.personal-entry{border-color:#ffd36a;color:#ffe7a8}
 .leaderboard-list li{width:100%;margin-left:0}
 @media(max-width:520px){.leaderboard-podium{gap:5px}.podium-entry{padding:10px 4px}.podium-entry b{font-size:8px}.podium-entry strong{font-size:10px}.podium-medal{width:58px;height:76px}.medal-1 .podium-medal{width:75px;height:96px}.medal-2 .podium-medal{width:56px;height:73px}.medal-3 .podium-medal{width:52px;height:68px}}
+
+/* Let short viewports scroll naturally, with the hero launch link inside its visible section. */
+@media(max-height:820px){
+  .hero{height:410px;min-height:410px}
+  .hero-start{margin-top:20px}
+}
+@media(max-width:600px){.hero-start{width:min(270px,85%);min-height:54px;margin:10px 0 0;padding:8px 13px}}
+.menu-orientation-notice{display:none}
+@media(max-aspect-ratio:1/1){
+  .menu-orientation-notice{position:fixed;z-index:1000;inset:0;display:grid;place-items:center;padding:24px;background:#020812f5;backdrop-filter:blur(10px);text-align:center}
+  .menu-orientation-notice>div{display:grid;justify-items:center;gap:12px;width:min(360px,100%);padding:30px 24px;border:1px solid #62e8f188;background:linear-gradient(145deg,#0d2131f7,#07111ff7);box-shadow:0 20px 80px #000c,0 0 36px #34ddec22}
+  .menu-orientation-notice span{font:52px/1 Arial;color:#79efff;animation:rotate-phone 1.8s ease-in-out infinite}
+  .menu-orientation-notice b{font:700 20px var(--thai);color:#edfcff}
+  .menu-orientation-notice small{font:12px/1.6 var(--thai);color:#a6bac5}
+}
+@keyframes rotate-phone{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}

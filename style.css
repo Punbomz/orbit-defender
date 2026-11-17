@@ -971,6 +971,53 @@ body:has(#overlay.academy-screen)::after{display:none!important}
 .brief-box.is-boss-brief .launch-button:hover{background-color:transparent!important;box-shadow:none!important;filter:brightness(1.12);transform:translateY(-1px)}
 @media(max-width:650px){.brief-box.is-boss-brief .launch-button{width:min(300px,76vw)}}
 
+/* Keep the orientation prompt reliable on mobile browsers with stale orientation media queries. */
+body.is-portrait .orientation-notice{position:fixed;z-index:3000;inset:0;display:grid;place-items:center;padding:24px;background:#020812f2;backdrop-filter:blur(10px);text-align:center}
+body.is-portrait .orientation-notice>div{display:grid;justify-items:center;gap:12px;width:min(360px,100%);padding:30px 24px;border:1px solid #62e8f188;background:linear-gradient(145deg,#0d2131f7,#07111ff7);box-shadow:0 20px 80px #000c,0 0 36px #34ddec22}
+body.is-portrait .orientation-notice span{font:48px/1 Arial;color:#79efff;animation:rotate-phone 1.8s ease-in-out infinite alternate}
+body.is-portrait .orientation-notice b{font:700 20px var(--sans);color:#edfcff}
+body.is-portrait .orientation-notice small{font:12px/1.6 var(--sans);color:#a6bac5}
+@media (max-aspect-ratio:1/1){.orientation-notice{position:fixed;z-index:3000;inset:0;display:grid;place-items:center;padding:24px;background:#020812f2;backdrop-filter:blur(10px);text-align:center}.orientation-notice>div{display:grid;justify-items:center;gap:12px;width:min(360px,100%);padding:30px 24px;border:1px solid #62e8f188;background:linear-gradient(145deg,#0d2131f7,#07111ff7);box-shadow:0 20px 80px #000c,0 0 36px #34ddec22}.orientation-notice span{font:48px/1 Arial;color:#79efff;animation:rotate-phone 1.8s ease-in-out infinite alternate}.orientation-notice b{font:700 20px var(--sans);color:#edfcff}.orientation-notice small{font:12px/1.6 var(--sans);color:#a6bac5}}
+
+/* Compact landscape layouts: fit every weapon control and keep the flight HUD in view. */
+@media (orientation:landscape) and (max-height:560px){
+  .game-shell{min-height:0}
+  .hud-top{height:52px;padding:0 9px}
+  .brand-lockup{gap:6px;min-width:0}
+  .brand-lockup .sigil{width:27px;height:27px;font-size:19px}
+  .brand-lockup b{font-size:9px}.brand-lockup small{font-size:6px;margin-top:2px}
+  .mission-readout{gap:5px;padding:5px 7px;font-size:7px;letter-spacing:.05em}
+  .hud-actions{min-width:0;gap:4px}
+  .score-box,.pilot-box,.energy-box,.shield-box{min-height:29px;padding:3px 4px;gap:3px}
+  .hud-actions small{font-size:6px!important}.score-box b,.pilot-box b,.shield-box b{font-size:9px!important}
+  .hud-top .hud-icon{width:30px;min-width:30px;height:30px;min-height:30px;font-size:13px}
+  .hud-actions .training-ready{width:auto;min-width:66px;height:28px;min-height:28px;font-size:8px}
+  .panel{top:60px;width:174px;padding:8px}
+  .mission-panel{left:8px}.telemetry-panel{right:8px}
+  .panel-heading{padding-bottom:5px;font-size:7px}
+  .mission-kicker,.telemetry-label{margin-top:6px;font-size:7px}
+  .mission-panel h1{font-size:14px}.mission-panel p{min-height:0;font-size:9px;line-height:1.35}
+  .panel-rule,.telemetry-rule{margin:6px 0}
+  .mission-objective b{font-size:9px}.wave-line{margin-top:6px}
+  .combo-readout{margin-top:6px}
+  .reference-panel{display:none!important}
+  .weapon-rack{bottom:6px;width:calc(100vw - 16px);max-width:none;padding:4px 6px;gap:3px}
+  .weapon-strip{min-height:34px;gap:4px;min-width:0}
+  .weapon-strip>b{width:48px;flex:0 0 48px;font-size:6px}
+  .weapon-strip.angle-strip .weapon-cards{min-width:0;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px}
+  .weapon-strip.value-strip .weapon-cards{min-width:0;gap:3px}
+  .weapon-strip.value-strip .quadrant-group{padding:1px 3px}
+  .weapon-strip.value-strip .value-unified .quadrant-weapons{gap:2px}
+  .weapon-strip.value-strip .value-unified .weapon-card{min-width:0;flex:1 1 0;width:auto}
+  .weapon-rack .weapon-card{min-width:0;width:auto;height:28px;padding:1px 2px}
+  .weapon-card small,.weapon-card span{font-size:5px}
+  .weapon-card b{margin:0;font-size:9px}
+  .weapon-rack .polarity-switch{width:54px;min-width:54px;height:27px;min-height:27px;margin:0 1px;padding:0 3px;font-size:10px}
+  .weapon-rack .polarity-switch i{left:3px;top:3px;width:22px;height:19px}
+  .weapon-rack .polarity-switch.negative i{transform:translateX(25px)}
+  .auto-hint{bottom:94px}
+}
+
 
 .brief-box.is-boss-brief .launch-button:hover{background-image:url('assets/ui-button-small.png')!important;background-repeat:no-repeat!important;background-position:center!important;background-size:100% 100%!important}
 
