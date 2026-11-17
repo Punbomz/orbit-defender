@@ -28,6 +28,7 @@
         <label class="settings-slider"><span>เพลง <b id="music-value"></b></span><input id="music-volume" type="range" min="0" max="100" step="5"></label>
         <label class="settings-slider"><span>เสียงเอฟเฟกต์ <b id="effects-value"></b></span><input id="effects-volume" type="range" min="0" max="100" step="5"></label>
         <label class="settings-motion"><input id="reduced-motion" type="checkbox"><span>ลดการเคลื่อนไหว</span></label>
+        <div class="settings-keybind"><b>ปุ่ม Value Cannon</b><div class="value-keybinds"><label>0 <button type="button" class="keybind-button" data-value-key="0">1</button></label><label>1/2 <button type="button" class="keybind-button" data-value-key="1/2">2</button></label><label>√2/2 <button type="button" class="keybind-button" data-value-key="√2/2">3</button></label><label>√3/2 <button type="button" class="keybind-button" data-value-key="√3/2">4</button></label><label>1 <button type="button" class="keybind-button" data-value-key="1">5</button></label></div><small>คลิกขวาที่สวิตช์เพื่อสลับเครื่องหมาย + / −</small></div>
       </div>
     </section>
     <aside id="dev-tools" class="dev-tools" hidden aria-label="เครื่องมือทดสอบสำหรับนักพัฒนา">
@@ -77,7 +78,7 @@
     </aside>
     <div class="center-reticle" aria-hidden="true"><i></i><b></b></div>
     <div class="toast" id="toast"></div>
-    <div class="weapon-rack" id="weapon-rack" aria-label="แถบเลือกอาวุธสองชนิด"><div class="weapon-strip angle-strip"><b>ANGLE<br>CANNON</b><div class="weapon-cards" id="angle-weapons"></div></div><div class="weapon-strip value-strip"><b>VALUE<br>CANNON</b><div class="weapon-cards" id="value-weapons"></div></div></div>
+    <div class="weapon-rack" id="weapon-rack" aria-label="แถบเลือกอาวุธสองชนิด"><div class="weapon-strip angle-strip"><b>ANGLE<br>CANNON</b><div class="weapon-cards" id="angle-weapons"></div><span class="weapon-control-hint" title="เลื่อนลูกกลิ้งเพื่อเล็งตามลำดับมุม">↕ ลูกกลิ้ง</span></div><div class="weapon-strip value-strip"><b>VALUE<br>CANNON</b><div class="weapon-cards" id="value-weapons"></div></div></div>
     <aside id="travel-hud" class="travel-hud" hidden aria-live="polite">
       <div><small>DEEP-SPACE INTERCEPT</small><b id="travel-clock">00:28</b></div>
       <div><small>AMMO</small><b id="travel-ammo">8 / 8</b></div>
