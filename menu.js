@@ -96,10 +96,44 @@
   });
 
   const settingsKey = 'orbit-defender-settings';
-  const defaults = { musicVolume: 45, effectsVolume: 70, voiceVolume: 80, reduceMotion: false };
+  const defaults = { musicVolume: 45, effectsVolume: 70, voiceVolume: 80, reduceMotion: false, valueFireKeys: { '0':'Digit1', '1/2':'Digit2', '√2/2':'Digit3', '√3/2':'Digit4', '1':'Digit5' } };
   let savedSettings = { ...defaults };
   try { savedSettings = { ...defaults, ...JSON.parse(localStorage.getItem(settingsKey) || '{}') }; } catch (_) {}
   const persistSettings = () => { try { localStorage.setItem(settingsKey, JSON.stringify(savedSettings)); } catch (_) {} };
+  savedSettings.valueFireKeys = { ...defaults.valueFireKeys, ...(savedSettings.valueFireKeys || {}) };
+  let lastValueKeyChange = null;
+  const keyLabel = code => code === 'Space' ? 'Space' : code.replace(/^Key/, '').replace(/^Digit/, '');
+  const syncValueKeyDuplicates = () => {
+    const counts = Object.values(savedSettings.valueFireKeys).reduce((result, code) => (result[code]=(result[code]||0)+1,result), {});
+    document.querySelectorAll('[data-value-key]').forEach(item => { const duplicate=counts[savedSettings.valueFireKeys[item.dataset.valueKey]]>1;item.classList.toggle('duplicate',duplicate);item.title=duplicate?'ปุ่มนี้ซ้ำกับค่าอื่น · เปลี่ยนปุ่มเพื่อแก้ไข':''; });
+  };
+  document.querySelectorAll('[data-value-key]').forEach(button => {
+    button.textContent = keyLabel(savedSettings.valueFireKeys[button.dataset.valueKey]);
+    button.addEventListener('click', () => {
+      document.querySelectorAll('[data-value-key].listening').forEach(item => { item.classList.remove('listening'); item.textContent = keyLabel(savedSettings.valueFireKeys[item.dataset.valueKey]); });
+      button.textContent = 'กดปุ่ม...'; button.classList.add('listening');
+    });
+  });
+  document.addEventListener('keydown', event => {
+    const button = document.querySelector('[data-value-key].listening');
+    if (!button) return;
+    event.preventDefault(); event.stopPropagation();
+    if (['Escape','Tab'].includes(event.key)) { button.classList.remove('listening'); button.textContent = keyLabel(savedSettings.valueFireKeys[button.dataset.valueKey]); button.blur(); return; }
+    lastValueKeyChange = { key: button.dataset.valueKey, previous: savedSettings.valueFireKeys[button.dataset.valueKey] };
+    savedSettings.valueFireKeys[button.dataset.valueKey] = event.code; persistSettings();
+    document.querySelectorAll('[data-value-key]').forEach(item => { item.textContent = keyLabel(savedSettings.valueFireKeys[item.dataset.valueKey]); item.classList.remove('listening'); });
+    syncValueKeyDuplicates(); button.blur();
+  }, true);
+  syncValueKeyDuplicates();
+  const rollbackDuplicateValueKey = () => {
+    if (!lastValueKeyChange) return;
+    const { key, previous } = lastValueKeyChange, assigned = savedSettings.valueFireKeys[key];
+    if (Object.values(savedSettings.valueFireKeys).filter(code => code === assigned).length > 1) { savedSettings.valueFireKeys[key] = previous; persistSettings(); }
+    lastValueKeyChange = null;
+    document.querySelectorAll('[data-value-key]').forEach(item => { item.textContent=keyLabel(savedSettings.valueFireKeys[item.dataset.valueKey]); item.classList.remove('duplicate'); });
+    syncValueKeyDuplicates();
+  };
+  document.querySelector('.options-menu')?.addEventListener('toggle', event => { if (!event.target.open) rollbackDuplicateValueKey(); });
   [['music-volume','musicVolume'],['effects-volume','effectsVolume'],['voice-volume','voiceVolume']].forEach(([id,key]) => {
     const slider = document.getElementById(id), output = document.getElementById(`${id}-value`);
     slider.value = Math.max(0, Math.min(100, Number(savedSettings[key]) || 0));
