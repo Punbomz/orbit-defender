@@ -1,0 +1,48 @@
+/* Match the in-flight lesson composition used by the campaign tutorial. */
+.minigame-tutorial-shell {
+  position:fixed!important;inset:0!important;z-index:10000!important;isolation:isolate;
+  display:grid!important;grid-template-columns:minmax(280px,44%) minmax(420px,56%);grid-template-rows:23% 1fr 15%;
+  align-items:center;gap:0 2.5vw;padding:0 7.2vw 2vh;color:#eafaff;overflow:hidden;
+  background:linear-gradient(180deg,#02081230,#02081250);font-family:"Segoe UI",Tahoma,Arial,sans-serif;
+}
+.minigame-tutorial-shell[hidden]{display:none!important}
+.minigame-tutorial-shell::before{content:"";position:absolute;z-index:-1;inset:-2%;background:linear-gradient(90deg,#020b16ad,#03101b5c 47%,#041421b8),var(--minigame-planet),url("space-bg.png");background-position:center,center,center;background-repeat:no-repeat;background-size:cover,min(76vh,760px),cover;filter:blur(6px) brightness(.7);transform:scale(1.03)}
+.minigame-tutorial-shell::after{content:"";position:absolute;z-index:5;inset:0;background:url("ui-console-frame.png") center/100% 100% no-repeat;pointer-events:none}
+.minigame-tutorial-heading{position:absolute;z-index:1;top:18%;left:7.2vw;right:7.2vw;font-family:Consolas,monospace}
+.minigame-tutorial-heading>small{display:block;color:#ffd27b;font-size:9px;font-weight:800;letter-spacing:.18em}
+.minigame-tutorial-heading h1{margin:12px 0 0;color:#effaff;font-size:clamp(22px,2.2vw,36px);letter-spacing:.05em}
+.minigame-tutorial-heading>b{display:block;margin-top:7px;color:#52e4ed;font-size:9px;letter-spacing:.15em}
+.minigame-tutorial-astra{grid-column:1;grid-row:2;align-self:end;width:43%;height:min(49vh,500px);margin-left:0;background:url("character-astra-hologram.png") center bottom/auto 100% no-repeat;mask-image:linear-gradient(#000 0%,#000 88%,transparent 100%);animation:minigame-astra-speaking .7s ease-in-out infinite alternate;transform-origin:bottom center}
+.minigame-tutorial-dialog{grid-column:1;grid-row:2;justify-self:end;width:55%;min-height:clamp(260px,38vh,390px);padding:clamp(20px,2.4vw,36px);display:flex;flex-direction:column;justify-content:space-between;position:relative;border:1px solid #55dff18a;border-left:3px solid #ffd27b;border-radius:22px;background:linear-gradient(110deg,#071c2bef,#071522ed);box-shadow:0 10px 30px #0007,inset 0 0 20px #28d7e719}
+.minigame-tutorial-dialog::before{content:"";position:absolute;left:-11px;top:calc(50% - 10px);width:18px;height:18px;background:#0a1d2a;border-left:1px solid #ffd27b;border-bottom:1px solid #ffd27b;transform:rotate(45deg)}
+.minigame-tutorial-dialog-head{display:flex;flex-direction:column;gap:9px;font-family:Consolas,monospace}
+.minigame-tutorial-dialog-head small{color:#73ede7;font-size:9px;font-weight:800;letter-spacing:.15em}
+.minigame-tutorial-dialog-head b{color:#ffd27b;font-size:9px}
+.minigame-tutorial-dialog p{margin:20px 0;min-height:95px;color:#eafaff;text-align:center;font-size:clamp(16px,1.35vw,22px);font-weight:650;line-height:1.8}
+.minigame-tutorial-controls{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.minigame-tutorial-controls button{min-width:132px;height:48px;min-height:48px;padding:9px 15px;border:0!important;border-radius:0!important;background-color:transparent!important;background-image:url("ui-button-small.png")!important;background-position:center center!important;background-repeat:no-repeat!important;background-size:100% 220%!important;color:#edfcff!important;font-weight:800;cursor:pointer;box-shadow:0 0 13px #17dfff29!important;text-shadow:0 1px 5px #001520!important}
+.minigame-tutorial-controls .minigame-tutorial-prev{min-width:132px;background-color:transparent!important;background-image:url("ui-button-small.png")!important;color:#baf8ff!important;box-shadow:0 0 13px #17dfff29!important;opacity:.38;cursor:default}
+.minigame-tutorial-controls .minigame-tutorial-continue{min-width:158px}
+.minigame-tutorial-controls .minigame-tutorial-prev:disabled{cursor:default;opacity:.55}
+.minigame-tutorial-continue{align-self:flex-end}
+.minigame-tutorial-controls button:hover{background-image:url("ui-button-small.png")!important;filter:brightness(1.18);box-shadow:inset 0 0 18px #b4fbff55,0 0 22px #17dfff55!important}
+.minigame-tutorial-controls .minigame-tutorial-prev:hover{filter:none;box-shadow:0 0 13px #17dfff29!important}
+.minigame-tutorial-continue:hover{filter:brightness(1.2)}
+.minigame-tutorial-example{grid-column:2;grid-row:2;align-self:center;justify-self:stretch;width:100%;padding:0 2.5vw 0 1vw;text-align:center;z-index:1}
+.minigame-tutorial-example>small{display:block;margin-bottom:12px;color:#69e9ed;font:800 9px Consolas,monospace;letter-spacing:.16em}
+.minigame-tutorial-demo{min-height:280px;display:grid;place-items:center}
+.minigame-demo-console{width:100%;min-height:clamp(330px,46vh,520px);padding:clamp(20px,3vw,42px);display:flex;flex-direction:column;justify-content:center;border:1px solid #49dff255;border-radius:8px;background:linear-gradient(145deg,#061725c9,#071b29b8);box-shadow:inset 0 0 28px #29d4e414}
+.minigame-demo-title{margin:0 0 13px;color:#bfeefa;font:800 14px Consolas,monospace}
+.minigame-demo-row{display:flex;justify-content:center;align-items:center;gap:9px;flex-wrap:wrap;margin:8px 0}
+.minigame-demo-chip{padding:8px 12px;border:1px solid #30d9ee;border-radius:5px;background:#0d263a;color:#effcff;font-size:clamp(11px,.9vw,15px);font-weight:700}
+.minigame-demo-chip.answer{border-color:#ffd166;color:#ffe29a}
+.minigame-demo-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;max-width:320px;margin:auto}
+.minigame-demo-grid span{padding:15px 5px;border:1px solid #2dcde0;border-radius:5px;background:#10243a;color:#8aefff;font-size:20px}
+.minigame-demo-grid span:first-child,.minigame-demo-grid span:nth-child(6){color:#ffe08b;border-color:#ffd166}
+.minigame-demo-orbit{width:clamp(220px,22vw,340px);height:clamp(220px,22vw,340px);border:3px solid #31dced;border-radius:50%;position:relative;margin:5px auto;background:linear-gradient(transparent 49%,#38d7e955 50%,transparent 51%),linear-gradient(90deg,transparent 49%,#38d7e955 50%,transparent 51%)}
+.minigame-demo-orbit:after{content:"●";position:absolute;top:20%;right:17%;color:#ffe18b;text-shadow:0 0 12px #ffe18b;font-size:24px}
+.minigame-demo-orbit:before{content:"X  Y";position:absolute;inset:45% 0 auto;color:#a8eff8;font:700 12px Consolas,monospace}
+@keyframes minigame-astra-speaking{from{transform:translateY(0) scale(1)}to{transform:translateY(-9px) scale(1.025)}}
+@media(prefers-reduced-motion:reduce){.minigame-tutorial-astra{animation:none}}
+@media(max-width:900px){.minigame-tutorial-shell{padding-left:5vw;padding-right:5vw;grid-template-columns:minmax(250px,44%) minmax(320px,56%);gap:0 1vw}.minigame-tutorial-heading{top:17%;left:5vw;right:5vw}.minigame-tutorial-astra{height:39vh}.minigame-tutorial-dialog{min-height:260px;padding:16px}.minigame-tutorial-dialog p{font-size:15px;min-height:75px}}
+@media(max-width:650px){.minigame-tutorial-shell{grid-template-columns:1fr 1fr;grid-template-rows:23% 1fr 12%;padding:0 7vw 2vh}.minigame-tutorial-heading{top:15%;left:7vw;right:7vw}.minigame-tutorial-heading h1{font-size:18px}.minigame-tutorial-astra{grid-column:1;grid-row:2;width:100%;height:26vh}.minigame-tutorial-dialog{grid-column:1/3;grid-row:2;justify-self:end;width:68%;min-height:220px;z-index:2;padding:12px}.minigame-tutorial-dialog p{font-size:13px;min-height:70px}.minigame-tutorial-example{grid-column:1/3;grid-row:2;align-self:end;justify-self:start;width:30%;padding:0}.minigame-tutorial-example>small{font-size:6px}.minigame-tutorial-demo{min-height:90px}.minigame-demo-console{min-height:0;padding:7px}.minigame-demo-title{font-size:9px}.minigame-demo-chip{padding:4px;font-size:8px}.minigame-demo-orbit{width:80px;height:80px}.minigame-tutorial-controls button{min-width:0;height:42px;min-height:42px;padding:5px;font-size:9px}.minigame-tutorial-controls .minigame-tutorial-prev{width:44%}.minigame-tutorial-controls .minigame-tutorial-continue{width:54%;min-width:0}}

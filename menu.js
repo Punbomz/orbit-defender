@@ -212,7 +212,7 @@
       if (!saved || !Number.isInteger(saved.level) || saved.level <= 1 || saved.level > 5) return null;
       const lastRun = JSON.parse(localStorage.getItem('orbit-defender-last-run') || 'null');
       const lastRunAt = Date.parse(lastRun?.when || '') || 0;
-      if (lastRunAt >= (Number(saved.updatedAt) || 0)) {
+      if (lastRun?.outcome === 'defeat' || lastRunAt >= (Number(saved.updatedAt) || 0)) {
         localStorage.removeItem('orbit-defender-campaign-checkpoint');
         return null;
       }
