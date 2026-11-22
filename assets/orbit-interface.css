@@ -444,3 +444,49 @@ button:disabled { filter: grayscale(.75) brightness(.68) !important; }
 .brief-box.has-results .launch-button { background: url("ui-button-small.png") center / 100% 100% no-repeat !important; background-size:100% 100% !important; border: 0 !important; box-shadow: none !important; }
 .brief-box.has-results { overflow-x: hidden !important; overflow-y: hidden !important; }
 .start-overlay:has(.brief-box.has-results) { overflow: hidden !important; }
+
+/* Match the story card treatment used by the minigame narrative screens. */
+.story-dialogue {
+  display: grid !important;
+  grid-template-columns: 84px minmax(0, 1fr) !important;
+  grid-template-rows: auto 1fr auto !important;
+  min-height: 170px !important;
+  padding: 18px 24px !important;
+  border: 1px solid #5ed8e8 !important;
+  border-radius: 0 !important;
+  background: #081522ed !important;
+  box-shadow: none !important;
+}
+.story-dialogue::before {
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  width: 3px !important;
+  height: auto !important;
+  background: #ffc64d !important;
+  box-shadow: none !important;
+}
+.story-speaker-row { grid-column: 2; grid-row: 1; display: grid !important; gap: 4px !important; align-content: start; }
+.story-speaker-mark {
+  position: absolute;
+  left: 18px;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 60px;
+  transform: translateY(-50%);
+  border-right: 1px solid #49e8f77a;
+}
+.story-speaker-row > small { order: 0; margin-left: 0 !important; color: #ffc64d !important; font: 800 9px var(--mono) !important; letter-spacing: .14em !important; }
+.story-speaker-row > b { order: 1; color: #f1fbff !important; font: 800 clamp(18px, 2vw, 25px)/1.25 var(--sans) !important; letter-spacing: 0 !important; }
+#story-line { grid-column: 2; grid-row: 2; min-height: 0 !important; margin: 7px 0 10px !important; font-size: clamp(14px, 1.15vw, 18px) !important; line-height: 1.55 !important; }
+.story-dialog #story-next { grid-column: 2; grid-row: 3; justify-self: end; }
+@media (max-width: 650px) {
+  .story-dialogue { grid-template-columns: 43px minmax(0, 1fr) !important; min-height: 170px !important; padding: 12px !important; }
+  .story-speaker-mark { left: 10px; width: 32px; height: 44px; font-size: 15px; }
+  .story-speaker-row > small { font-size: 6px !important; }
+  .story-speaker-row > b { font-size: 15px !important; }
+  #story-line { font-size: 13px !important; line-height: 1.6 !important; }
+  .story-tools { bottom: calc(12px + 182px + 12px); }
+}
