@@ -7,6 +7,13 @@
   const CAMPAIGN_MINIGAMES_KEY = 'orbit-defender-campaign-minigames-used';
   const audioPrefs = (() => { let stored={};try { stored=JSON.parse(localStorage.getItem('orbit-defender-settings') || '{}'); } catch (_) {} const params=new URLSearchParams(location.search);const result={ musicVolume:45,effectsVolume:70,voiceVolume:80,...stored };result.valueFireKeys={ '0':'Digit1', '1/2':'Digit2', '√2/2':'Digit3', '√3/2':'Digit4', '1':'Digit5', ...(stored.valueFireKeys||{}) };if(params.has('music'))result.musicVolume=params.get('music');if(params.has('effects'))result.effectsVolume=params.get('effects');if(params.has('voice'))result.voiceVolume=params.get('voice');if(params.has('reduceMotion'))result.reduceMotion=params.get('reduceMotion')==='true';return result; })();
   const volume = key => Math.max(0, Math.min(1, Number(audioPrefs[key]) / 100 || 0));
+  const flightSfx = new Map();
+  function playFlightSfx(file) {
+    if (!state?.sound || volume('effectsVolume') <= 0) return;
+    let sound = flightSfx.get(file);
+    if (!sound) { sound = new Audio(`SFX_menu/${file}`); sound.preload = 'auto'; flightSfx.set(file, sound); }
+    sound.pause(); sound.currentTime = 0; sound.volume = volume('effectsVolume'); sound.play().catch(() => {});
+  }
   document.documentElement.classList.toggle('reduce-motion', Boolean(audioPrefs.reduceMotion));
   function maxPracticeLevel(params){let fromMenu=Math.max(1,Math.min(4,Number(params.get('maxLevel'))||1));try{const stored=localStorage.getItem('orbit-defender-route-unlocked');if(stored!==null)return Math.max(1,Math.min(4,(Number(stored)||0)+1));}catch(_){}return 1;}
   const spaceArt = new Image();
@@ -160,6 +167,7 @@
   }
   const flightCinematic=$('flight-cinematic');let flightTimer=0;
   function playFlightCinematic(direction,targetIndex,done){
+    playFlightSfx('Vehicle-Move.mp3');
     setSceneMusic('arrivedepart');
     const index=Math.max(0,Math.min(STAGES.length-1,targetIndex)),planetIndex=direction==='depart'?state.stage:index;
     clearTimeout(flightTimer);
@@ -189,7 +197,7 @@
     flightTimer=setTimeout(finish,document.documentElement.classList.contains('reduce-motion')?120:4000);
   }
   $('story-next').addEventListener('click',advanceStory);
-  $('story-history-toggle').addEventListener('click',()=>{const popup=$('story-history-popup'),open=popup.hidden;if(open){renderStoryHistory();popup.hidden=false;$('story-history-toggle').setAttribute('aria-expanded','true');$('story-history-toggle').setAttribute('aria-label','ซ่อนประวัติการสนทนา');$('story-history-toggle').title='ซ่อนประวัติการสนทนา';}else closeStoryHistory();});
+  $('story-history-toggle').addEventListener('click',()=>{playFlightSfx('overlay.mp3');const popup=$('story-history-popup'),open=popup.hidden;if(open){renderStoryHistory();popup.hidden=false;$('story-history-toggle').setAttribute('aria-expanded','true');$('story-history-toggle').setAttribute('aria-label','ซ่อนประวัติการสนทนา');$('story-history-toggle').title='ซ่อนประวัติการสนทนา';}else closeStoryHistory();});
   $('story-history-close').addEventListener('click',closeStoryHistory);
   $('story-history-popup').addEventListener('click',e=>{if(e.target===$('story-history-popup'))closeStoryHistory();});
   $('story-home').addEventListener('click',()=>{location.href='index.html';});
@@ -292,14 +300,14 @@
   function setMissionAudio(){if(!state.audio)return;const notes=[[55,82.4],[62,92.5],[73.4,110],[41.2,61.7]][state.stage];state.drone.forEach((d,i)=>d.osc.frequency.setTargetAtTime(notes[i],state.audio.currentTime,.8));}
   function tone(freq,duration=.1,type='sine',amount=.035,slide=0){if(!state.sound||!state.audio||volume('effectsVolume')===0)return;const ac=state.audio,osc=ac.createOscillator(),gain=ac.createGain();osc.type=type;osc.frequency.setValueAtTime(freq,ac.currentTime);if(slide)osc.frequency.exponentialRampToValueAtTime(Math.max(35,freq+slide),ac.currentTime+duration);gain.gain.setValueAtTime(.0001,ac.currentTime);gain.gain.exponentialRampToValueAtTime(Math.max(.0001,amount*volume('effectsVolume')),ac.currentTime+.012);gain.gain.exponentialRampToValueAtTime(.0001,ac.currentTime+duration);osc.connect(gain);gain.connect(ac.destination);osc.start();osc.stop(ac.currentTime+duration+.02);}
   function sfx(kind){if(!state.sound)return;switch(kind){case'fire':tone(610,.11,'sawtooth',.04,-330);tone(1180,.055,'triangle',.018,-620);break;case'explode':tone(155,.32,'sawtooth',.085,-120);tone(72,.38,'triangle',.065,-35);tone(520,.12,'sine',.03,-410);break;case'hit':tone(190,.18,'triangle',.07,-105);tone(480,.1,'sine',.025,170);break;case'shield':tone(270,.2,'sine',.055,390);break;case'damage':tone(125,.34,'sawtooth',.06,-70);break;case'clear':tone(420,.14,'triangle',.05,160);setTimeout(()=>tone(630,.19,'triangle',.04,210),100);break;case'boss':tone(72,.65,'sawtooth',.05,33);break;case'scan':tone(730,.2,'sine',.045,-520);break;}}
-  $('settings-open').addEventListener('click',()=>{const panel=$('flight-settings');panel.hidden=false;$('music-volume').value=audioPrefs.musicVolume;$('effects-volume').value=audioPrefs.effectsVolume;$('music-value').textContent=`${audioPrefs.musicVolume}%`;$('effects-value').textContent=`${audioPrefs.effectsVolume}%`;$('reduced-motion').checked=Boolean(audioPrefs.reduceMotion);syncSettingsSoundButton();syncValueKey();});
+  $('settings-open').addEventListener('click',()=>{playFlightSfx('overlay.mp3');const panel=$('flight-settings');panel.hidden=false;$('music-volume').value=audioPrefs.musicVolume;$('effects-volume').value=audioPrefs.effectsVolume;$('music-value').textContent=`${audioPrefs.musicVolume}%`;$('effects-value').textContent=`${audioPrefs.effectsVolume}%`;$('reduced-motion').checked=Boolean(audioPrefs.reduceMotion);syncSettingsSoundButton();syncValueKey();});
   const valueKeyLabel=code=>code==='Space'?'Space':code.replace(/^Key/,'').replace(/^Digit/,'');
   let lastValueKeyChange = null;
   function syncValueKey(){const counts=Object.values(audioPrefs.valueFireKeys).reduce((result,code)=>(result[code]=(result[code]||0)+1,result),{});document.querySelectorAll('[data-value-key]').forEach(button=>{button.textContent=valueKeyLabel(audioPrefs.valueFireKeys[button.dataset.valueKey]);const duplicate=counts[audioPrefs.valueFireKeys[button.dataset.valueKey]]>1;button.classList.toggle('duplicate',duplicate);button.title=duplicate?'ปุ่มนี้ซ้ำกับค่าอื่น · เปลี่ยนปุ่มเพื่อแก้ไข':'';});document.querySelectorAll('.weapon-key-hint').forEach((label,index)=>{if(VALUE_VALUES[index])label.textContent=valueKeyLabel(audioPrefs.valueFireKeys[VALUE_VALUES[index].key]);});}
   document.querySelectorAll('[data-value-key]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('[data-value-key].listening').forEach(item=>{item.classList.remove('listening');item.textContent=valueKeyLabel(audioPrefs.valueFireKeys[item.dataset.valueKey]);});button.textContent='กดปุ่ม...';button.classList.add('listening');}));
   document.addEventListener('keydown',e=>{const button=document.querySelector('[data-value-key].listening');if(!button)return;e.preventDefault();e.stopPropagation();if(['Escape','Tab'].includes(e.key)){button.classList.remove('listening');syncValueKey();button.blur();return;}lastValueKeyChange={key:button.dataset.valueKey,previous:audioPrefs.valueFireKeys[button.dataset.valueKey]};audioPrefs.valueFireKeys[button.dataset.valueKey]=e.code;button.classList.remove('listening');saveAudioPrefs();syncValueKey();button.blur();},true);
   function rollbackDuplicateValueKey(){if(!lastValueKeyChange)return;const {key,previous}=lastValueKeyChange,assigned=audioPrefs.valueFireKeys[key];if(Object.values(audioPrefs.valueFireKeys).filter(code=>code===assigned).length>1){audioPrefs.valueFireKeys[key]=previous;saveAudioPrefs();}lastValueKeyChange=null;syncValueKey();}
-  $('settings-close').addEventListener('click',()=>{rollbackDuplicateValueKey();$('flight-settings').hidden=true;});
+  $('settings-close').addEventListener('click',()=>{playFlightSfx('overlay.mp3');rollbackDuplicateValueKey();$('flight-settings').hidden=true;});
   $('flight-settings').addEventListener('click',e=>{if(e.target===$('flight-settings')){rollbackDuplicateValueKey();$('flight-settings').hidden=true;}});
   $('settings-sound-toggle').addEventListener('click',togglePromptSound);
   function syncSettingsSoundButton(){const b=$('settings-sound-toggle');b.textContent=state.sound?'เปิดเสียงอยู่':'ปิดเสียงอยู่';b.setAttribute('aria-pressed',String(state.sound));}
@@ -312,7 +320,7 @@
   let resumeCheckpoint=null,launchSelectedSession=()=>{};
   function syncSoundToggle(){const button=$('sound-toggle'),waves=button.querySelector('.sound-waves'),mute=button.querySelector('.sound-muted');button.classList.toggle('muted',!state.sound);waves.style.display=state.sound?'block':'none';mute.style.display=state.sound?'none':'block';button.setAttribute('aria-pressed',String(state.sound));button.setAttribute('aria-label',state.sound?'ปิดเสียง':'เปิดเสียง');button.title=state.sound?'ปิดเสียง':'เปิดเสียง';const storyButton=$('story-sound-toggle');storyButton.classList.toggle('muted',!state.sound);storyButton.querySelector('.sound-waves').style.display=state.sound?'block':'none';storyButton.querySelector('.sound-muted').style.display=state.sound?'none':'block';storyButton.setAttribute('aria-pressed',String(state.sound));storyButton.setAttribute('aria-label',state.sound?'ปิดเสียง':'เปิดเสียง');storyButton.title=state.sound?'ปิดเสียง':'เปิดเสียง';$('sound-toggle-state').textContent=state.sound?'เปิดเสียง':'ปิดเสียง';syncSettingsSoundButton();}
   function togglePromptSound(){state.sound=!state.sound;if(state.sound)initAudio();else syncDrone();syncSoundToggle();}
-  function launchSession(shouldResume=false){soundPrompt.hidden=true;launchSelectedSession(shouldResume);}
+  function launchSession(shouldResume=false){playFlightSfx('start.mp3');soundPrompt.hidden=true;launchSelectedSession(shouldResume);}
   $('sound-toggle').addEventListener('click',togglePromptSound);
   $('launch-session').addEventListener('click',()=>launchSession(false));
   $('resume-campaign').addEventListener('click',()=>launchSession(true));
