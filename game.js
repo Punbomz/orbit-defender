@@ -630,7 +630,7 @@
     if(!selectedMiniGame){console.error('No unused minigame is available for this campaign stage.',{stage:state.stage,candidateMiniGames,usedMiniGames});return;}
     state.activeMinigame=selectedMiniGame;
     if(!state.practiceMode&&!state.endlessMode&&!devSelected){usedMiniGames.push(selectedMiniGame);try{localStorage.setItem(CAMPAIGN_MINIGAMES_KEY,JSON.stringify(usedMiniGames));}catch(_){}}
-    state.zombieTime=selectedMiniGame==='radar.html'||selectedMiniGame==='trigo_merge.html'?300:selectedMiniGame==='matching.html'?120:selectedMiniGame==='light_path.html'?60:90;state.zombieGraceTime=selectedMiniGame==='trigo_combat.html'?0:5;
+    state.zombieTime=selectedMiniGame==='radar.html'?195:selectedMiniGame==='trigo_merge.html'?300:selectedMiniGame==='matching.html'?120:selectedMiniGame==='light_path.html'?60:90;state.zombieGraceTime=selectedMiniGame==='trigo_combat.html'?0:5;
     $('zombie-clock').textContent=`${String(Math.floor(state.zombieTime/60)).padStart(2,'0')}:${String(Math.floor(state.zombieTime%60)).padStart(2,'0')}`;$('zombie-game').src='about:blank';$('pause').style.visibility='hidden';
     try{localStorage.setItem('orbit-defender-minigame-current',JSON.stringify({level:state.stage+1,content:params.get('content'),startedAt:new Date().toISOString(),status:'in-progress'}));}catch(_){}
     const labels={'trigo_combat.html':'COMBAT QUIZ · ANSWER TO FIRE','wiring.html':'WIRING · RESTORE THE CORE','radar.html':'RADAR · POSITIONING','matching.html':'SIGNAL MATCH · NAVIGATION DATA','satellite_radar.html':'SATELLITE ALIGNMENT','trigo_merge.html':'TRIGO MERGE · ANGLE RECOVERY','light_path.html':'LIGHT PATH · SIGNAL ALIGNMENT'};$('minigame-title').textContent=labels[selectedMiniGame]||'STARFALL ROUTE · MINIGAME';
