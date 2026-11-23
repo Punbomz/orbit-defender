@@ -1,0 +1,23 @@
+/* The original button artwork contains transparent padding above and below its frame. */
+button:not(.card):not([data-dir]):not(.story-next):not(.restore-reset):not(.demo-term),
+.minigame-tutorial-controls button {
+  background-image: url("ui-button-small-fitted.png") !important;
+  background-position: center !important;
+  background-size: 100% 100% !important;
+  background-repeat: no-repeat !important;
+  box-shadow: none !important;
+}
+button:not(.card):not([data-dir]):not(.story-next):not(.restore-reset):not(.demo-term):hover,
+.minigame-tutorial-controls button:hover {
+  background-image: url("ui-button-small-fitted.png") !important;
+  box-shadow: none !important;
+  filter: brightness(1.18) drop-shadow(0 0 6px #17dfff88) !important;
+}
+.action-row .button::before { display: none; }
+.action-row .button.lock-action:not(:disabled) { animation: none; }
+.controls button[data-dir]:hover, .controls button[data-dir]:focus-visible,
+.card:hover { box-shadow: none !important; }
+
+.story-next:hover, .demo-term:hover {
+  box-shadow: none !important;
+}
