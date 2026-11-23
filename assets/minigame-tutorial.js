@@ -19,7 +19,7 @@
       : path.includes('radar.html')
       ? { target: '#intro', title: 'ซ่อมเรดาร์พิกัด', copy: '#introStory', fallback: 'Null Armada รบกวนเรดาร์ของ STARFALL ลากจุดไปยังตำแหน่งเป้าหมายโดยใช้พิกัด X และ Y เพื่อค้นหาตำแหน่งให้ถูกต้อง', action: '#start', demo: '<div class="minigame-demo-console"><div class="minigame-demo-title">ลากจุดไปยังตำแหน่งเป้าหมาย</div><div class="minigame-demo-orbit"></div><div class="minigame-demo-row"><span class="minigame-demo-chip">X = +6 km</span><span class="minigame-demo-chip answer">Y = +6 km</span></div></div>' }
       : path.includes('matching.html')
-      ? { target: '#briefing', title: 'จับคู่ข้อมูลนำทาง', copy: '#briefText', action: '#begin', demo: '<div class="minigame-demo-console"><div class="minigame-demo-title">เปิดการ์ดเพื่อหาคู่ที่ตรงกัน</div><div class="minigame-demo-grid"><span>sin 30°</span><span>?</span><span>?</span><span>?</span><span>?</span><span>1/2</span><span>?</span><span>?</span></div></div>' }
+      ? { target: '#briefing', title: 'จับคู่ข้อมูลนำทาง', copy: '#briefText', tutorialCopy: 'ค่า tan θ คำนวณได้จาก sin θ ÷ cos θ หรือ ด้านตรงข้าม ÷ ด้านประชิด จากนั้นจับคู่การ์ดโจทย์กับค่าตรีโกณมิติให้ถูกต้อง', action: '#begin', demo: '<div class="minigame-demo-console"><div class="minigame-demo-title">หลักการ · tan θ = sin θ ÷ cos θ</div><div class="minigame-demo-row"><span class="minigame-demo-chip">tan 30°</span><span>=</span><span class="minigame-demo-chip">sin 30° ÷ cos 30°</span></div><div class="minigame-demo-row"><span class="minigame-demo-chip">= (1/2) ÷ (√3/2)</span><span>=</span><span class="minigame-demo-chip answer">√3/3</span></div><div class="minigame-demo-title">ลองจับคู่การ์ดโจทย์กับคำตอบ</div><div class="minigame-demo-grid"><span>tan 30°</span><span>?</span><span>?</span><span>?</span><span>?</span><span>√3/3</span><span>?</span><span>?</span></div></div>' }
       : path.includes('trigo_merge.html')
       ? { target: '#intro', title: 'Trigo Merge · กู้คืนข้อมูลมุม', copy: '#introText', action: '#start', demo: mergeDemo }
       : path.includes('light_path.html')
@@ -29,7 +29,7 @@
     if (!target || document.querySelector('.minigame-tutorial-shell')) return;
     const show = () => {
     if (document.querySelector('.minigame-tutorial-shell')) return;
-    let copy = target.querySelector(config.copy)?.textContent?.trim() || config.fallback || 'ทำตามคำแนะนำของ ASTRA เพื่อกู้คืนเส้นทาง';
+    let copy = config.tutorialCopy || target.querySelector(config.copy)?.textContent?.trim() || config.fallback || 'ทำตามคำแนะนำของ ASTRA เพื่อกู้คืนเส้นทาง';
     if (path.includes('trigo_combat')) copy = `ASTRA: ${copy}`;
     const shell = document.createElement('section'); shell.className = 'minigame-tutorial-shell'; if (path.includes('trigo_merge.html')) shell.classList.add('trigo-merge-tutorial'); if (path.includes('light_path.html')) shell.classList.add('light-path-tutorial'); shell.setAttribute('role','dialog'); shell.setAttribute('aria-modal','true');
     shell.dataset.level = new URLSearchParams(location.search).get('level') || '1';
