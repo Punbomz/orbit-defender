@@ -46,7 +46,13 @@ Tutorial และโจทย์ฝึกปรากฏก่อนภาร�
 - `assets/planet-helios-outpost.webp`, `assets/planet-mirror-belt.webp`, `assets/planet-shattered-meridian.webp` — ภาพดาวสามด่านแรกในเส้นทางแคมเปญ
 - `assets/nox-command-base.png` — ฐานบัญชาการ Null Armada ใช้เป็นปลายทางด่านบอสในเส้นทางและฉากเดินทาง
 - `assets/nox-flagship.png` — ยานธงของ NOX พร้อมตัวละคร NOX ในห้องบัญชาการ ใช้เป็นภาพบอสระหว่างต่อสู้
-- `assets/visual-novel-character-trio.png` — ภาพตัวละครต้นฉบับที่สร้างด้วย AI พื้นหลังโปร่งใส สำหรับบทสนทนา NOVA (นักบินชาย), ASTRA และ NOX
+- `assets/character-nova-v2.png` — ภาพ NOVA นักบินชายแบบแยกตัวละคร พื้นหลังโปร่งใส
+- `assets/character-astra-hologram.png` — ภาพ ASTRA AI โฮโลแกรมทั้งตัวรวมถึงใบหน้า พื้นหลังโปร่งใส
+- `assets/character-nox-v2.png` — ภาพ NOX แบบแยกตัวละคร พื้นหลังโปร่งใส
+- `assets/character-nova-dialogue-halfbody.png` — ภาพ NOVA ครึ่งตัวสำหรับฉากบทสนทนา
+- `assets/character-astra-dialogue-halfbody.png` — ภาพ ASTRA โฮโลแกรมครึ่งตัวสำหรับฉากบทสนทนา
+- `assets/character-nox-dialogue-halfbody-left.png` — ภาพ NOX ครึ่งตัวสำหรับฉากบทสนทนา หันหน้าไปทางซ้าย
+- `assets/visual-novel-character-trio.png` — ภาพชุดตัวละครรุ่นเดิม เก็บไว้เป็น legacy asset
 - `assets/ui-button-small.png` — กรอบ UI โปร่งใสที่สร้างใหม่สำหรับปุ่มตัวเลือกขนาดเล็ก
 - `assets/ui-threat-card.png` — กรอบการ์ด Threat Level ที่สร้างใหม่ให้เข้าธีมปุ่มเกม
 - `assets/favicon.svg` — ไอคอน Orbit Defender สำหรับแท็บเบราว์เซอร์
@@ -58,6 +64,6 @@ Tutorial และโจทย์ฝึกปรากฏก่อนภาร�
 
 แนวทางสีและภาพอยู่ใน [VISUAL_DIRECTION.md](VISUAL_DIRECTION.md)
 
-หน้าสรุปผลหลังจบ run แสดงภาพ Degree Core สถิติพร้อมไอคอน และข้อเสนอแนะด้านจุดแข็งกับสิ่งที่ควรฝึกต่อ
+หน้าสรุปผลหลังจบ run แสดงภาพ Degree Core สถิติพร้อมไอคอน ผลประเมินแยกหัวข้อการหามุม, x = cos θ, y = sin θ, เครื่องหมาย Quadrant, การเลือกอาวุธ และการประยุกต์ในมินิเกม พร้อมจำนวนข้อที่ตอบถูก จุดแข็ง และสิ่งที่ควรฝึกต่อ หากข้อมูลแต่ละหัวข้อน้อยจะแสดงว่าต้องเก็บข้อมูลเพิ่ม
 
 

@@ -4,12 +4,21 @@
   const flightSetup = document.querySelector('#flight-setup-modal');
   const menuSoundToggle = document.querySelector('#menu-sound-toggle');
   let selectedSound = false;
+  const menuSfx = new Map();
   const routeStops = [...document.querySelectorAll('[data-route-stage]')];
   const getUnlockedThrough = () => {
     try { return Math.max(0, Math.min(3, Number(localStorage.getItem('orbit-defender-route-unlocked')) || 0)); }
     catch (_) { return 0; }
   };
   const isEndlessUnlocked = () => { try { return localStorage.getItem('orbit-defender-endless-unlocked') === 'true'; } catch (_) { return false; } };
+  function playMenuSfx(file) {
+    if (menuMusic.paused || menuMusic.muted || menuMusic.volume <= 0 || Number(savedSettings.effectsVolume) <= 0) return;
+    let sound = menuSfx.get(file);
+    if (!sound) { sound = new Audio(`SFX_menu/${file}`); sound.preload = 'auto'; menuSfx.set(file, sound); }
+    sound.pause(); sound.currentTime = 0;
+    sound.volume = Math.max(0, Math.min(1, Number(savedSettings.effectsVolume) / 100));
+    sound.play().catch(() => {});
+  }
   const renderRoute = () => {
     const unlockedThrough = getUnlockedThrough();
     const selectingPractice = config.mode === 'practice';
@@ -63,6 +72,7 @@
   };
 
   document.querySelectorAll('.choice').forEach(button => button.addEventListener('click', () => {
+    playMenuSfx(button.disabled ? 'Reject-menu.mp3' : 'menu-click.mp3');
     config[button.dataset.group] = button.dataset.value;
     if (button.dataset.group === 'mode') {
       config.level = button.dataset.value === 'daily' ? getUnlockedThrough() + 1 : Math.min(config.level, getUnlockedThrough() + 1);
@@ -79,7 +89,8 @@
 
   routeStops.forEach((stop, index) => {
     const choose = () => {
-      if (config.mode !== 'practice' || index > getUnlockedThrough()) return;
+      if (config.mode !== 'practice' || index > getUnlockedThrough()) { playMenuSfx(index > getUnlockedThrough() ? 'rejecte-star.mp3' : 'Reject-menu.mp3'); return; }
+      playMenuSfx('Click-Star.mp3');
       config.level = index + 1;
       renderRoute();
       sync();
@@ -212,7 +223,7 @@
       if (!saved || !Number.isInteger(saved.level) || saved.level <= 1 || saved.level > 5) return null;
       const lastRun = JSON.parse(localStorage.getItem('orbit-defender-last-run') || 'null');
       const lastRunAt = Date.parse(lastRun?.when || '') || 0;
-      if (lastRunAt >= (Number(saved.updatedAt) || 0)) {
+      if (lastRun?.outcome === 'defeat' || lastRunAt >= (Number(saved.updatedAt) || 0)) {
         localStorage.removeItem('orbit-defender-campaign-checkpoint');
         return null;
       }
@@ -221,6 +232,7 @@
   };
   const openFlightSetup = event => {
     event?.preventDefault();
+    playMenuSfx('overlay.mp3');
     selectedSound = !menuMusic.paused && !menuMusic.muted && menuMusic.volume > 0;
     menuSoundToggle.setAttribute('aria-pressed', String(selectedSound));
     menuSoundToggle.textContent = selectedSound ? 'เปิดเสียงอยู่' : 'ปิดเสียงอยู่';
@@ -238,7 +250,7 @@
     flightSetup.showModal();
   };
   launch.addEventListener('click', openFlightSetup);
-  document.querySelector('#flight-setup-close').addEventListener('click', () => flightSetup.close());
+  document.querySelector('#flight-setup-close').addEventListener('click', () => { playMenuSfx('overlay.mp3'); flightSetup.close(); });
   menuSoundToggle.addEventListener('click', () => {
     selectedSound = !selectedSound;
     menuSoundToggle.setAttribute('aria-pressed', String(selectedSound));
@@ -246,6 +258,7 @@
     if (selectedSound) updateMenuMusic(); else menuMusic.pause();
   });
   const launchFlight = resume => {
+    playMenuSfx('start.mp3');
     const url = new URL(launch.href, location.href);
     url.searchParams.set('sound', selectedSound ? 'on' : 'off');
     url.searchParams.set('autoLaunch', '1');

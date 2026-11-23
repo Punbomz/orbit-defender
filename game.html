@@ -17,6 +17,8 @@
   <main id="game" class="game-shell">
     <canvas id="arena" aria-label="สนามรบ Orbit Defender"></canvas>
     <div class="vignette"></div>
+    <section class="target-banner" id="target-banner" hidden aria-live="polite" aria-label="โจทย์เป้าหมายปัจจุบัน"><small id="aim-status">ANGLE CANNON · SELECT AN ANGLE TO FIRE</small><b id="target-prompt"></b></section>
+    <nav class="field-camera-controls" id="field-camera-controls" hidden aria-label="ควบคุมมุมมองสนาม"><button id="camera-zoom-out" type="button" aria-label="ซูมออก">−</button><output id="camera-zoom-level">100%</output><button id="camera-zoom-in" type="button" aria-label="ซูมเข้า">+</button><button id="camera-reset" type="button" aria-label="จัดสนามกลับกึ่งกลาง">⌖</button><small>Alt + ลาก · เลื่อนสนาม</small></nav>
     <header class="hud-top">
       <div class="brand-lockup"><span class="sigil">◎</span><div><b>ORBIT DEFENDER</b><small>DEGREE PROTOCOL</small></div></div>
       <div class="mission-readout"><span class="live-dot"></span><span id="stage-name">ACADEMY</span><i>/</i><span id="stage-phase">SYSTEM READY</span><i>/</i><span id="difficulty-label">PILOT</span></div>
@@ -78,7 +80,7 @@
     </aside>
     <div class="center-reticle" aria-hidden="true"><i></i><b></b></div>
     <div class="toast" id="toast"></div>
-    <div class="weapon-rack" id="weapon-rack" aria-label="แถบเลือกอาวุธสองชนิด"><div class="weapon-strip angle-strip"><b>ANGLE<br>CANNON</b><div class="weapon-cards" id="angle-weapons"></div><span class="weapon-control-hint" title="เลื่อนลูกกลิ้งเพื่อเล็งตามลำดับมุม">↕ ลูกกลิ้ง</span></div><div class="weapon-strip value-strip"><b>VALUE<br>CANNON</b><div class="weapon-cards" id="value-weapons"></div></div></div>
+    <div class="weapon-rack" id="weapon-rack" aria-label="แถบเลือกอาวุธสองชนิด"><div class="weapon-strip angle-strip"><b>ANGLE<br>CANNON</b><div class="weapon-cards" id="angle-weapons"></div><span class="weapon-control-hint" title="เลื่อนลูกกลิ้งหรือลากเพื่อเลือกมุม แล้วคลิกปุ่มมุมเพื่อยิง">↕ ล้อเมาส์ · ลากเลือก · คลิกมุมยิง</span></div><div class="weapon-strip value-strip"><b>VALUE<br>CANNON</b><div class="weapon-cards" id="value-weapons"></div></div></div>
     <aside id="travel-hud" class="travel-hud" hidden aria-live="polite">
       <div><small>DEEP-SPACE INTERCEPT</small><b id="travel-clock">00:28</b></div>
       <div><small>AMMO</small><b id="travel-ammo">8 / 8</b></div>
@@ -148,6 +150,10 @@
             <article><span class="metric-icon accuracy-icon">⌖</span><small>WEAPON MATCH</small><b id="result-accuracy">0%</b></article>
             <article><span class="metric-icon mini-icon">▣</span><small>MINIGAMES</small><b id="result-minigames">0 / 0</b></article>
           </div>
+          <section class="result-learning" aria-label="ผลการเรียนรู้แยกตามทักษะ">
+            <header><b>ผลการเรียนรู้รายหัวข้อ</b><small>ประเมินจากโจทย์ที่พบและคำตอบในรอบนี้</small></header>
+            <div class="learning-topic-grid" id="learning-topic-grid"></div>
+          </section>
           <div class="result-feedback"><article class="strength-card"><b><span>✓</span> ทำได้ดี</b><p id="result-strength"></p></article><article class="improve-card"><b><span>↗</span> ควรปรับปรุง</b><p id="result-improve"></p></article></div>
         </section>
         <div class="mission-art" id="mission-art" hidden></div>

@@ -504,7 +504,7 @@
 .story-dialog{position:fixed;inset:0;z-index:1200;display:grid;place-items:center;padding:clamp(12px,3vw,42px);background:#020611d9;backdrop-filter:blur(8px);cursor:pointer}
 .story-backdrop{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 38%,#163f59a8,transparent 65%),linear-gradient(180deg,#060a17aa,#020611ee)}
 .story-stage{position:relative;isolation:isolate;width:min(100%,1000px);height:min(76dvh,650px);min-height:430px;overflow:hidden;border:1px solid #75eaf288;border-radius:16px;background:#081421;box-shadow:0 26px 90px #000b,0 0 42px #4ceaff20;cursor:default;animation:story-arrive .5s cubic-bezier(.2,.75,.2,1) both}
-.story-art{position:absolute;inset:0;background-color:#07101b;background-image:linear-gradient(180deg,#07101b10 25%,#06111b40 55%,#040a13ed 100%),var(--story-art-image,url("assets/visual-novel-character-trio.png"));background-size:cover;background-position:center 38%;background-repeat:no-repeat;transform:scale(1.015);animation:story-breathe 7s ease-in-out infinite alternate;transition:filter .35s,background-position .45s}
+.story-art{position:absolute;inset:0;background-color:#07101b;background-image:linear-gradient(180deg,#07101b10 25%,#06111b40 55%,#040a13ed 100%),var(--story-art-image,url("assets/space-bg.png"));background-size:cover;background-position:center 38%;background-repeat:no-repeat;transform:scale(1.015);animation:story-breathe 7s ease-in-out infinite alternate;transition:filter .35s,background-position .45s}
 .story-dialog[data-art-type="planet"] .story-art{background-size:100% 100%,auto 82%;background-position:center,right 8% center;background-repeat:no-repeat}
 .story-dialog[data-art-type="panel"] .story-art{background-size:100% 100%,200% 200%;background-position:center,100% 100%;background-repeat:no-repeat}
 .story-dialog[data-speaker="pilot"] .story-art{background-position:43% 38%;filter:saturate(1.06)}
@@ -537,8 +537,8 @@
 
 /* Original generated portraits: the current speaker brightens while the others recede. */
 .story-cast{inset:auto 4% 31%;height:54%;display:flex;align-items:stretch;justify-content:space-between;gap:1.5%;}
-.story-portrait{position:relative;flex:1 1 0;min-width:0;height:100%;background-image:url("assets/visual-novel-character-trio.png");background-size:300% 100%;background-repeat:no-repeat;background-position:0% center;opacity:.34;filter:brightness(.58) saturate(.72);transform:translateY(9px) scale(.97);transition:opacity .4s,filter .4s,transform .4s;mask-image:linear-gradient(180deg,#000 0%,#000 72%,transparent 100%);}
-.story-portrait.ai{background-position:50% center}.story-portrait.overlord{background-position:100% center}
+.story-portrait{position:relative;flex:1 1 0;min-width:0;height:100%;background-image:url("assets/character-nova-dialogue-halfbody.png");background-size:auto 100%;background-repeat:no-repeat;background-position:center bottom;opacity:.34;filter:brightness(.58) saturate(.72);transform:translateY(9px) scale(.97);transition:opacity .4s,filter .4s,transform .4s;mask-image:linear-gradient(180deg,#000 0%,#000 86%,transparent 100%);}
+.story-portrait.ai{background-image:url("assets/character-astra-dialogue-halfbody.png");background-position:center bottom}.story-portrait.overlord{background-image:url("assets/character-nox-dialogue-halfbody-left.png");background-position:center bottom}
 .story-portrait span{position:absolute;left:50%;bottom:6px;transform:translateX(-50%);padding:5px 7px;border:1px solid #8eeeff40;background:#06131ddd;color:#c2dce2;font:700 8px/1 var(--mono);letter-spacing:.1em;white-space:nowrap;transition:color .35s,border-color .35s,box-shadow .35s;}
 .story-dialog[data-speaker="pilot"] .story-portrait.pilot,.story-dialog[data-speaker="ai"] .story-portrait.ai{opacity:1;filter:brightness(1.12) saturate(1.08);transform:translateY(0) scale(1.015);}
 .story-dialog[data-speaker="overlord"] .story-portrait.overlord{opacity:1;filter:brightness(1.13) saturate(1.18);transform:translateY(0) scale(1.025);animation:story-threat 1.3s ease-in-out infinite alternate;}
@@ -548,8 +548,8 @@
 @media(prefers-reduced-motion:reduce){.story-stage,.story-art,.story-actor{animation:none!important;transition:none!important}}
 html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 .story-art{filter:brightness(.72)!important}
-.story-portrait{flex:0 0 auto;width:auto;aspect-ratio:2/3;background-size:auto 100%}
-@media(max-width:620px){.story-cast{inset:auto 0 44%;height:35%;justify-content:center}.story-portrait{display:none;height:100%;width:auto;aspect-ratio:2/3}.story-dialog[data-speaker="pilot"] .story-portrait.pilot,.story-dialog[data-speaker="ai"] .story-portrait.ai,.story-dialog[data-speaker="overlord"] .story-portrait.overlord{display:block;flex:0 0 auto}}
+.story-portrait,.story-portrait.ai,.story-portrait.overlord{flex:0 0 auto;width:auto;aspect-ratio:1/1;background-size:auto 88%;background-position:center bottom}
+@media(max-width:620px){.story-cast{inset:auto 0 44%;height:35%;justify-content:center}.story-portrait{display:none;height:100%;width:auto;aspect-ratio:1/1;background-size:auto 88%}.story-dialog[data-speaker="pilot"] .story-portrait.pilot,.story-dialog[data-speaker="ai"] .story-portrait.ai,.story-dialog[data-speaker="overlord"] .story-portrait.overlord{display:block;flex:0 0 auto}}
 .story-backdrop{inset:-20px;background:linear-gradient(180deg,#06132684,#020611b8),url("assets/space-bg.png") center/cover no-repeat;filter:blur(10px) saturate(.82);transform:scale(1.04);opacity:.96}
 .story-dialog[data-speaker="narration"] .story-portrait{opacity:.16;filter:brightness(.42) saturate(.5);transform:translateY(8px) scale(.97)}
 .story-portrait{visibility:hidden;opacity:0;transform:translateY(24px) scale(.94)}
@@ -558,8 +558,8 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{scro
 .story-dialog[data-speaker="narration"][data-seen-pilot="true"] .story-portrait.pilot,.story-dialog[data-speaker="narration"][data-seen-ai="true"] .story-portrait.ai,.story-dialog[data-speaker="narration"][data-seen-overlord="true"] .story-portrait.overlord{opacity:.16;filter:brightness(.42) saturate(.5)}
 .story-dialog[data-speaker="pilot"] .story-art,.story-dialog[data-speaker="ai"] .story-art,.story-dialog[data-speaker="overlord"] .story-art{filter:blur(5px) brightness(.72)!important}
 .story-portrait span{display:none}
-.story-portrait.overlord{position:relative;background-image:none}
-.story-portrait.overlord::before{content:"";position:absolute;inset:0;background-image:url("assets/visual-novel-character-trio.png");background-size:auto 100%;background-position:100% center;background-repeat:no-repeat;transform:scaleX(-1)}
+.story-portrait.overlord{position:relative}
+.story-portrait.overlord::before{content:none}
 .story-dialog[data-speaker="overlord"] .story-portrait.overlord{transform:translateY(0) scale(1.025)}
 
 /* Flight brief and learning flow */
@@ -641,7 +641,7 @@ html.reduce-motion *,html.reduce-motion *:before,html.reduce-motion *:after{scro
 .brief-box.is-academy::before{background:linear-gradient(90deg,#03101b28,#03101bb8 31%,#041421f2 52%,#061522f5);filter:none}
 .brief-box.is-academy>.academy-astra{position:absolute;z-index:2;left:clamp(18px,3vw,48px);bottom:clamp(22px,5vh,58px);width:26%;max-width:350px;display:flex;flex-direction:column;align-items:flex-start;gap:10px;pointer-events:none}
 .brief-box.is-academy>.academy-astra[hidden]{display:none}
-.academy-astra-portrait{width:clamp(260px,34vw,480px);height:min(70vh,650px);background:url("assets/visual-novel-character-trio.png") 50% center/auto 100% no-repeat;filter:drop-shadow(0 8px 22px #00d9ff4d);mask-image:linear-gradient(#000 0%,#000 84%,transparent 100%);animation:astra-idle 3.2s ease-in-out infinite}
+.academy-astra-portrait{width:clamp(260px,34vw,480px);height:min(70vh,650px);background:url("assets/character-astra-hologram.png") center bottom/auto 100% no-repeat;filter:none;mask-image:linear-gradient(#000 0%,#000 84%,transparent 100%);animation:astra-idle 3.2s ease-in-out infinite}
 .academy-astra>div:last-child{padding:10px 12px;border:1px solid #47def276;border-left:3px solid #ffd27b;background:#061522e8;box-shadow:0 8px 28px #0008}
 .academy-astra small{font:700 8px var(--mono);letter-spacing:.12em;color:#75f1e7}
 .academy-astra p{margin:5px 0 0;color:#e6f4f8;font:12px/1.65 var(--sans)}
@@ -1051,3 +1051,79 @@ body.is-portrait .orientation-notice small{font:12px/1.6 var(--sans);color:#a6ba
 .boss-health-panel .progress-track{height:10px;margin-top:7px;border:1px solid #ff718088;background:#270c18;box-shadow:inset 0 0 7px #000}
 .boss-health-panel .progress-track i{background:linear-gradient(90deg,#ff264d,#ff8a72);box-shadow:0 0 13px #ff3b5c;transition:width .35s ease}
 
+/* User-testing refinements: keep combat information out of the main play lane. */
+#arena{touch-action:none}
+.game-shell:not(.mission-complete) .mission-panel{top:82px;left:14px;width:190px;padding:9px 11px;border-radius:5px;clip-path:none;background:#071522c9;backdrop-filter:blur(3px)}
+.game-shell:not(.mission-complete) .mission-panel .panel-heading,.game-shell:not(.mission-complete) .mission-panel .mission-kicker,.game-shell:not(.mission-complete) .mission-panel h1,.game-shell:not(.mission-complete) .mission-panel p,.game-shell:not(.mission-complete) .mission-panel .panel-rule,.game-shell:not(.mission-complete) .mission-panel .mission-objective,.game-shell:not(.mission-complete) .mission-panel .combo-readout{display:none!important}
+.game-shell:not(.mission-complete) .mission-panel .wave-line{margin-top:0;font-size:9px}
+.game-shell:not(.mission-complete) .mission-panel .progress-track{margin-top:5px}
+@media(max-width:650px){.game-shell:not(.mission-complete) .mission-panel{top:66px;left:8px;width:min(150px,42vw);padding:7px 8px}.game-shell:not(.mission-complete) .mission-panel .wave-line{font-size:7px}}
+
+/* Separate the controls rail from the orbital playfield. */
+.game-shell:not(.traveling):not(.mission-complete) .mission-panel{top:82px;left:12px;width:210px;padding:8px 10px;background:#071522f2;backdrop-filter:none}
+.game-shell:not(.traveling):not(.mission-complete) .weapon-rack{top:137px;right:auto;bottom:12px;left:12px;transform:none;width:210px;max-width:calc(100vw - 24px);max-height:none;overflow-x:hidden;overflow-y:auto;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:7px;padding:8px;background:#071522f5;backdrop-filter:none;scrollbar-width:thin;scrollbar-color:#3a9eb2 #071522}
+.game-shell:not(.traveling):not(.mission-complete) .weapon-strip{display:flex;flex-direction:column;align-items:stretch;gap:4px;min-height:0}
+.game-shell:not(.traveling):not(.mission-complete) .weapon-strip>b{width:auto;min-height:18px;padding:2px 0;border-right:0;border-bottom:1px solid #70b4c333;text-align:left;font-size:8px}
+.game-shell:not(.traveling):not(.mission-complete) .weapon-strip.angle-strip .weapon-cards{display:flex;flex-direction:column;gap:3px;min-width:0;overflow:visible}
+.game-shell:not(.traveling):not(.mission-complete) .weapon-rack .quadrant-group{gap:2px;padding:3px 1px;border-left:0;border-top:1px solid #70b4c322}
+.game-shell:not(.traveling):not(.mission-complete) .weapon-rack .quadrant-group>small{text-align:left;font-size:7px}
+.game-shell:not(.traveling):not(.mission-complete) .weapon-rack .quadrant-weapons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:4px;min-height:0}
+.game-shell:not(.traveling):not(.mission-complete) .weapon-rack .weapon-card{width:100%;min-width:0;height:34px;flex:none;padding:2px}
+.game-shell:not(.traveling):not(.mission-complete) .weapon-rack .value-unified .quadrant-weapons{grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch}
+.game-shell:not(.traveling):not(.mission-complete) .weapon-rack .value-key-slot{min-width:0}
+.game-shell:not(.traveling):not(.mission-complete) .weapon-rack .value-unified .weapon-card{width:100%;min-width:0}
+.game-shell:not(.traveling):not(.mission-complete) .weapon-rack .weapon-control-hint{white-space:normal;font-size:8px;text-align:center}
+.target-banner{position:absolute;z-index:3;top:84px;left:calc((min(100vw - 80px,236px) + 100vw)/2);transform:translateX(-50%);display:grid;gap:5px;width:min(520px,calc(100vw - 280px));min-height:48px;padding:8px 14px;border:1px solid #52dff088;border-radius:5px;background:#061522ec;box-shadow:0 8px 22px #0008,0 0 15px #25d9ec20;text-align:center;pointer-events:none}
+#target-banner{display:none!important}
+.target-banner[hidden],.field-camera-controls[hidden]{display:none}
+.target-banner small{color:#83e9f0;font:700 8px/1.2 Consolas,monospace;letter-spacing:.12em}
+.target-banner b{color:#f3fbff;font:700 13px/1.35 Consolas,monospace;overflow-wrap:anywhere}
+.field-camera-controls{position:absolute;z-index:3;right:16px;bottom:16px;display:flex;align-items:center;gap:6px;padding:7px 9px;border:1px solid #55dced88;border-radius:5px;background:#061522ed;box-shadow:0 8px 22px #0008;color:#bfeaf0}
+.field-camera-controls button{display:grid;place-items:center;flex:0 0 34px;width:34px;min-width:34px;max-width:34px;height:30px;min-height:30px;padding:0;border:0;border-radius:0;background-color:transparent!important;background-image:url("assets/ui-button-small.png")!important;background-size:100% 180%!important;background-position:center!important;background-repeat:no-repeat!important;color:#e8fcff;font:700 16px/1 Consolas,monospace;cursor:pointer}
+.field-camera-controls button:hover{filter:brightness(1.2);box-shadow:0 0 12px #39ddeb55}
+.field-camera-controls output{min-width:42px;text-align:center;color:#ffe099;font:700 9px Consolas,monospace}
+.field-camera-controls small{margin-left:4px;color:#9bbbc5;font:8px Consolas,monospace;white-space:nowrap}
+@media(max-width:650px){.game-shell:not(.traveling):not(.mission-complete) .mission-panel{top:66px;left:8px;width:min(210px,calc(100vw - 24px));padding:7px 8px}.game-shell:not(.traveling):not(.mission-complete) .weapon-rack{top:117px;bottom:8px;left:8px;width:min(210px,calc(100vw - 24px));max-width:none;padding:6px}.game-shell:not(.traveling):not(.mission-complete) .weapon-rack .weapon-card{height:30px}}
+.is-camera-panning #arena{cursor:grabbing}
+@media(max-width:650px){.target-banner{top:68px;left:calc((min(100vw - 60px,220px) + 100vw)/2);width:min(420px,calc(100vw - 250px));padding:6px 8px}.target-banner small{font-size:6px}.target-banner b{font-size:9px}.field-camera-controls{right:8px;bottom:8px;gap:4px;padding:5px}.field-camera-controls small{display:none}.field-camera-controls button{flex-basis:30px;width:30px;min-width:30px;max-width:30px;height:28px;min-height:28px}}
+
+/* Keep the full Astra lesson portrait inside its frame at every viewport size. */
+#overlay.academy-screen .academy-astra-portrait{background-size:contain!important;background-position:center bottom!important}
+
+/* Detailed learning outcomes in the post-flight report. */
+.brief-box.has-results{width:min(1120px,calc(100vw - 48px));overflow-y:auto}
+.brief-box.has-results .result-visual{height:auto;min-height:540px;padding:20px 24px;grid-template-columns:minmax(190px,28%) minmax(0,1fr);grid-template-rows:auto auto auto auto;align-items:stretch;column-gap:20px;row-gap:12px}
+.brief-box.has-results .result-hero{grid-column:2;grid-row:1}
+.brief-box.has-results .result-hero small{font-size:10px}
+.brief-box.has-results .result-hero b{font-size:clamp(16px,1.8vw,22px)}
+.brief-box.has-results .result-hero span{font-size:12px}
+.brief-box.has-results .result-visual::before{left:4%;top:7%;width:23%;transform:none}
+.brief-box.has-results .result-hero img{left:4%;top:9%;width:23%;height:auto;max-height:31%;transform:none}
+.brief-box.has-results .result-metrics{grid-column:2;grid-row:2}
+.brief-box.has-results .result-metrics article{gap:7px;padding:11px 8px}
+.brief-box.has-results .metric-icon{width:30px;height:30px;font-size:16px}
+.brief-box.has-results .result-metrics small{font-size:8px}
+.brief-box.has-results .result-metrics article>b{font-size:15px}
+.brief-box.has-results .result-learning{grid-column:1/-1;grid-row:3;min-width:0;display:grid;gap:8px;padding-top:9px;border-top:1px solid #48d8e344}
+.result-learning>header{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.result-learning>header b{color:#b5f9f4;font:700 14px var(--sans)}
+.result-learning>header small{color:#8caeba;font:10px var(--sans)}
+.learning-topic-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px}
+.learning-topic{min-width:0;min-height:124px;padding:10px 12px;border:1px solid #43d6e345;background:linear-gradient(145deg,#0b2535ed,#071522ed);display:flex;flex-direction:column;gap:5px}
+.learning-topic.good{border-color:#3fd58f66}.learning-topic.developing{border-color:#52c9d966}.learning-topic.improve{border-color:#f0b65088}.learning-topic.low{border-color:#7293a055}
+.learning-topic>header{display:flex;align-items:flex-start;justify-content:space-between;gap:4px}
+.learning-topic>header b{color:#e7f8fb;font:700 11px/1.35 var(--sans)}
+.learning-topic>header span{flex:none;color:#85e9c0;font:700 9px/1.3 var(--sans)}
+.learning-topic.developing>header span{color:#7eeafa}.learning-topic.improve>header span{color:#ffd27b}.learning-topic.low>header span{color:#9cb5c0}
+.learning-topic-result{display:flex;align-items:baseline;gap:7px}
+.learning-topic-result strong{color:#f1fbff;font:700 18px var(--mono)}
+.learning-topic-result small{color:#a6c2cc;font:10px var(--sans)}
+.learning-topic-meter{height:4px;background:#07101a;border:1px solid #294251}
+.learning-topic-meter i{display:block;height:100%;background:linear-gradient(90deg,#28aebf,#78f0cb)}
+.learning-topic.improve .learning-topic-meter i{background:linear-gradient(90deg,#c07a2d,#ffd27b)}
+.learning-topic>p,.learning-topic-note{margin:0;color:#aec5ce;font:10px/1.4 var(--sans)}
+.quadrant-breakdown{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:3px;margin-top:auto}
+.quadrant-breakdown>span{display:grid;grid-template-columns:auto 1fr;align-items:center;gap:2px 4px;padding:4px;border:1px solid #3d637355;color:#a6c7d0;font:9px var(--mono)}
+.quadrant-breakdown>span>b{text-align:right;color:#83e9c0}.quadrant-breakdown>span>small{grid-column:1/-1;color:#829eaa;font:8px var(--sans)}
+.brief-box.has-results .result-feedback{grid-column:1/-1;grid-row:4}
+@media(max-width:650px){.brief-box.has-results{width:calc(100vw - 20px);max-height:calc(100dvh - 12px);padding:10px;overflow-y:auto}.brief-box.has-results .result-visual{min-height:0;padding:10px 9px;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto auto;gap:8px}.brief-box.has-results .result-visual::before{left:1%;top:1%;width:23%}.brief-box.has-results .result-hero{grid-column:1;grid-row:1;min-height:58px;padding-left:26%}.brief-box.has-results .result-hero img{left:1%;top:0;width:23%;height:auto;max-height:17%;transform:none}.brief-box.has-results .result-metrics{grid-column:1;grid-row:2}.brief-box.has-results .result-learning{grid-column:1;grid-row:3}.result-learning>header{align-items:flex-start;flex-direction:column;gap:2px}.learning-topic-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.learning-topic{min-height:116px;padding:6px}.learning-topic>header b{font-size:8px}.learning-topic>header span{font-size:6px}.learning-topic>p,.learning-topic-note{font-size:7px}.brief-box.has-results .result-feedback{grid-column:1;grid-row:4}}
