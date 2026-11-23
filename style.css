@@ -886,7 +886,6 @@ body:has(#overlay.academy-screen)::after{display:none!important}
 .weapon-rack .polarity-switch.negative i{transform:translateX(40px);background:linear-gradient(180deg,#d09aff,#7940ce);box-shadow:0 0 12px #c982ff88,inset 0 1px 4px #f1ddffcc}
 .weapon-rack .polarity-switch:not(.negative) span:first-of-type,.weapon-rack .polarity-switch.negative span:last-of-type{color:#061923}
 .value-key-slot{display:flex;flex:1 1 0;min-width:0;flex-direction:column;align-items:stretch;gap:3px}.weapon-key-hint{display:block!important;min-height:14px;margin:0!important;color:#e4fbff!important;font:700 11px/14px Consolas,monospace!important;text-align:center;text-shadow:0 0 6px #38dfffa8}.weapon-control-hint{flex:none;align-self:center;color:#9eeaf4;font:700 13px/1.25 Consolas,monospace;letter-spacing:.02em;white-space:nowrap;text-shadow:0 0 9px #23cce488}.angle-strip .weapon-control-hint{margin-left:6px}.sign-control-hint{margin-left:6px}.weapon-rack .value-unified .quadrant-weapons{align-items:center}
-.weapon-rack .angle-card.selected{position:relative;border:1px solid #ffe28a!important;background:linear-gradient(145deg,#735627,#1c2530 72%)!important;color:#fff2bd!important;box-shadow:0 0 7px #ffd166aa,0 0 18px #ffbc4380,inset 0 0 14px #ffd16655!important;transform:translateY(-3px) scale(1.06);z-index:2}.weapon-rack .angle-card.selected b{color:#fff2bd!important;text-shadow:0 0 9px #ffd166!important}
 @media(max-width:900px){.weapon-rack{gap:5px;padding:6px 8px}.weapon-strip>b{width:64px}.weapon-strip.angle-strip .weapon-cards{min-width:660px}.weapon-strip.value-strip .weapon-cards{min-width:600px}}
 @media(max-width:650px){.weapon-rack{padding:5px;gap:4px}.weapon-strip{gap:5px;min-height:42px}.weapon-strip>b{width:46px;font-size:6px}.weapon-strip.angle-strip .weapon-cards{min-width:590px;gap:4px}.weapon-strip.value-strip .weapon-cards{min-width:540px;gap:4px}.weapon-strip.value-strip .quadrant-group{padding:2px 4px}.weapon-rack .weapon-card{height:34px}.weapon-rack .polarity-switch{width:76px;min-width:76px;height:32px;min-height:32px;margin-left:2px;padding:0 6px;font-size:12px}.weapon-rack .polarity-switch i{left:3px;top:3px;width:32px;height:24px}.weapon-rack .polarity-switch.negative i{transform:translateX(35px)}}
 /* Lesson circle layout: equations beside the ring, active coordinates below it */
@@ -1078,14 +1077,15 @@ body.is-portrait .orientation-notice small{font:12px/1.6 var(--sans);color:#a6ba
 .target-banner[hidden],.field-camera-controls[hidden]{display:none}
 .target-banner small{color:#83e9f0;font:700 8px/1.2 Consolas,monospace;letter-spacing:.12em}
 .target-banner b{color:#f3fbff;font:700 13px/1.35 Consolas,monospace;overflow-wrap:anywhere}
-.field-camera-controls{position:absolute;z-index:3;right:16px;bottom:16px;display:flex;align-items:center;gap:6px;padding:7px 9px;border:1px solid #55dced88;border-radius:5px;background:#061522ed;box-shadow:0 8px 22px #0008;color:#bfeaf0}
+.field-camera-controls{position:absolute;z-index:3;right:16px;bottom:8px;display:grid;grid-template-columns:34px 42px 34px 34px;align-items:center;justify-items:center;gap:3px 6px;padding:7px 9px;border:1px solid #55dced88;border-radius:5px;background:#061522ed;box-shadow:0 8px 22px #0008;color:#bfeaf0}
 .field-camera-controls button{display:grid;place-items:center;flex:0 0 34px;width:34px;min-width:34px;max-width:34px;height:30px;min-height:30px;padding:0;border:0;border-radius:0;background-color:transparent!important;background-image:url("assets/ui-button-small.png")!important;background-size:100% 180%!important;background-position:center!important;background-repeat:no-repeat!important;color:#e8fcff;font:700 16px/1 Consolas,monospace;cursor:pointer}
 .field-camera-controls button:hover{filter:brightness(1.2);box-shadow:0 0 12px #39ddeb55}
 .field-camera-controls output{min-width:42px;text-align:center;color:#ffe099;font:700 9px Consolas,monospace}
-.field-camera-controls small{margin-left:4px;color:#9bbbc5;font:8px Consolas,monospace;white-space:nowrap}
+.field-camera-controls small{grid-column:1/-1;justify-self:stretch;margin:0;color:#9bbbc5;font:8px/1.3 Consolas,monospace;text-align:center;white-space:normal}
+.camera-touch-hint{display:none}
 @media(max-width:650px){.game-shell:not(.traveling):not(.mission-complete) .mission-panel{top:66px;left:8px;width:min(210px,calc(100vw - 24px));padding:7px 8px}.game-shell:not(.traveling):not(.mission-complete) .weapon-rack{top:117px;bottom:8px;left:8px;width:min(210px,calc(100vw - 24px));max-width:none;padding:6px}.game-shell:not(.traveling):not(.mission-complete) .weapon-rack .weapon-card{height:30px}}
 .is-camera-panning #arena{cursor:grabbing}
-@media(max-width:650px){.target-banner{top:68px;left:calc((min(100vw - 60px,220px) + 100vw)/2);width:min(420px,calc(100vw - 250px));padding:6px 8px}.target-banner small{font-size:6px}.target-banner b{font-size:9px}.field-camera-controls{right:8px;bottom:8px;gap:4px;padding:5px}.field-camera-controls small{display:none}.field-camera-controls button{flex-basis:30px;width:30px;min-width:30px;max-width:30px;height:28px;min-height:28px}}
+@media(max-width:650px){.target-banner{top:68px;left:calc((min(100vw - 60px,220px) + 100vw)/2);width:min(420px,calc(100vw - 250px));padding:6px 8px}.target-banner small{font-size:6px}.target-banner b{font-size:9px}.field-camera-controls{right:8px;bottom:8px;grid-template-columns:30px 34px 30px 30px;gap:3px 4px;padding:5px}.field-camera-controls small{display:block;justify-self:stretch;margin:0;font-size:7px}.camera-desktop-hint{display:none}.camera-touch-hint{display:inline}.field-camera-controls button{flex-basis:30px;width:30px;min-width:30px;max-width:30px;height:28px;min-height:28px}}
 
 /* Keep the full Astra lesson portrait inside its frame at every viewport size. */
 #overlay.academy-screen .academy-astra-portrait{background-size:contain!important;background-position:center bottom!important}
@@ -1127,3 +1127,59 @@ body.is-portrait .orientation-notice small{font:12px/1.6 var(--sans);color:#a6ba
 .quadrant-breakdown>span>b{text-align:right;color:#83e9c0}.quadrant-breakdown>span>small{grid-column:1/-1;color:#829eaa;font:8px var(--sans)}
 .brief-box.has-results .result-feedback{grid-column:1/-1;grid-row:4}
 @media(max-width:650px){.brief-box.has-results{width:calc(100vw - 20px);max-height:calc(100dvh - 12px);padding:10px;overflow-y:auto}.brief-box.has-results .result-visual{min-height:0;padding:10px 9px;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto auto;gap:8px}.brief-box.has-results .result-visual::before{left:1%;top:1%;width:23%}.brief-box.has-results .result-hero{grid-column:1;grid-row:1;min-height:58px;padding-left:26%}.brief-box.has-results .result-hero img{left:1%;top:0;width:23%;height:auto;max-height:17%;transform:none}.brief-box.has-results .result-metrics{grid-column:1;grid-row:2}.brief-box.has-results .result-learning{grid-column:1;grid-row:3}.result-learning>header{align-items:flex-start;flex-direction:column;gap:2px}.learning-topic-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.learning-topic{min-height:116px;padding:6px}.learning-topic>header b{font-size:8px}.learning-topic>header span{font-size:6px}.learning-topic>p,.learning-topic-note{font-size:7px}.brief-box.has-results .result-feedback{grid-column:1;grid-row:4}}
+
+.field-camera-controls button{background-image:url("assets/ui-button-small.png")!important;background-size:100% 180%!important;background-position:center!important;background-repeat:no-repeat!important}
+.game-shell:not(.mission-complete) .mission-panel{top:82px;left:14px;width:min(260px,calc(100vw - 28px));max-height:calc(100dvh - 164px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:#397f91 #071522}
+.game-shell:not(.mission-complete) .mission-panel .panel-heading{display:flex!important}
+.game-shell:not(.mission-complete) .mission-panel .mission-kicker{display:block!important;margin-top:9px}
+.game-shell:not(.mission-complete) .mission-panel h1{display:block!important;margin:4px 0;font-size:16px}
+.game-shell:not(.mission-complete) .mission-panel p{display:block!important;min-height:0;font-size:10px;line-height:1.5}
+.game-shell:not(.mission-complete) .mission-panel .panel-rule{display:block!important;margin:8px 0}
+.game-shell:not(.mission-complete) .mission-panel .mission-objective{display:flex!important;gap:7px}
+.game-shell:not(.mission-complete) .mission-panel .objective-glyph{width:21px;height:21px;flex:0 0 21px}
+.game-shell:not(.mission-complete) .mission-panel .mission-objective small{font-size:7px}
+.game-shell:not(.mission-complete) .mission-panel .mission-objective b{font-size:9px;line-height:1.35}
+.game-shell:not(.mission-complete) .mission-panel .wave-line{margin-top:9px;font-size:8px}
+.game-shell:not(.mission-complete) .mission-panel .progress-track{margin-top:4px}
+.game-shell:not(.mission-complete) .mission-panel .combo-readout{display:flex!important;margin-top:8px}
+.mission-space-hint{display:flex;align-items:center;gap:7px;margin-top:10px;padding-top:8px;border-top:1px solid #4ab9c333;color:#a8c9d2;font:8px/1.4 var(--mono)}
+.mission-space-hint[hidden]{display:none!important}
+.mission-space-hint kbd{padding:3px 5px;border:1px solid #69dfe177;border-radius:3px;color:#d8fbff;font:700 8px var(--mono)}
+@media(max-width:650px){.game-shell:not(.mission-complete) .mission-panel{top:66px;left:8px;width:min(220px,calc(100vw - 16px));max-height:calc(100dvh - 132px);padding:8px}.game-shell:not(.mission-complete) .mission-panel h1{font-size:13px}.game-shell:not(.mission-complete) .mission-panel p{font-size:8px}.mission-space-hint{font-size:7px}}
+
+/* Restore the left firing rail; only the answer family relevant to the aligned target is shown. */
+#game .weapon-rack:not([hidden]){display:flex!important}
+#game .weapon-rack[hidden]{display:none!important}
+#game .weapon-rack .weapon-strip[hidden]{display:none!important}
+
+/* One contextual answer row along the bottom of the playfield. */
+#game .weapon-rack:not([hidden]){position:absolute;z-index:6;top:auto;right:auto;bottom:12px;left:50%;transform:translateX(-50%);box-sizing:border-box;width:min(1240px,calc(100vw - 32px));max-width:none;max-height:76px;min-height:58px;display:flex!important;flex-direction:row!important;align-items:center;justify-content:center;gap:8px;overflow-x:auto;overflow-y:hidden;padding:6px 10px;border:1px solid #52dceb99;border-radius:6px;background:linear-gradient(100deg,#041521f2,#082535f2);box-shadow:0 8px 28px #0008,0 0 22px #28d5e52a;scrollbar-width:thin}
+#game .weapon-rack[hidden],#game .weapon-rack .weapon-strip[hidden],#game .weapon-rack .quadrant-group[hidden],#game .weapon-rack .value-key-slot[hidden]{display:none!important}
+#game .weapon-empty{color:#a9cad3;font:10px var(--mono);letter-spacing:.04em;text-align:center}
+#game .weapon-empty[hidden]{display:none!important}
+#game .weapon-rack .weapon-strip{display:flex;flex:1;flex-direction:row;align-items:center;gap:8px;min-width:0;min-height:0}
+#game .weapon-rack .weapon-strip>b{width:auto;min-width:54px;min-height:0;padding:0 8px 0 0;border:0;border-right:1px solid #70b4c355;text-align:center;font-size:8px}
+#game .weapon-rack .weapon-cards{display:flex;flex:1;align-items:center;justify-content:center;gap:7px;min-width:0;overflow:visible;padding:0}
+#game .weapon-rack .quadrant-group{display:flex;flex:1;align-items:center;justify-content:center;gap:8px;min-width:0;padding:0 5px;border:0;background:transparent}
+#game .weapon-rack .quadrant-group>small{display:none}
+#game .weapon-rack .quadrant-weapons{display:flex;align-items:center;justify-content:center;gap:7px;min-height:0}
+#game .weapon-rack .weapon-card{display:flex;width:clamp(78px,8vw,118px);min-width:70px;height:42px;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:3px 6px}
+#game .weapon-rack .weapon-card b{margin:0;font-size:15px}
+#game .weapon-rack .weapon-key-hint{display:block!important;min-height:12px;font:700 10px/12px var(--mono)!important;color:#f1ffff!important;text-shadow:0 0 7px #53e9ffb0!important;opacity:1!important}
+#game .weapon-rack .value-key-slot{flex:0 1 100px;min-width:58px;align-items:center;gap:0}
+#game .weapon-rack .value-unified{flex:1;min-width:0}
+#game .weapon-rack .value-unified .quadrant-weapons{justify-content:center;gap:7px}
+#game .weapon-rack .value-unified .weapon-card{width:clamp(72px,8vw,104px);min-width:58px;flex:1 1 72px}
+#game .weapon-rack .polarity-switch{flex:0 0 76px;width:76px;min-width:76px;height:34px;min-height:34px;margin:0 3px;padding:0 7px}
+#game .weapon-rack .polarity-switch i{width:30px;height:24px}
+#game .weapon-rack .polarity-switch.negative i{transform:translateX(33px)}
+#game .weapon-rack .weapon-control-hint{font-size:8px;white-space:nowrap}
+@media(max-width:700px){#game .weapon-rack:not([hidden]){bottom:6px;width:calc(100vw - 12px);min-height:48px;max-height:62px;gap:4px;padding:4px}#game .weapon-rack .weapon-strip{gap:4px}#game .weapon-rack .weapon-strip>b{min-width:40px;padding-right:4px;font-size:6px}#game .weapon-rack .weapon-cards,#game .weapon-rack .quadrant-weapons{gap:4px}#game .weapon-rack .quadrant-group{padding:0 2px}#game .weapon-rack .weapon-card,#game .weapon-rack .value-unified .weapon-card{width:auto;min-width:48px;height:36px;flex:1 1 48px;padding:2px}#game .weapon-rack .weapon-card b{font-size:12px}#game .weapon-rack .weapon-key-hint{font-size:7px!important}#game .weapon-rack .value-key-slot{min-width:45px}#game .weapon-rack .polarity-switch{flex-basis:58px;width:58px;min-width:58px;height:29px;min-height:29px;padding:0 4px;font-size:12px}#game .weapon-rack .polarity-switch i{left:3px;top:3px;width:24px;height:21px}#game .weapon-rack .polarity-switch.negative i{transform:translateX(25px)}#game .weapon-rack .weapon-control-hint{font-size:6px;white-space:normal;text-align:center}}
+
+/* Give neighboring answer buttons more breathing room. */
+#game .weapon-rack .weapon-cards{column-gap:14px}
+#game .weapon-rack .quadrant-weapons{column-gap:14px}
+#game .weapon-rack .value-unified .quadrant-weapons{column-gap:18px}
+#game .weapon-rack .value-key-slot{flex-basis:112px}
+@media(max-width:700px){#game .weapon-rack .weapon-cards,#game .weapon-rack .quadrant-weapons{column-gap:8px}#game .weapon-rack .value-unified .quadrant-weapons{column-gap:8px}#game .weapon-rack .value-key-slot{flex-basis:54px}}
+.settings-keybind .keybind-button{display:grid!important;place-items:center;text-align:center}
