@@ -1,1315 +1,2135 @@
+push ลง git branch Krit คอมมิต ว่า
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Orbital Intercept · Trigonometry Defense</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --rot: #030b18;
-    --rot-2: #071a31;
-    --toxic: #20eaff;
-    --toxic-dim: #087db8;
-    --blood: #ff426d;
-    --blood-dim: #8d204b;
-    --amber: #79efff;
-    --fog: rgba(32,234,255,0.06);
-    --panel: rgba(4,16,34,0.9);
-  }
-  *{box-sizing:border-box;}
-  html,body{
-    margin:0; padding:0; width:100%; height:100%;
-    background:radial-gradient(ellipse at 50% 110%,#07335a 0,transparent 52%),var(--rot);
-    color:#dfe9d6;
-    font-family:'Rajdhani',sans-serif;
-    overflow:hidden;
-    -webkit-user-select:none; user-select:none;
-  }
-  #app{position:relative; width:100vw; height:100vh; overflow:hidden;}
-
-  .screen{
-    position:absolute; inset:0;
-    display:flex; align-items:center; justify-content:center;
-    flex-direction:column;
-  }
-  .hidden{display:none !important;}
-
-  /* ---------- MENU ---------- */
-  #screen-menu{
-    background:
-      radial-gradient(ellipse at 50% 105%, rgba(0,174,255,0.2), transparent 55%),
-      radial-gradient(ellipse at 78% 12%, rgba(32,234,255,0.08), transparent 42%),
-      linear-gradient(180deg, #071a31b8 0%, #030814df 100%),
-      url('assets/orbital-intercept-bg.webp') center/cover no-repeat;
-    padding: 3vh 4vw;
-    gap: 1.6vh;
-  }
-  .title-wrap{ text-align:center; margin-bottom: 0.2vh; }
-  .kicker{
-    font-family:'Share Tech Mono', monospace;
-    color: var(--toxic-dim);
-    letter-spacing: 0.35em;
-    font-size: 12px;
-    margin-bottom: 6px;
-  }
-  h1.game-title{
-    font-family:'Orbitron', sans-serif;
-    font-weight:900;
-    font-size: clamp(2.1rem, 5.4vw, 3.8rem);
-    margin: 0;
-    color: var(--toxic);
-    text-shadow: 0 0 18px rgba(32,234,255,0.45), 0 0 2px #000;
-    letter-spacing: 0.03em;
-    line-height: 1;
-  }
-  h1.game-title span{ color: var(--blood); text-shadow: 0 0 18px rgba(217,51,63,0.55);}
-  .subtitle{
-    font-family:'Share Tech Mono', monospace;
-    color:#9db08e;
-    font-size: 12px;
-    margin-top: 6px;
-    letter-spacing: 0.08em;
-  }
-
-  .intro-card{width:min(760px,92vw);padding:clamp(22px,4vw,48px);background:linear-gradient(145deg,#071b31f2,#041125f2);border:1px solid #20eaff99;box-shadow:0 0 48px #008ec044,inset 0 0 34px #0788b514;text-align:left;clip-path:polygon(20px 0,100% 0,100% calc(100% - 20px),calc(100% - 20px) 100%,0 100%,0 20px)}
-  .intro-card h2{margin:0 0 12px;color:var(--toxic);font:900 clamp(1.7rem,4vw,2.5rem) 'Orbitron',sans-serif}
-  .intro-card p{margin:10px 0;color:#d8efff;font-size:clamp(16px,2vw,20px);line-height:1.55}
-  .mission-facts{display:flex;flex-wrap:wrap;gap:10px;margin:22px 0;color:#a5eaff;font:700 12px 'Share Tech Mono',monospace;letter-spacing:.08em}
-  .mission-facts span{padding:9px 12px;border:1px solid #20eaff55;background:#03142a}
-  .briefing-toast{position:absolute;left:50%;top:15%;transform:translateX(-50%);z-index:29;width:min(600px,90vw);padding:14px 20px;background:#041327e8;border:1px solid #20eaff88;box-shadow:0 0 22px #008ec044;text-align:center;color:#dffaff;animation:briefIn .35s ease-out both;pointer-events:none}
-  .briefing-toast strong{display:block;color:var(--toxic);font:800 12px 'Share Tech Mono',monospace;letter-spacing:.15em;margin-bottom:4px}
-  @keyframes briefIn{from{opacity:0;transform:translate(-50%,-10px)}to{opacity:1;transform:translate(-50%,0)}}
-  .start-btn{
-    font-family:'Orbitron', sans-serif;
-    font-weight:800;
-    font-size: 1.2rem;
-    letter-spacing: 0.08em;
-    padding: 13px 44px;
-    background: linear-gradient(180deg, var(--blood), var(--blood-dim));
-    color: #fff0ee;
-    border: 2px solid #ff5f6b;
-    cursor:pointer;
-    clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
-    box-shadow: 0 0 30px rgba(217,51,63,0.45);
-    margin-top: 0.4vh;
-  }
-  .start-btn:hover{ filter:brightness(1.15); transform: translateY(-1px); }
-  .start-btn:disabled{ opacity:0.4; cursor:not-allowed; filter:none; transform:none;}
-
-  /* ---------- GAME ---------- */
-  #screen-game{ cursor:none; background:radial-gradient(ellipse at 50% 92%,#06284a66,transparent 52%); }
-  #gameCanvas{ position:absolute; inset:0; width:100%; height:100%; display:block; }
-
-  #crosshair{
-    position:absolute; top:0; left:0;
-    width:54px; height:54px;
-    transform: translate(-50%,-50%);
-    pointer-events:none;
-    z-index: 50;
-  }
-  #crosshair svg{ width:100%; height:100%; filter: drop-shadow(0 0 6px #20eaffaa); transition: filter 0.1s; }
-  #crosshair.recoil svg{ animation: recoilKick 0.14s ease-out; }
-  @keyframes recoilKick{
-    0%{ transform:scale(0.75) rotate(0deg); }
-    45%{ transform:scale(1.35) rotate(-4deg); }
-    100%{ transform:scale(1) rotate(0deg); }
-  }
-  #crosshair.hitflash svg circle:nth-child(1){ stroke:#20eaff; }
-  #crosshair.hitflash svg line{ stroke:#20eaff; }
-  #crosshair.hitflash svg{ filter: drop-shadow(0 0 10px rgba(32,234,255,0.9)); }
-
-  .hud{ position:absolute; inset:0; pointer-events:none; z-index:30; font-family:'Share Tech Mono', monospace;}
-  .hud-top{
-    position:absolute; top:0; left:0; right:0;
-    display:flex; justify-content:space-between; align-items:flex-start;
-    padding: 2vh 2.4vw 0;
-  }
-  .hearts{ display:flex; gap:6px; }
-  .heart{ width:26px; height:24px; }
-  .hud-center-top{ text-align:center; color:#cfe0c2; }
-  .hud-score{ font-size: 22px; color:var(--amber); text-shadow:0 0 8px rgba(32,234,255,0.5); }
-  .hud-timer{ font-size: 13px; color:#9db08e; margin-top:2px; }
-  .target-box{ text-align:right; }
-  .target-label{ font-size:11px; color:#93a586; letter-spacing:0.2em; }
-  .target-count{ font-size: 26px; color: var(--toxic); text-shadow:0 0 8px rgba(32,234,255,0.6); }
-
-  .attack-prompt-wrap{
-    position:absolute; bottom: 4vh; left:50%; transform:translateX(-50%); width:min(92vw,700px); text-align:center;
-    pointer-events:all;
-    display:flex; flex-direction:column; align-items:center; gap:6px;
-  }
-  .attack-prompt{pointer-events:none;font:700 12px 'Share Tech Mono',monospace;letter-spacing:.12em;color:#bceeff;padding:10px 16px;border:1px solid #20eaff66;background:#041327dd;box-shadow:0 0 18px #008ec033;}
-
-  .flash-msg{
-    position:absolute; top: 38%; left:50%; transform:translate(-50%,-50%); width:min(90vw,640px); text-align:center;
-    font-family:'Orbitron',sans-serif; font-weight:800; font-size: 1.6rem;
-    color: var(--blood); text-shadow:0 0 16px rgba(217,51,63,0.8);
-    opacity:0; pointer-events:none; letter-spacing:0.05em;
-  }
-  .flash-msg.show{ animation: flashPop 0.7s ease-out; }
-  @keyframes flashPop{ 0%{opacity:0; transform:translate(-50%,-40%) scale(0.8);} 20%{opacity:1; transform:translate(-50%,-50%) scale(1.05);} 70%{opacity:1;} 100%{opacity:0; transform:translate(-50%,-55%) scale(1);} }
-
-  .vignette-red{
-    position:absolute; inset:0; pointer-events:none; z-index:25;
-    box-shadow: inset 0 0 0 0 rgba(217,51,63,0);
-    transition: box-shadow 0.15s ease;
-  }
-  .vignette-red.hit{ box-shadow: inset 0 0 160px 40px rgba(217,51,63,0.55); }
-
-  /* ---------- TARGET QUESTION OVERLAY ---------- */
-  #targetOverlay{
-    position:absolute; inset:0; z-index:60;
-    background: rgba(2,8,20,0.78);
-    backdrop-filter: blur(5px);
-    display:flex; align-items:center; justify-content:center;
-    pointer-events:all;
-  }
-  .quiz-panel{
-    width: min(640px, 92vw);
-    background: var(--panel);
-    border: 1px solid rgba(32,234,255,0.72);
-    box-shadow: 0 0 50px #008ec044, inset 0 0 24px #0788b514;
-    padding: 2.4vh 3vw;
-    clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
-    max-height: 90vh;
-    overflow-y: auto;
-    animation:panelArrive .24s cubic-bezier(.2,.8,.2,1) both;
-  }
-  @keyframes panelArrive{from{opacity:0;transform:translateY(14px) scale(.98)}to{opacity:1;transform:none}}
-  .quiz-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom: 1.4vh;}
-  .quiz-title{ font-family:'Orbitron',sans-serif; color:var(--toxic); font-size: 1.05rem; letter-spacing:0.06em;}
-  .quiz-sub{ font-family:'Share Tech Mono',monospace; font-size:11px; color:#93a586; }
-  .quiz-question{
-    font-size: 1.35rem; text-align:center; margin: 1vh 0 1.6vh;
-    color:#eef5e6;
-  }
-  .quiz-question .theta{ color: var(--toxic); font-weight:700; }
-  .quiz-options{ display:grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .opt-btn{
-    font-family:'Share Tech Mono', monospace;
-    font-size: 15px;
-    padding: 12px 10px;
-    background: rgba(32,234,255,0.05);
-    border: 1.5px solid rgba(32,234,255,0.42);
-    color:#dfe9d6;
-    cursor:pointer;
-  }
-  .opt-btn:hover,.opt-btn:focus-visible{ border-color: var(--toxic); background: rgba(32,234,255,0.16); outline:2px solid #20eaff88; outline-offset:2px; }
-  .opt-btn.correct{ background: rgba(32,234,255,0.35); border-color: var(--toxic); color:#08170a;}
-  .opt-btn.wrong{ background: rgba(217,51,63,0.35); border-color: var(--blood); color:#1c0507;}
-  .opt-btn:disabled{ cursor:default; }
-
-  .quiz-canvas-wrap{
-    display:flex; flex-direction:column; align-items:center; gap:6px;
-    margin-bottom: 1.6vh;
-  }
-  #quizCanvas{
-    width: 230px; height:230px;
-    background: rgba(0,12,28,0.7);
-    border: 1px solid rgba(32,234,255,0.4);
-    border-radius: 10px;
-    touch-action:none;
-  }
-  .quiz-canvas-hint{
-    font-family:'Share Tech Mono',monospace; font-size:12px; color:#20eaff; min-height:14px;
-  }
-
-  .quiz-footer{ display:flex; justify-content:space-between; align-items:center; margin-top: 1.6vh; }
-  .quiz-stats{ font-family:'Share Tech Mono',monospace; font-size:12px; color:#8a9c7d; }
-  #resumeBtn{
-    font-family:'Orbitron',sans-serif; font-weight:700; font-size:13px; letter-spacing:0.08em;
-    padding:10px 22px; background: linear-gradient(180deg, var(--toxic), var(--toxic-dim));
-    color:#07130a; border:none; cursor:pointer;
-    clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
-  }
-  #resumeBtn:hover{ filter:brightness(1.1); }
-  .quiz-feedback{ text-align:center; font-size:13px; height:auto; min-height:16px; margin-top:8px; font-family:'Share Tech Mono',monospace;}
-  .quiz-feedback.ok{ color: var(--toxic); }
-  .quiz-feedback.bad{ color: var(--blood); }
-  .thai-ui{font-family:'Leelawadee UI',Tahoma,sans-serif;letter-spacing:normal}
-  .quiz-feedback,.quiz-question,.flash-msg,.go-title,.stat-k{font-family:'Leelawadee UI',Tahoma,sans-serif;letter-spacing:normal}
-
-  /* ---------- GAME OVER ---------- */
-  #screen-gameover{
-    background: radial-gradient(ellipse at 50% 30%, rgba(255,66,109,0.15), transparent 60%), #030814;
-    gap: 1.4vh;
-  }
-  .go-title{
-    font-family:'Orbitron',sans-serif; font-weight:900; font-size: clamp(2rem,5vw,3.2rem);
-    color: var(--blood); text-shadow: 0 0 24px rgba(217,51,63,0.6);
-    letter-spacing:0.04em;
-  }
-  .go-title.success{color:var(--toxic);text-shadow:0 0 24px #20eaff99}
-  .stats-panel{
-    background: var(--panel); border:1px solid rgba(217,51,63,0.3);
-    padding: 2.4vh 3vw; width:min(480px,88vw);
-    display:grid; grid-template-columns:1fr 1fr; gap: 1.2vh 2vw;
-    font-family:'Share Tech Mono', monospace;
-  }
-  .stat-line{ display:flex; flex-direction:column; }
-  .stat-k{ font-size:11px; color:#8a9c7d; letter-spacing:0.1em; }
-  .stat-v{ font-size:20px; color: var(--toxic); }
-  .retry-btn{
-    font-family:'Orbitron',sans-serif; font-weight:800; font-size:1.1rem; letter-spacing:0.06em;
-    padding:12px 36px; margin-top: 1vh;
-    background: linear-gradient(180deg, var(--amber), #b57310);
-    color:#1c1204; border:2px solid #ffd27a; cursor:pointer;
-    clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
-  }
-  .retry-btn:hover{ filter:brightness(1.1); }
-
-  .story-screen{isolation:isolate;color:#effaff;background:#020814;overflow:hidden}
-  .story-art{position:absolute;z-index:-1;inset:0;background-image:linear-gradient(180deg,#02081455 0%,#02081412 36%,#02081450 62%,#020814dc 100%),var(--story-art);background-position:center;background-size:cover}
-  .story-screen::after{content:"";position:absolute;z-index:1;inset:0;pointer-events:none;background:url("assets/ui-console-frame.png") center/100% 100% no-repeat}
-  .story-brand,.story-route,.story-caption,.story-next{position:absolute;z-index:4}
-  .story-brand{top:4%;left:4%;display:flex;align-items:center;gap:10px;text-shadow:0 2px 8px #001}
-  .story-brand img{width:34px;height:34px;filter:drop-shadow(0 0 8px #27eaff88)}
-  .story-brand span{display:grid;gap:3px}.story-brand b{font:900 12px 'Share Tech Mono',monospace;letter-spacing:.1em}.story-brand small{color:#ffc64d;font:700 7px 'Share Tech Mono',monospace;letter-spacing:.22em}
-  .story-route{top:5%;right:5%;color:#bdeaf4;font:800 9px 'Share Tech Mono',monospace;letter-spacing:.14em;text-shadow:0 2px 8px #001}
-  .story-caption{left:50%;bottom:23%;transform:translateX(-50%);width:min(1120px,82vw);display:flex;align-items:center;gap:22px;padding:17px 24px;border:1px solid #40e9ff;background:linear-gradient(100deg,#041525f2,#08283bf0 52%,#041525f2);box-shadow:0 0 0 5px #062338b8,inset 0 0 26px #2deaff19,0 0 30px #20dfff36}
-  .story-caption::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:#ffc64d;box-shadow:0 0 14px #ffd27b99}
-  .story-mark{flex:0 0 72px;display:grid;place-items:center;height:62px;border-right:1px solid #49e8f77a;color:#55efff;font:48px/1 'Share Tech Mono',monospace;text-shadow:0 0 16px #27eaffaa}
-  .story-caption>div{min-width:0}.story-caption small{color:#ffc64d;font:800 8px 'Share Tech Mono',monospace;letter-spacing:.18em}.story-caption h2{margin:4px 0;color:#f1fbff;font:900 clamp(16px,1.7vw,24px) 'Orbitron',sans-serif;letter-spacing:.03em}.story-caption p{margin:0;color:#d4eaf1;font:600 clamp(13px,1.1vw,17px)/1.55 'Rajdhani',sans-serif}
-  .story-next{left:50%;bottom:16%;transform:translateX(-50%);width:min(290px,70vw);min-height:60px;border:1px solid #69f5ff;background:linear-gradient(100deg,#087d94,#09c8d5 50%,#087d94);box-shadow:0 0 0 5px #062338b8,0 0 24px #27d9ed88,inset 0 0 14px #a4ffff30;color:#f4fdff;font:900 18px 'Orbitron',sans-serif;letter-spacing:.08em;cursor:pointer}
-  .story-next:hover{filter:brightness(1.16)}.story-next:focus-visible{outline:3px solid #fff;outline-offset:5px}
-  @media(max-width:650px){.story-brand{top:3%;left:6%;gap:6px}.story-brand img{width:26px;height:26px}.story-brand b{font-size:9px}.story-brand small{font-size:6px}.story-route{top:4%;right:7%;max-width:38vw;text-align:right;font-size:7px;line-height:1.6}.story-caption{bottom:25%;width:calc(100vw - 34px);align-items:flex-start;gap:12px;padding:12px 13px}.story-mark{flex-basis:38px;height:46px;font-size:30px}.story-caption small{font-size:7px}.story-caption h2{font-size:15px}.story-caption p{font-size:12px;line-height:1.45}.story-next{bottom:16%;min-height:48px;width:min(250px,68vw);font-size:15px}}
-
-  ::-webkit-scrollbar{ width:8px; }
-
-  .tutorial-screen{isolation:isolate;overflow:hidden;background:linear-gradient(90deg,#031022df,#031022b8),url('assets/minigame-intercept-intro.webp') center/cover; padding:5vh 6vw;color:#effaff}
-  .tutorial-screen::after{content:'';position:absolute;z-index:2;inset:0;pointer-events:none;background:url('assets/ui-console-frame.png') center/100% 100% no-repeat}
-  .tutorial-layout{position:relative;z-index:1;width:min(1100px,100%);height:min(650px,90vh);display:grid;grid-template-columns:minmax(180px,32%) 1fr;align-items:end;gap:clamp(16px,3vw,42px)}
-  .tutorial-astra{height:100%;background:url('assets/character-astra-hologram.png') center bottom/auto 100% no-repeat;filter:none}
-  .tutorial-content{align-self:center;padding:clamp(20px,3vw,36px);background:#041629ed;border:1px solid #4eeaff;box-shadow:0 10px 35px #0008,inset 0 0 30px #16c6ee16}
-  .tutorial-progress{color:#71e9f6;font:700 12px 'Share Tech Mono',monospace;letter-spacing:.12em}
-  .tutorial-content h2{font:700 clamp(22px,3vw,36px) 'Leelawadee UI',Tahoma,sans-serif;margin:12px 0;color:#fff}
-  .tutorial-content p{font:600 clamp(16px,1.6vw,20px)/1.6 'Leelawadee UI',Tahoma,sans-serif;margin:0 0 16px}
-  .tutorial-demo{min-height:106px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;padding:14px;background:#071f35;border:1px solid #287a91}
-  .tutorial-demo img{width:76px;height:65px;object-fit:contain}.tutorial-demo strong{font-size:22px;color:#8ff5ff}.tutorial-demo button,.tutorial-actions button{cursor:pointer;color:#efffff;background:#07455c;border:1px solid #61eaff;padding:10px 18px;font:700 16px 'Leelawadee UI',Tahoma,sans-serif}
-  .tutorial-demo button:hover,.tutorial-actions button:hover{background:#0a7387}.tutorial-demo button:focus-visible,.tutorial-actions button:focus-visible{outline:3px solid white;outline-offset:3px}
-  .tutorial-feedback{width:100%;color:#ffe28b;font-size:15px}.tutorial-actions{display:flex;justify-content:space-between;gap:10px;margin-top:20px}.tutorial-actions .tutorial-skip{background:transparent;border-color:#6993a1}
-  @media(max-width:650px){.tutorial-screen{padding:12px}.tutorial-layout{height:100%;grid-template-columns:1fr;grid-template-rows:minmax(90px,25vh) auto;gap:0;align-content:center}.tutorial-astra{background-size:auto 100%;background-position:center}.tutorial-content{padding:16px;max-height:70vh;overflow:auto}.tutorial-content h2{font-size:21px;margin:6px 0}.tutorial-content p{font-size:15px;line-height:1.45;margin-bottom:10px}.tutorial-demo{min-height:75px;padding:9px}.tutorial-demo img{width:54px;height:45px}.tutorial-actions{margin-top:12px}.tutorial-actions button,.tutorial-demo button{font-size:14px;padding:8px 12px}}
-
-  ::-webkit-scrollbar-thumb{ background: var(--toxic-dim); }
-</style>
-<link rel="stylesheet" href="assets/orbit-interface.css">  <link rel="stylesheet" href="assets/minigame-tutorial.css">
-</head>
-<body>
-<div id="app">
-
-  <!-- ================= MENU ================= -->
-  <div id="screen-menu" class="screen">
-    <div class="title-wrap">
-      <div class="kicker">ASTRA FLIGHT SYSTEMS · EMERGENCY INTERCEPT</div>
-      <h1 class="game-title">ORBITAL <span>INTERCEPT</span></h1>
-      <div class="subtitle">A FIVE-TARGET TRIGONOMETRY DEFENSE MISSION</div>
-    </div>
-
-    <div class="intro-card">
-      <div class="kicker">MISSION BRIEF · ASTRA</div>
-      <h2>HELIOS ESCORT UNDER ATTACK</h2>
-      <p>“Hostile interceptors have breached the convoy route. Each craft carries a trigonometry lock. Solve its signal to fire, and stop all five before they reach your ship.”</p>
-      <div class="mission-facts"><span>♥ 3 HULL</span><span>✦ 5 INTERCEPTORS</span><span>TRIG ANSWER TO FIRE</span></div>
-      <button class="start-btn" id="startBtn">START INTERCEPT</button>
-    </div>
-  </div>
-
-  <div id="screen-story" class="screen story-screen hidden" role="dialog" aria-modal="true" aria-labelledby="storyTitle">
-    <div id="storyArt" class="story-art" aria-hidden="true"></div>
-    <div class="story-brand"><img src="assets/favicon.svg" alt=""><span><b>ORBIT DEFENDER</b><small>DEGREE PROTOCOL</small></span></div>
-    <small id="storyRoute" class="story-route"></small>
-    <div class="story-caption"><span class="story-mark" aria-hidden="true">⌖</span><div><small id="storyKicker"></small><h2 id="storyTitle"></h2><p id="storyCopy"></p></div></div>
-    <button id="storyNext" class="story-next" type="button">NEXT »</button>
-  </div>
-
-
-  <div id="screen-tutorial" class="screen tutorial-screen hidden" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle">
-    <div class="tutorial-layout">
-      <div class="tutorial-astra" role="img" aria-label="ASTRA ผู้ช่วยประจำยาน"></div>
-      <div class="tutorial-content">
-        <div id="tutorialProgress" class="tutorial-progress"></div>
-        <h2 id="tutorialTitle"></h2>
-        <p id="tutorialCopy"></p>
-        <div id="tutorialDemo" class="tutorial-demo"></div>
-        <div class="tutorial-actions"><button id="tutorialSkip" class="tutorial-skip" type="button">ข้ามบทสอน</button><button id="tutorialNext" type="button">ถัดไป →</button></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= GAME ================= -->
-  <div id="screen-game" class="screen hidden">
-    <canvas id="gameCanvas"></canvas>
-    <div class="vignette-red" id="vignetteRed"></div>
-
-    <div class="hud">
-      <div class="hud-top">
-        <div class="hearts" id="heartsRow"></div>
-        <div class="hud-center-top">
-          <div class="hud-score" id="scoreVal">0</div>
-          <div class="hud-timer thai-ui" id="timerVal">เวลา 00:00</div>
-        </div>
-        <div class="target-box">
-          <div class="target-label thai-ui">กำจัดศัตรู</div>
-          <div class="target-count" id="targetVal">—</div>
-        </div>
-      </div>
-
-      <div class="attack-prompt-wrap attack-prompt thai-ui">คลิกยานศัตรูเพื่อล็อกเป้า · ตอบถูกเพื่อยิง</div>
-
-      <div class="flash-msg" id="flashMsg"></div>
-    </div>
-    <div class="briefing-toast hidden thai-ui" id="briefingToast"><strong>ASTRA · ตรวจพบยานศัตรู</strong>ตอบโจทย์ตรีโกณมิติเพื่อยิงสกัด รักษาความทนทานของยาน 3 หน่วย และกำจัดเป้าหมายทั้ง 5 ลำให้ครบ</div>
-
-    <div id="crosshair">
-      <svg viewBox="0 0 54 54">
-        <circle cx="27" cy="27" r="16" fill="none" stroke="#20eaff" stroke-width="1.6" opacity="0.8"/>
-        <line x1="27" y1="2" x2="27" y2="14" stroke="#20eaff" stroke-width="2"/>
-        <line x1="27" y1="40" x2="27" y2="52" stroke="#20eaff" stroke-width="2"/>
-        <line x1="2" y1="27" x2="14" y2="27" stroke="#20eaff" stroke-width="2"/>
-        <line x1="40" y1="27" x2="52" y2="27" stroke="#20eaff" stroke-width="2"/>
-        <circle cx="27" cy="27" r="1.6" fill="#20eaff"/>
-      </svg>
-    </div>
-
-    <div id="targetOverlay" class="hidden">
-      <div class="quiz-panel">
-        <div class="quiz-head">
-          <div class="quiz-title thai-ui" id="quizTitle">ล็อกเป้าหมายแล้ว</div>
-          <div class="quiz-sub thai-ui">ASTRA · เลือกคำตอบเพื่อยิง</div>
-        </div>
-        <div class="quiz-question thai-ui" id="quizQuestion">เมื่อ θ = <span class="theta">π/4</span> เลือก (cos θ, sin θ) ที่ถูกต้อง</div>
-
-        <div class="quiz-canvas-wrap hidden" id="quizCanvasWrap">
-          <canvas id="quizCanvas" width="260" height="260"></canvas>
-          <div class="quiz-canvas-hint" id="quizCanvasHint"></div>
-        </div>
-
-        <div class="quiz-options" id="quizOptions"></div>
-        <div class="quiz-feedback" id="quizFeedback"></div>
-        <div class="quiz-footer">
-          <div class="quiz-stats thai-ui" id="quizStats">ตอบถูก 0/0 ข้อ</div>
-          <button id="resumeBtn" class="thai-ui">ยกเลิกการล็อกเป้า</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ================= GAME OVER ================= -->
-  <div id="screen-gameover" class="screen hidden">
-    <div class="go-title thai-ui" id="goTitle">ภารกิจล้มเหลว</div>
-    <div class="stats-panel">
-        <div class="stat-line"><div class="stat-k">เวลาที่ใช้</div><div class="stat-v" id="goTime">00:00</div></div>
-      <div class="stat-line"><div class="stat-k">ยานที่สกัดได้</div><div class="stat-v" id="goKills">0 / 5</div></div>
-      <div class="stat-line"><div class="stat-k">คะแนน</div><div class="stat-v" id="goScore">0</div></div>
-      <div class="stat-line"><div class="stat-k">ความแม่นยำการยิง</div><div class="stat-v" id="goAcc">0%</div></div>
-      <div class="stat-line"><div class="stat-k">ความแม่นยำตรีโกณมิติ</div><div class="stat-v" id="goQuiz">0%</div></div>
-      <div class="stat-line"><div class="stat-k">สถิติดีที่สุด</div><div class="stat-v" id="goBest">00:00</div></div>
-    </div>
-    <button class="retry-btn thai-ui" id="retryBtn">เล่นอีกครั้ง</button>
-  </div>
-
-</div>
-
-<script>
-(function(){
-  "use strict";
-
-  /* ---------------- ANGLE DATA (from the referenced unit-circle designs) ---------------- */
-  const ANGLES = {
-    1: [
-      {label:'0',    cos:'1',      sin:'0',      cosV:1,      sinV:0,      rad:0},
-      {label:'π/6',  cos:'√3/2',   sin:'1/2',    cosV:0.866,  sinV:0.5,    rad:Math.PI/6},
-      {label:'π/4',  cos:'√2/2',   sin:'√2/2',   cosV:0.707,  sinV:0.707,  rad:Math.PI/4},
-      {label:'π/3',  cos:'1/2',    sin:'√3/2',   cosV:0.5,    sinV:0.866,  rad:Math.PI/3},
-      {label:'π/2',  cos:'0',      sin:'1',      cosV:0,      sinV:1,      rad:Math.PI/2},
-    ],
-    2: [
-      {label:'2π/3', cos:'-1/2',   sin:'√3/2',   cosV:-0.5,   sinV:0.866,  rad:2*Math.PI/3},
-      {label:'3π/4', cos:'-√2/2',  sin:'√2/2',   cosV:-0.707, sinV:0.707,  rad:3*Math.PI/4},
-      {label:'5π/6', cos:'-√3/2',  sin:'1/2',    cosV:-0.866, sinV:0.5,    rad:5*Math.PI/6},
-      {label:'π',    cos:'-1',     sin:'0',      cosV:-1,     sinV:0,      rad:Math.PI},
-    ],
-    3: [
-      {label:'7π/6', cos:'-√3/2',  sin:'-1/2',   cosV:-0.866, sinV:-0.5,   rad:7*Math.PI/6},
-      {label:'5π/4', cos:'-√2/2',  sin:'-√2/2',  cosV:-0.707, sinV:-0.707, rad:5*Math.PI/4},
-      {label:'4π/3', cos:'-1/2',   sin:'-√3/2',  cosV:-0.5,   sinV:-0.866, rad:4*Math.PI/3},
-      {label:'3π/2', cos:'0',      sin:'-1',     cosV:0,      sinV:-1,     rad:3*Math.PI/2},
-    ],
-    4: [
-      {label:'5π/3', cos:'1/2',    sin:'-√3/2',  cosV:0.5,    sinV:-0.866, rad:5*Math.PI/3},
-      {label:'7π/4', cos:'√2/2',   sin:'-√2/2',  cosV:0.707,  sinV:-0.707, rad:7*Math.PI/4},
-      {label:'11π/6',cos:'√3/2',   sin:'-1/2',   cosV:0.866,  sinV:-0.5,   rad:11*Math.PI/6},
-      {label:'2π',   cos:'1',      sin:'0',      cosV:1,      sinV:0,      rad:2*Math.PI},
-    ],
-  };
-  const ALL_ANGLES = [];
-  Object.keys(ANGLES).forEach(k=>{ ANGLES[k].forEach(a=>ALL_ANGLES.push({...a, q:Number(k)})); });
-  const QUAD_RANGE = {1:[0,Math.PI/2], 2:[Math.PI/2,Math.PI], 3:[Math.PI,3*Math.PI/2], 4:[3*Math.PI/2,2*Math.PI]};
-  const ENEMY_TOTAL = 5, MAX_PLAYER_HP = 3;
-  const params = new URLSearchParams(location.search);
-  const completedLevel = Math.max(1, Number(params.get('level')) || 1);
-  const unit = params.get('unit') === 'degree' ? 'degree' : 'radian';
-  const completedQuadrants = completedLevel < 2 ? [1] : completedLevel < 3 ? [1,2] : [1,2,3,4];
-  const displayAngle = label => unit === 'degree' ? ({'0':'0°','π/6':'30°','π/4':'45°','π/3':'60°','π/2':'90°','2π/3':'120°','3π/4':'135°','5π/6':'150°','π':'180°','7π/6':'210°','5π/4':'225°','4π/3':'240°','3π/2':'270°','5π/3':'300°','7π/4':'315°','11π/6':'330°','2π':'360°'}[label] || label) : label;
-
-  function flipSign(s){
-    if(s === '0') return '0';
-    return s.startsWith('-') ? s.slice(1) : ('-'+s);
-  }
-  function pairStr(c,s){ return `(${c}, ${s})`; }
-  function angDist(a,b){ let d=Math.abs(a-b); if(d>Math.PI) d=Math.PI*2-d; return d; }
-
-  /* ---------------- Question builders ---------------- */
-  function buildPool(){
-    const p = [];
-    completedQuadrants.forEach(q => ANGLES[q].forEach(a => p.push(a)));
-    return p;
-  }
-
-  function buildPairQuestion(pool){
-    const correct = pool[Math.floor(Math.random()*pool.length)];
-    const correctStr = pairStr(correct.cos, correct.sin);
-    const set = new Set([correctStr]);
-    const options = [correctStr];
-    const candidates = [
-      pairStr(flipSign(correct.cos), correct.sin),
-      pairStr(correct.cos, flipSign(correct.sin)),
-      pairStr(correct.sin, correct.cos),
-    ];
-    const others = pool.filter(a => pairStr(a.cos,a.sin) !== correctStr);
-    if(others.length){
-      const r = others[Math.floor(Math.random()*others.length)];
-      candidates.push(pairStr(r.cos, r.sin));
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Orbital Intercept · Trigonometry Defense</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --rot: #030b18;
+      --rot-2: #071a31;
+      --toxic: #20eaff;
+      --toxic-dim: #087db8;
+      --blood: #ff426d;
+      --blood-dim: #8d204b;
+      --amber: #79efff;
+      --fog: rgba(32, 234, 255, 0.06);
+      --panel: rgba(4, 16, 34, 0.9);
     }
-    for(const c of candidates){
-      if(options.length>=4) break;
-      if(!set.has(c)){ set.add(c); options.push(c); }
+
+    * {
+      box-sizing: border-box;
     }
-    let guard=0;
-    while(options.length<4 && guard<50){
-      guard++;
-      const r = pool[Math.floor(Math.random()*pool.length)];
-      const f = pairStr(flipSign(r.cos), flipSign(r.sin));
-      if(!set.has(f)){ set.add(f); options.push(f); }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(ellipse at 50% 110%, #07335a 0, transparent 52%), var(--rot);
+      color: #dfe9d6;
+      font-family: 'Rajdhani', sans-serif;
+      overflow: hidden;
+      -webkit-user-select: none;
+      user-select: none;
     }
-    shuffle(options);
-    return { type:'pair', angleLabel: displayAngle(correct.label), correctStr, options };
-  }
 
-  function buildSingleQuestion(pool){
-    const correct = pool[Math.floor(Math.random()*pool.length)];
-    const askCos = Math.random()<0.5;
-    const correctVal = askCos ? correct.cos : correct.sin;
-    const otherFn = askCos ? correct.sin : correct.cos;
-    const flipped = flipSign(correctVal);
-    const others = pool.filter(a=>a!==correct);
-    const refPick = others.length ? others[Math.floor(Math.random()*others.length)] : correct;
-    const refVal = askCos ? refPick.cos : refPick.sin;
-
-    const set = new Set([correctVal]);
-    const options = [correctVal];
-    [flipped, otherFn, refVal, flipSign(otherFn)].forEach(c=>{
-      if(options.length<4 && !set.has(c)){ set.add(c); options.push(c); }
-    });
-    let guard=0;
-    while(options.length<4 && guard<50){
-      guard++;
-      const r = pool[Math.floor(Math.random()*pool.length)];
-      const v = flipSign(askCos ? r.cos : r.sin);
-      if(!set.has(v)){ set.add(v); options.push(v); }
+    #app {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
     }
-    shuffle(options);
-    return { type:'single', angleLabel: displayAngle(correct.label), askCos, correctStr: correctVal, options };
-  }
 
-  function buildDiagramQuestion(pool){
-    const correct = pool[Math.floor(Math.random()*pool.length)];
-    const set = new Set([correct.label]);
-    const options = [correct.label];
-    const others = pool.filter(a=>a.label!==correct.label);
-    shuffle(others);
-    for(const o of others){
-      if(options.length>=4) break;
-      if(!set.has(o.label)){ set.add(o.label); options.push(o.label); }
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
     }
-    shuffle(options);
-    return { type:'diagram', angleRad: correct.rad, correctLabel: displayAngle(correct.label), options:options.map(displayAngle) };
-  }
 
-  function buildDragQuestion(pool){
-    const correct = pool[Math.floor(Math.random()*pool.length)];
-    return { type:'drag', targetLabel: correct.label, displayLabel: displayAngle(correct.label), targetRad: correct.rad };
-  }
-
-  function shuffle(arr){
-    for(let i=arr.length-1;i>0;i--){
-      const j = Math.floor(Math.random()*(i+1));
-      [arr[i],arr[j]] = [arr[j],arr[i]];
+    .hidden {
+      display: none !important;
     }
-    return arr;
-  }
 
-  function buildQuestion(){
-    const pool = buildPool();
-    const questionTypes = ['pair','single','diagram','drag'];
-    const type = questionTypes[Math.floor(Math.random()*questionTypes.length)];
-    if(type==='pair') return buildPairQuestion(pool);
-    if(type==='single') return buildSingleQuestion(pool);
-    if(type==='diagram') return buildDiagramQuestion(pool);
-    return buildDragQuestion(pool);
-  }
-
-  /* ---------------- AUDIO (tiny synthesized SFX, no assets) ---------------- */
-  let actx = null;
-  function ac(){ if(!actx){ try{ actx = new (window.AudioContext||window.webkitAudioContext)(); }catch(e){} } return actx; }
-  function beep(freq, dur, type, gainVal, glide){
-    const A = ac(); if(!A) return;
-    const osc = A.createOscillator();
-    const gain = A.createGain();
-    osc.type = type || 'square';
-    osc.frequency.setValueAtTime(freq, A.currentTime);
-    if(glide) osc.frequency.exponentialRampToValueAtTime(Math.max(30,freq+glide), A.currentTime+dur);
-    gain.gain.setValueAtTime(gainVal||0.08, A.currentTime);
-    gain.gain.exponentialRampToValueAtTime(0.0001, A.currentTime+dur);
-    osc.connect(gain); gain.connect(A.destination);
-    osc.start(); osc.stop(A.currentTime+dur);
-  }
-  const sfx = {
-    shoot: ()=>{ beep(200,0.07,'square',0.1,-140); beep(70,0.05,'square',0.05,-30); },
-    hit:   ()=>{ beep(380,0.1,'sawtooth',0.11,260); setTimeout(()=>beep(95,0.16,'square',0.13,-60),18); },
-    heartLoss: ()=>beep(120,0.35,'sawtooth',0.12,-60),
-    correct: ()=>beep(520,0.14,'triangle',0.1,260),
-    wrong: ()=>beep(140,0.22,'square',0.1,-40),
-  };
-
-  /* ---------------- DOM refs ---------------- */
-  const screenMenu = document.getElementById('screen-menu');
-  const screenGame = document.getElementById('screen-game');
-  const screenOver = document.getElementById('screen-gameover');
-  const screenStory = document.getElementById('screen-story');
-  const storyArt = document.getElementById('storyArt');
-  const storyRoute = document.getElementById('storyRoute');
-  const storyKicker = document.getElementById('storyKicker');
-  const storyTitle = document.getElementById('storyTitle');
-  const storyCopy = document.getElementById('storyCopy');
-  const storyNext = document.getElementById('storyNext');
-  const canvas = document.getElementById('gameCanvas');
-  const ctx = canvas.getContext('2d');
-  const sceneArt = new Image(); sceneArt.src='assets/orbital-intercept-bg.webp';
-  const enemyArt = new Image(); enemyArt.src='assets/interceptor-enemy.webp';
-  const playerArt = new Image(); playerArt.src='assets/interceptor-player.webp';
-  const crosshair = document.getElementById('crosshair');
-  const heartsRow = document.getElementById('heartsRow');
-  const scoreVal = document.getElementById('scoreVal');
-  const timerVal = document.getElementById('timerVal');
-  const targetVal = document.getElementById('targetVal');
-  const briefingToast = document.getElementById('briefingToast');
-  const flashMsg = document.getElementById('flashMsg');
-  const vignetteRed = document.getElementById('vignetteRed');
-  const targetOverlay = document.getElementById('targetOverlay');
-  const quizQuestion = document.getElementById('quizQuestion');
-  const quizOptions = document.getElementById('quizOptions');
-  const quizFeedback = document.getElementById('quizFeedback');
-  const quizStats = document.getElementById('quizStats');
-  const quizCanvasWrap = document.getElementById('quizCanvasWrap');
-  const quizCanvas = document.getElementById('quizCanvas');
-  const quizCanvasHint = document.getElementById('quizCanvasHint');
-  const qctx = quizCanvas.getContext('2d');
-  const resumeBtn = document.getElementById('resumeBtn');
-  const startBtn = document.getElementById('startBtn');
-  const retryBtn = document.getElementById('retryBtn');
-
-  function showCampaignStory(result=null){
-    const intro=!result,success=result?.success,passedAll=result?.score>=0&&state.kills===ENEMY_TOTAL;
-    storyArt.style.setProperty('--story-art',`url("assets/minigame-intercept-${intro?'intro':'outro'}.webp")`);
-    storyRoute.textContent=`STARFALL ROUTE · LEVEL ${String(Number(params.get('level'))||1).padStart(2,'0')} · ORBITAL INTERCEPT`;
-    storyKicker.textContent=intro?'ENEMY INCOMING · FIVE HOSTILES':success?'INTERCEPT COMPLETE · ROUTE CLEAR':'INTERCEPT REPORT · ROUTE NOT SECURED';
-    storyTitle.textContent=intro?'ฝูงยานศัตรูปิดเส้นทาง':success?'เส้นทางข้างหน้าเปิดแล้ว':'การสกัดกั้นยังไม่สมบูรณ์';
-    storyCopy.textContent=intro?'ระหว่างเดินทาง ยานลาดตระเวน Null Armada เข้ามาขัดขวางเส้นทางของ STARFALL เลือกคำตอบตรีโกณมิติให้ถูกต้องเพื่อยิงสกัดพวกมันให้ครบทั้งห้าลำ':success?'ยานลาดตระเวน Null Armada ถูกกำจัดแล้ว เส้นทางข้างหน้าเปิดโล่งสำหรับการเดินทางต่อ':'ยังมียานศัตรูหลบหนีไปได้ค่ะ เราจะเดินทางต่อโดยเปิดระบบเฝ้าระวังไว้';
-    if(!intro&&!success&&passedAll)storyCopy.textContent='เรากำจัดยานศัตรูได้ครบแล้ว แต่ความแม่นยำของคำตอบยังไม่ถึงเกณฑ์ยืนยันเส้นทาง เราจะเดินทางต่อโดยเปิดระบบเฝ้าระวังไว้';
-    storyNext.textContent=intro?'เรียนรู้วิธีสกัด ↗':window.parent===window?'ดูผลภารกิจ ↗':'ไปยังด่านถัดไป ↗';
-    storyNext.onclick=()=>{if(intro){screenStory.classList.add('hidden');showTutorial();}else if(window.parent!==window){parent.postMessage(result,'*');}else{screenStory.classList.add('hidden');screenOver.classList.remove('hidden');}};
-    screenMenu.classList.add('hidden');screenGame.classList.add('hidden');screenOver.classList.add('hidden');screenStory.classList.remove('hidden');storyNext.focus();
-  }
-
-  const tutorialScreen = document.getElementById('screen-tutorial');
-  const tutorialNext = document.getElementById('tutorialNext');
-  const tutorialDemo = document.getElementById('tutorialDemo');
-  let tutorialStep = 0;
-  function beginIntercept(){
-    tutorialScreen.classList.add('hidden');
-    if(timedIntermission && window.parent!==window) parent.postMessage({type:'orbit-minigame-start'},'*');
-    startGame();
-  }
-  function showTutorial(){
-    tutorialStep=0;
-    screenMenu.classList.add('hidden');
-    tutorialScreen.classList.remove('hidden');
-    renderTutorial();
-  }
-  function renderTutorial(){
-    const steps=[
-      ['เลือกยานที่ต้องการสกัด','ASTRA: คลิกหรือแตะยานศัตรูเพื่อเปิดโจทย์ประจำยาน เวลาจะเดินช้าลงระหว่างที่คุณคิดคำตอบค่ะ', '<img src="assets/interceptor-enemy.webp" alt="ยานศัตรู"><strong>แตะยาน → เปิดโจทย์</strong>'],
-      ['ลองตอบโจทย์ตัวอย่าง','ASTRA: เลือกคำตอบที่ถูกต้องเพื่อยิง ลองหาค่า sin 30° กันก่อนนะคะ', '<strong>sin 30° = ?</strong><button type="button" data-answer="wrong">√3/2</button><button type="button" data-answer="correct">1/2</button><span class="tutorial-feedback" aria-live="polite"></span>'],
-      ['พร้อมออกสกัด','ASTRA: ตอบผิดดูเฉลยแล้วลองใหม่ได้ แต่ยานยังเคลื่อนที่อยู่ หากศัตรูฝ่าเข้ามา HP จะลด สกัดให้ครบ 5 ลำและตอบให้แม่นยำอย่างน้อย 70% ค่ะ', '<img src="assets/interceptor-player.webp" alt="ยานผู้เล่น"><strong>3 HP · 5 เป้าหมาย · 70% ความแม่นยำ</strong>']
-    ];
-    const [title,copy,demo]=steps[tutorialStep];
-    document.getElementById('tutorialProgress').textContent=`ASTRA · บทสอน ${tutorialStep+1} / ${steps.length}`;
-    document.getElementById('tutorialTitle').textContent=title;
-    document.getElementById('tutorialCopy').textContent=copy;
-    tutorialDemo.innerHTML=demo;
-    tutorialNext.textContent=tutorialStep===steps.length-1?'เริ่มภารกิจ →':'ถัดไป →';
-    tutorialDemo.querySelectorAll('[data-answer]').forEach(button=>button.addEventListener('click',()=>{
-      tutorialDemo.querySelector('.tutorial-feedback').textContent=button.dataset.answer==='correct'?'ถูกต้อง! sin 30° = 1/2 · ยิงสกัดสำเร็จ':'ยังไม่ถูก ลองอีกครั้ง: sin 30° = 1/2';
-    }));
-    tutorialNext.focus();
-  }
-  tutorialNext.addEventListener('click',()=>{if(tutorialStep<2){tutorialStep++;renderTutorial();}else beginIntercept();});
-  document.getElementById('tutorialSkip').addEventListener('click',beginIntercept);
-
-  const HEART_SVG = `<svg class="heart" viewBox="0 0 32 29" xmlns="http://www.w3.org/2000/svg"><path d="M16 28.5S1 19 1 9.6C1 4.6 4.9 1 9.4 1c2.9 0 5.4 1.5 6.6 3.9C17.2 2.5 19.7 1 22.6 1 27.1 1 31 4.6 31 9.6 31 19 16 28.5 16 28.5Z" fill="__COLOR__" stroke="#3a0507" stroke-width="1.3"/></svg>`;
-
-  /* ---------------- Menu selection state ---------------- */
-  const cfgQuadrants = completedQuadrants;
-
-  /* ---------------- Game state ---------------- */
-  let W=0,H=0;
-  function resize(){
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-  window.addEventListener('resize', resize);
-
-  let mouseX=0, mouseY=0;
-  window.addEventListener('mousemove', (e)=>{
-    mouseX = e.clientX; mouseY = e.clientY;
-    crosshair.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`;
-  });
-
-  let state = null;
-  let bestTime = 0;
-
-  /* ---------- Impact FX state ---------- */
-  let shakeMag = 0;
-  let hitStopT = 0;
-  let particles = [];
-  let muzzleFlashes = [];
-
-  function spawnParticles(x,y,color,count){
-    for(let i=0;i<count;i++){
-      const a = Math.random()*Math.PI*2;
-      const sp = 60 + Math.random()*220;
-      particles.push({
-        x, y,
-        vx: Math.cos(a)*sp,
-        vy: Math.sin(a)*sp - 40,
-        life: 1,
-        dec: 1.4 + Math.random()*0.8,
-        color,
-        size: 2.5 + Math.random()*3.5,
-      });
+    /* ---------- MENU ---------- */
+    #screen-menu {
+      background:
+        radial-gradient(ellipse at 50% 105%, rgba(0, 174, 255, 0.2), transparent 55%),
+        radial-gradient(ellipse at 78% 12%, rgba(32, 234, 255, 0.08), transparent 42%),
+        linear-gradient(180deg, #071a31b8 0%, #030814df 100%),
+        url('assets/orbital-intercept-bg.webp') center/cover no-repeat;
+      padding: 3vh 4vw;
+      gap: 1.6vh;
     }
-  }
-  function updateParticles(dt){
-    for(let i=particles.length-1;i>=0;i--){
-      const p = particles[i];
-      p.x += p.vx*dt;
-      p.y += p.vy*dt;
-      p.vy += 260*dt;
-      p.life -= p.dec*dt;
-      if(p.life<=0) particles.splice(i,1);
+
+    .title-wrap {
+      text-align: center;
+      margin-bottom: 0.2vh;
     }
-  }
-  function drawParticles(){
-    for(const p of particles){
-      ctx.save();
-      ctx.globalAlpha = Math.max(0,p.life);
-      ctx.fillStyle = p.color;
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.size,0,Math.PI*2);
-      ctx.fill();
-      ctx.restore();
+
+    .kicker {
+      font-family: 'Share Tech Mono', monospace;
+      color: var(--toxic-dim);
+      letter-spacing: 0.35em;
+      font-size: 12px;
+      margin-bottom: 6px;
     }
-  }
-  function updateMuzzle(dt){
-    for(let i=muzzleFlashes.length-1;i>=0;i--){
-      muzzleFlashes[i].life -= dt*7;
-      if(muzzleFlashes[i].life<=0) muzzleFlashes.splice(i,1);
+
+    h1.game-title {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2.1rem, 5.4vw, 3.8rem);
+      margin: 0;
+      color: var(--toxic);
+      text-shadow: 0 0 18px rgba(32, 234, 255, 0.45), 0 0 2px #000;
+      letter-spacing: 0.03em;
+      line-height: 1;
     }
-  }
-  function drawMuzzle(){
-    for(const m of muzzleFlashes){
-      ctx.save();
-      ctx.globalAlpha = Math.max(0,m.life);
-      const r = 26*(1-m.life)+10;
-      const grad = ctx.createRadialGradient(m.x,m.y,0,m.x,m.y,r);
-      grad.addColorStop(0,'rgba(255,240,200,0.9)');
-      grad.addColorStop(0.4,'rgba(32,234,255,0.5)');
-      grad.addColorStop(1,'rgba(32,234,255,0)');
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(m.x,m.y,r,0,Math.PI*2);
-      ctx.fill();
-      ctx.restore();
+
+    h1.game-title span {
+      color: var(--blood);
+      text-shadow: 0 0 18px rgba(217, 51, 63, 0.55);
     }
-  }
-  function triggerHitFlash(){
-    crosshair.classList.add('hitflash');
-    setTimeout(()=>crosshair.classList.remove('hitflash'), 130);
-  }
-  function triggerRecoil(){
-    crosshair.classList.remove('recoil');
-    void crosshair.offsetWidth;
-    crosshair.classList.add('recoil');
-  }
 
-  function newGameState(){
-    return {
-      hearts: MAX_PLAYER_HP,
-      kills: 0,
-      shotsFired: 0,
-      shotsHit: 0,
-      score: 0,
-      simTime: 0,
-      spawnTimer: 1.8,
-      enemies: [],
-      lanes: shuffle([...LANES]),
-      nextId: 1,
-      spawned: 0,
-      running: true,
-      quizOpen: false,
-      quizCorrect: 0,
-      quizTotal: 0,
-      lastQuestion: null,
-      targetId: null,
-      firing: false,
-      projectiles: [],
-    };
-  }
-
-  function heartsMarkup(n){
-    let html='';
-    for(let i=0;i<MAX_PLAYER_HP;i++){
-      html += HEART_SVG.replace('__COLOR__', i<n ? '#d9333f' : '#3a1013');
+    .subtitle {
+      font-family: 'Share Tech Mono', monospace;
+      color: #9db08e;
+      font-size: 12px;
+      margin-top: 6px;
+      letter-spacing: 0.08em;
     }
-    return html;
-  }
 
-  function fmtTime(t){
-    const m = Math.floor(t/60).toString().padStart(2,'0');
-    const s = Math.floor(t%60).toString().padStart(2,'0');
-    return `${m}:${s}`;
-  }
-
-  function updateHud(){
-    heartsRow.innerHTML = heartsMarkup(state.hearts);
-    scoreVal.textContent = Math.floor(state.score);
-    timerVal.textContent = `เวลา ${fmtTime(state.simTime)}`;
-    targetVal.textContent = `${state.kills} / 5`;
-  }
-
-  function showFlash(text){
-    flashMsg.textContent = text;
-    flashMsg.classList.remove('show');
-    void flashMsg.offsetWidth;
-    flashMsg.classList.add('show');
-  }
-
-  function redFlash(){
-    vignetteRed.classList.add('hit');
-    setTimeout(()=>vignetteRed.classList.remove('hit'), 180);
-  }
-
-  /* ---------- Hostile interceptors ---------- */
-  const LANES = [0.18,0.34,0.5,0.66,0.82];
-
-  function spawnEnemy(){
-    if(state.spawned>=ENEMY_TOTAL) return;
-    const lane = state.lanes[state.spawned];
-    const speedVar = 0.9 + Math.random()*0.2;
-    state.enemies.push({
-      id: state.nextId++,
-      lane,
-      z: 0,
-      dz: (1/14) * speedVar,
-      swayPhase: Math.random()*Math.PI*2,
-      swayAmp: 0.012,
-      hp: 1,
-      dying: 0,
-      alive: true,
-      problem: buildQuestion(),
-    });
-    state.spawned++;
-  }
-
-  function enemyScreenPos(z){
-    const horizonY = H*0.2;
-    const groundY = H*0.86;
-    const y = horizonY + z*(groundY-horizonY);
-    return {y};
-  }
-
-  function enemyBounds(zb){
-    const {y} = enemyScreenPos(zb.z);
-    const sway = Math.sin(state.simTime*1.6 + zb.swayPhase) * zb.swayAmp * (1-zb.z*0.6);
-    const x = W*(zb.lane + sway);
-    const scale = 0.62 + zb.z*1.05;
-    const height = 74*scale;
-    const width = 112*scale;
-    return {x, y, width, height, scale};
-  }
-
-  /* ---------- Rendering (main game) ---------- */
-  function drawBackground(){
-    if(sceneArt.complete && sceneArt.naturalWidth){
-      const scale=Math.max(W/sceneArt.width,H/sceneArt.height),w=sceneArt.width*scale,h=sceneArt.height*scale;
-      ctx.drawImage(sceneArt,(W-w)/2,(H-h)/2,w,h);
-    }else{
-      const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,'#071a31');g.addColorStop(1,'#020711');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    .intro-card {
+      width: min(760px, 92vw);
+      padding: clamp(22px, 4vw, 48px);
+      background: linear-gradient(145deg, #071b31f2, #041125f2);
+      border: 1px solid #20eaff99;
+      box-shadow: 0 0 48px #008ec044, inset 0 0 34px #0788b514;
+      text-align: left;
+      clip-path: polygon(20px 0, 100% 0, 100% calc(100% - 20px), calc(100% - 20px) 100%, 0 100%, 0 20px)
     }
-    ctx.fillStyle='rgba(1,7,18,.2)';ctx.fillRect(0,0,W,H);
-    const vignette=ctx.createRadialGradient(W/2,H/2,H*.2,W/2,H/2,H*.8);
-    vignette.addColorStop(0,'rgba(0,0,0,0)');vignette.addColorStop(1,'rgba(0,0,0,.32)');ctx.fillStyle=vignette;ctx.fillRect(0,0,W,H);
-  }
 
-  function drawEnemy(enemy){
-    const {x,y,width,height}=enemyBounds(enemy);
-    ctx.save();ctx.globalAlpha=Math.min(1,enemy.z*3+.2)*(1-enemy.dying*.75);
-    if(enemyArt.complete && enemyArt.naturalWidth) ctx.drawImage(enemyArt,x-width/2,y-height*.58,width,height);
-    else{ctx.fillStyle='#142b4d';ctx.strokeStyle='#ff426d';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(x,y-height*.65);ctx.lineTo(x+width*.48,y-height*.2);ctx.lineTo(x,y);ctx.lineTo(x-width*.48,y-height*.2);ctx.closePath();ctx.fill();ctx.stroke();}
-    if(state.targetId===enemy.id){
-      const r=width*.57,cy=y-height*.28,c=width*.16;ctx.strokeStyle='#ff426d';ctx.lineWidth=3;ctx.shadowColor='#ff426d';ctx.shadowBlur=14;
-      ctx.beginPath();ctx.moveTo(x-r+c,cy-r);ctx.lineTo(x-r,cy-r);ctx.lineTo(x-r,cy-r+c);ctx.moveTo(x+r-c,cy-r);ctx.lineTo(x+r,cy-r);ctx.lineTo(x+r,cy-r+c);ctx.moveTo(x-r,cy+r-c);ctx.lineTo(x-r,cy+r);ctx.lineTo(x-r+c,cy+r);ctx.moveTo(x+r-c,cy+r);ctx.lineTo(x+r,cy+r);ctx.lineTo(x+r,cy+r-c);ctx.stroke();
+    .intro-card h2 {
+      margin: 0 0 12px;
+      color: var(--toxic);
+      font: 900 clamp(1.7rem, 4vw, 2.5rem) 'Orbitron', sans-serif
     }
-    ctx.restore();
-  }
 
-  function drawEnemies(){
-    [...state.enemies].sort((a,b)=>a.z-b.z).forEach(drawEnemy);
-  }
-
-  function drawPlayer(){
-    const w=Math.min(190,W*.22),h=w*.92,x=(W-w)/2,y=H*.86-h*.48;
-    if(playerArt.complete && playerArt.naturalWidth) ctx.drawImage(playerArt,x,y,w,h);
-    else{ctx.fillStyle='#20eaff';ctx.beginPath();ctx.moveTo(W/2,H*.77);ctx.lineTo(W*.56,H*.9);ctx.lineTo(W/2,H*.87);ctx.lineTo(W*.44,H*.9);ctx.closePath();ctx.fill();}
-  }
-
-  function drawProjectiles(){
-    for(const shot of state.projectiles){
-      ctx.save(); ctx.strokeStyle='#7cf7ff'; ctx.shadowColor='#20eaff'; ctx.shadowBlur=18; ctx.lineWidth=4;
-      ctx.beginPath(); ctx.moveTo(shot.x,shot.y+22); ctx.lineTo(shot.x,shot.y); ctx.stroke();
-      ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(shot.x,shot.y,4,0,Math.PI*2); ctx.fill(); ctx.restore();
+    .intro-card p {
+      margin: 10px 0;
+      color: #d8efff;
+      font-size: clamp(16px, 2vw, 20px);
+      line-height: 1.55
     }
-  }
 
-  /* ---------- Combat ---------- */
-  function tryShoot(){
-    if(state.quizOpen || state.firing) return;
-    let best = null, bestZ = -1;
-    for(const zb of state.enemies){
-      if(zb.dying>0) continue;
-      const b = enemyBounds(zb);
-      const dx = mouseX-b.x, dy = mouseY-(b.y-b.height*0.4);
-      const rx = b.width*0.55, ry = b.height*0.55;
-      const inside = (dx*dx)/(rx*rx) + (dy*dy)/(ry*ry) <= 1;
-      if(inside && zb.z>bestZ){ best = zb; bestZ = zb.z; }
+    .mission-facts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 22px 0;
+      color: #a5eaff;
+      font: 700 12px 'Share Tech Mono', monospace;
+      letter-spacing: .08em
     }
-    if(best) openTargetQuestion(best);
-  }
 
-  canvas.addEventListener('pointerdown', (e)=>{
-    if(e.button!==0 || !e.isPrimary) return;
-    if(!state || !state.running) return;
-    mouseX=e.clientX; mouseY=e.clientY;
-    tryShoot();
-  });
+    .mission-facts span {
+      padding: 9px 12px;
+      border: 1px solid #20eaff55;
+      background: #03142a
+    }
 
-  /* ---------- Target-bound combat quiz ---------- */
-  function openTargetQuestion(target){
-    if(!state || !state.running || target.dying>0) return;
-    state.targetId = target.id;
-    state.quizOpen = true;
-    targetOverlay.classList.remove('hidden');
-    document.getElementById('quizTitle').textContent = `ล็อกเป้าหมาย #${target.id}`;
-    quizFeedback.textContent = 'ASTRA: เลือกคำตอบที่ถูกต้องเพื่อยิง';
-    quizFeedback.className = 'quiz-feedback';
-    nextQuestion(target.problem);
-  }
-  function closeTargetQuestion(){
-    state.quizOpen = false;
-    state.targetId = null;
-    targetOverlay.classList.add('hidden');
-  }
-  function shootTarget(target){
-    const fromX=W/2, fromY=H*.88;
-    state.firing=true; state.targetId=target.id;
-    state.projectiles.push({targetId:target.id,x:fromX,y:fromY,progress:0});
-    muzzleFlashes.push({x:fromX,y:fromY,life:1});
-    triggerRecoil(); sfx.shoot(); shakeMag=Math.min(shakeMag+3.5,8);
-  }
-  function updateProjectiles(dt){
-    for(let i=state.projectiles.length-1;i>=0;i--){
-      const shot=state.projectiles[i]; shot.progress+=dt*4.2;
-      const target=state.enemies.find(z=>z.id===shot.targetId && z.dying===0);
-      if(!target){state.projectiles.splice(i,1);state.firing=false;if(state.targetId===shot.targetId)state.targetId=null;continue;}
-      const b=enemyBounds(target); shot.x=W/2+(b.x-W/2)*Math.min(shot.progress,1); shot.y=H*.88+((b.y-b.height*.4)-H*.88)*Math.min(shot.progress,1);
-      if(shot.progress>=1){
-        target.dying=.001; state.kills++; state.shotsHit++; state.score+=10+Math.floor(target.z*20);
-        sfx.hit(); triggerHitFlash(); shakeMag=Math.min(shakeMag+14,22); hitStopT=.06;
-        spawnParticles(shot.x,shot.y,'#20eaff',18); spawnParticles(shot.x,shot.y,'#ff426d',8);
-        state.projectiles.splice(i,1); state.firing=false; state.targetId=null;
-        showFlash('กำจัดยานศัตรูแล้ว'); updateHud();
+    .briefing-toast {
+      position: absolute;
+      left: 50%;
+      top: 15%;
+      transform: translateX(-50%);
+      z-index: 29;
+      width: min(600px, 90vw);
+      padding: 14px 20px;
+      background: #041327e8;
+      border: 1px solid #20eaff88;
+      box-shadow: 0 0 22px #008ec044;
+      text-align: center;
+      color: #dffaff;
+      animation: briefIn .35s ease-out both;
+      pointer-events: none
+    }
+
+    .briefing-toast strong {
+      display: block;
+      color: var(--toxic);
+      font: 800 12px 'Share Tech Mono', monospace;
+      letter-spacing: .15em;
+      margin-bottom: 4px
+    }
+
+    @keyframes briefIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -10px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translate(-50%, 0)
       }
     }
-  }
 
-  /* --- drag-question interactive state --- */
-  let dragState = { angle:0, dragging:false, locked:false, targetRad:0, targetLabel:'' };
-
-  function angleAtPointer(clientX, clientY){
-    const rect = quizCanvas.getBoundingClientRect();
-    const scaleX = quizCanvas.width/rect.width, scaleY = quizCanvas.height/rect.height;
-    const px = (clientX-rect.left)*scaleX, py = (clientY-rect.top)*scaleY;
-    const cx=130, cy=130;
-    let a = Math.atan2(cy-py, px-cx);
-    if(a<0) a += Math.PI*2;
-    return a;
-  }
-  function angleToXY(angle, cx=130, cy=130, r=92){
-    return { x: cx + r*Math.cos(angle), y: cy - r*Math.sin(angle) };
-  }
-  function qFindSnap(angle){
-    let best=-1, bd=0.18;
-    ALL_ANGLES.forEach((a,i)=>{ const d=angDist(angle,a.rad); if(d<bd){ bd=d; best=i; } });
-    return best;
-  }
-
-  function drawMiniCircleBase(){
-    const cx=130, cy=130, r=92;
-    qctx.clearRect(0,0,260,260);
-    qctx.save();
-    qctx.fillStyle = 'rgba(255,255,255,0.02)';
-    qctx.fillRect(0,0,260,260);
-    qctx.strokeStyle='rgba(255,255,255,0.08)'; qctx.lineWidth=1;
-    qctx.beginPath(); qctx.moveTo(cx-r-14,cy); qctx.lineTo(cx+r+14,cy); qctx.stroke();
-    qctx.beginPath(); qctx.moveTo(cx,cy-r-14); qctx.lineTo(cx,cy+r+14); qctx.stroke();
-
-    cfgQuadrants.forEach(q=>{
-      const [mn,mx] = QUAD_RANGE[q];
-      qctx.beginPath();
-      qctx.moveTo(cx,cy);
-      qctx.arc(cx,cy,r,-mn,-mx,true);
-      qctx.closePath();
-      qctx.fillStyle = 'rgba(32,234,255,0.06)';
-      qctx.fill();
-    });
-
-    qctx.beginPath(); qctx.arc(cx,cy,r,0,Math.PI*2);
-    qctx.strokeStyle='rgba(32,234,255,0.4)'; qctx.lineWidth=1.5; qctx.stroke();
-
-    ALL_ANGLES.forEach(a=>{
-      const active = cfgQuadrants.includes(a.q);
-      const dx=Math.cos(a.rad), dy=-Math.sin(a.rad);
-      qctx.beginPath();
-      qctx.moveTo(cx+(r-6)*dx, cy+(r-6)*dy);
-      qctx.lineTo(cx+(r+4)*dx, cy+(r+4)*dy);
-      qctx.strokeStyle = active ? 'rgba(32,234,255,0.55)' : 'rgba(255,255,255,0.12)';
-      qctx.lineWidth = 1.4;
-      qctx.stroke();
-    });
-    qctx.restore();
-  }
-
-  function drawDiagramCanvas(angleRad){
-    drawMiniCircleBase();
-    const p = angleToXY(angleRad);
-    qctx.save();
-    qctx.shadowColor='#20eaff'; qctx.shadowBlur=14;
-    qctx.beginPath(); qctx.arc(p.x,p.y,7,0,Math.PI*2); qctx.fillStyle='#20eaff'; qctx.fill();
-    qctx.shadowBlur=0;
-    qctx.fillStyle='#20eaff'; qctx.font='700 18px "Share Tech Mono", monospace';
-    qctx.textAlign='center';
-    qctx.fillText('?', p.x, p.y-18);
-    qctx.restore();
-  }
-
-  function drawDragCanvas(){
-    drawMiniCircleBase();
-    const p = angleToXY(dragState.angle);
-    let col = '#20eaff';
-    let snapIdx = qFindSnap(dragState.angle);
-    if(dragState.locked){
-      const snappedLabel = snapIdx>=0 ? ALL_ANGLES[snapIdx].label : null;
-      col = (snappedLabel===dragState.targetLabel) ? '#20eaff' : '#d9333f';
+    .start-btn {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: 0.08em;
+      padding: 13px 44px;
+      background: linear-gradient(180deg, var(--blood), var(--blood-dim));
+      color: #fff0ee;
+      border: 2px solid #ff5f6b;
+      cursor: pointer;
+      clip-path: polygon(14px 0, 100% 0, 100% calc(100% - 14px), calc(100% - 14px) 100%, 0 100%, 0 14px);
+      box-shadow: 0 0 30px rgba(217, 51, 63, 0.45);
+      margin-top: 0.4vh;
     }
-    qctx.save();
-    qctx.shadowColor=col; qctx.shadowBlur=14;
-    qctx.beginPath(); qctx.arc(p.x,p.y,8,0,Math.PI*2); qctx.fillStyle=col; qctx.fill();
-    qctx.shadowBlur=0;
-    qctx.restore();
 
-    if(dragState.locked){
-      const snappedLabel = snapIdx>=0 ? ALL_ANGLES[snapIdx].label : null;
-      if(snappedLabel!==dragState.targetLabel){
-        const tp = angleToXY(dragState.targetRad);
+    .start-btn:hover {
+      filter: brightness(1.15);
+      transform: translateY(-1px);
+    }
+
+    .start-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+      filter: none;
+      transform: none;
+    }
+
+    /* ---------- GAME ---------- */
+    #screen-game {
+      cursor: none;
+      background: radial-gradient(ellipse at 50% 92%, #06284a66, transparent 52%);
+    }
+
+    #gameCanvas {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    #crosshair {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 54px;
+      height: 54px;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      z-index: 50;
+    }
+
+    #crosshair svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 6px #20eaffaa);
+      transition: filter 0.1s;
+    }
+
+    #crosshair.recoil svg {
+      animation: recoilKick 0.14s ease-out;
+    }
+
+    @keyframes recoilKick {
+      0% {
+        transform: scale(0.75) rotate(0deg);
+      }
+
+      45% {
+        transform: scale(1.35) rotate(-4deg);
+      }
+
+      100% {
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    #crosshair.hitflash svg circle:nth-child(1) {
+      stroke: #20eaff;
+    }
+
+    #crosshair.hitflash svg line {
+      stroke: #20eaff;
+    }
+
+    #crosshair.hitflash svg {
+      filter: drop-shadow(0 0 10px rgba(32, 234, 255, 0.9));
+    }
+
+    .hud {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 30;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    .hud-top {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      padding: 2vh 2.4vw 0;
+    }
+
+    .hearts {
+      display: flex;
+      gap: 6px;
+    }
+
+    .heart {
+      width: 26px;
+      height: 24px;
+    }
+
+    .hud-center-top {
+      text-align: center;
+      color: #cfe0c2;
+    }
+
+    .hud-score {
+      font-size: 22px;
+      color: var(--amber);
+      text-shadow: 0 0 8px rgba(32, 234, 255, 0.5);
+    }
+
+    .hud-timer {
+      font-size: 13px;
+      color: #9db08e;
+      margin-top: 2px;
+    }
+
+    .target-box {
+      text-align: right;
+    }
+
+    .target-label {
+      font-size: 11px;
+      color: #93a586;
+      letter-spacing: 0.2em;
+    }
+
+    .target-count {
+      font-size: 26px;
+      color: var(--toxic);
+      text-shadow: 0 0 8px rgba(32, 234, 255, 0.6);
+    }
+
+    .attack-prompt-wrap {
+      position: absolute;
+      bottom: 4vh;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(92vw, 700px);
+      text-align: center;
+      pointer-events: all;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .attack-prompt {
+      pointer-events: none;
+      font: 700 12px 'Share Tech Mono', monospace;
+      letter-spacing: .12em;
+      color: #bceeff;
+      padding: 10px 16px;
+      border: 1px solid #20eaff66;
+      background: #041327dd;
+      box-shadow: 0 0 18px #008ec033;
+    }
+
+    .flash-msg {
+      position: absolute;
+      top: 38%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: min(90vw, 640px);
+      text-align: center;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      font-size: 1.6rem;
+      color: var(--blood);
+      text-shadow: 0 0 16px rgba(217, 51, 63, 0.8);
+      opacity: 0;
+      pointer-events: none;
+      letter-spacing: 0.05em;
+    }
+
+    .flash-msg.show {
+      animation: flashPop 0.7s ease-out;
+    }
+
+    @keyframes flashPop {
+      0% {
+        opacity: 0;
+        transform: translate(-50%, -40%) scale(0.8);
+      }
+
+      20% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1.05);
+      }
+
+      70% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -55%) scale(1);
+      }
+    }
+
+    .vignette-red {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 25;
+      box-shadow: inset 0 0 0 0 rgba(217, 51, 63, 0);
+      transition: box-shadow 0.15s ease;
+    }
+
+    .vignette-red.hit {
+      box-shadow: inset 0 0 160px 40px rgba(217, 51, 63, 0.55);
+    }
+
+    /* ---------- TARGET QUESTION OVERLAY ---------- */
+    #targetOverlay {
+      position: absolute;
+      inset: 0;
+      z-index: 60;
+      background: rgba(2, 8, 20, 0.78);
+      backdrop-filter: blur(5px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: all;
+    }
+
+    .quiz-panel {
+      width: min(640px, 92vw);
+      background: var(--panel);
+      border: 1px solid rgba(32, 234, 255, 0.72);
+      box-shadow: 0 0 50px #008ec044, inset 0 0 24px #0788b514;
+      padding: 2.4vh 3vw;
+      clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px);
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: panelArrive .24s cubic-bezier(.2, .8, .2, 1) both;
+    }
+
+    @keyframes panelArrive {
+      from {
+        opacity: 0;
+        transform: translateY(14px) scale(.98)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .quiz-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.4vh;
+    }
+
+    .quiz-title {
+      font-family: 'Orbitron', sans-serif;
+      color: var(--toxic);
+      font-size: 1.05rem;
+      letter-spacing: 0.06em;
+    }
+
+    .quiz-sub {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 11px;
+      color: #93a586;
+    }
+
+    .quiz-question {
+      font-size: 1.35rem;
+      text-align: center;
+      margin: 1vh 0 1.6vh;
+      color: #eef5e6;
+    }
+
+    .quiz-question .theta {
+      color: var(--toxic);
+      font-weight: 700;
+    }
+
+    .quiz-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .opt-btn {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 15px;
+      padding: 12px 10px;
+      background: rgba(32, 234, 255, 0.05);
+      border: 1.5px solid rgba(32, 234, 255, 0.42);
+      color: #dfe9d6;
+      cursor: pointer;
+    }
+
+    .opt-btn:hover,
+    .opt-btn:focus-visible {
+      border-color: var(--toxic);
+      background: rgba(32, 234, 255, 0.16);
+      outline: 2px solid #20eaff88;
+      outline-offset: 2px;
+    }
+
+    .opt-btn.correct {
+      background: rgba(32, 234, 255, 0.35);
+      border-color: var(--toxic);
+      color: #08170a;
+    }
+
+    .opt-btn.wrong {
+      background: rgba(217, 51, 63, 0.35);
+      border-color: var(--blood);
+      color: #1c0507;
+    }
+
+    .opt-btn:disabled {
+      cursor: default;
+    }
+
+    .quiz-canvas-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 1.6vh;
+    }
+
+    #quizCanvas {
+      width: 230px;
+      height: 230px;
+      background: rgba(0, 12, 28, 0.7);
+      border: 1px solid rgba(32, 234, 255, 0.4);
+      border-radius: 10px;
+      touch-action: none;
+    }
+
+    .quiz-canvas-hint {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      color: #20eaff;
+      min-height: 14px;
+    }
+
+    .quiz-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1.6vh;
+    }
+
+    .quiz-stats {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 12px;
+      color: #8a9c7d;
+    }
+
+    #resumeBtn {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      padding: 10px 22px;
+      background: linear-gradient(180deg, var(--toxic), var(--toxic-dim));
+      color: #07130a;
+      border: none;
+      cursor: pointer;
+      clip-path: polygon(8px 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%, 0 8px);
+    }
+
+    #resumeBtn:hover {
+      filter: brightness(1.1);
+    }
+
+    .quiz-feedback {
+      text-align: center;
+      font-size: 13px;
+      height: auto;
+      min-height: 16px;
+      margin-top: 8px;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    .quiz-feedback.ok {
+      color: var(--toxic);
+    }
+
+    .quiz-feedback.bad {
+      color: var(--blood);
+    }
+
+    .thai-ui {
+      font-family: 'Leelawadee UI', Tahoma, sans-serif;
+      letter-spacing: normal
+    }
+
+    .quiz-feedback,
+    .quiz-question,
+    .flash-msg,
+    .go-title,
+    .stat-k {
+      font-family: 'Leelawadee UI', Tahoma, sans-serif;
+      letter-spacing: normal
+    }
+
+    /* ---------- GAME OVER ---------- */
+    #screen-gameover {
+      background: radial-gradient(ellipse at 50% 30%, rgba(255, 66, 109, 0.15), transparent 60%), #030814;
+      gap: 1.4vh;
+    }
+
+    .go-title {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 900;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--blood);
+      text-shadow: 0 0 24px rgba(217, 51, 63, 0.6);
+      letter-spacing: 0.04em;
+    }
+
+    .go-title.success {
+      color: var(--toxic);
+      text-shadow: 0 0 24px #20eaff99
+    }
+
+    .stats-panel {
+      background: var(--panel);
+      border: 1px solid rgba(217, 51, 63, 0.3);
+      padding: 2.4vh 3vw;
+      width: min(480px, 88vw);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2vh 2vw;
+      font-family: 'Share Tech Mono', monospace;
+    }
+
+    .stat-line {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .stat-k {
+      font-size: 11px;
+      color: #8a9c7d;
+      letter-spacing: 0.1em;
+    }
+
+    .stat-v {
+      font-size: 20px;
+      color: var(--toxic);
+    }
+
+    .retry-btn {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 800;
+      font-size: 1.1rem;
+      letter-spacing: 0.06em;
+      padding: 12px 36px;
+      margin-top: 1vh;
+      background: linear-gradient(180deg, var(--amber), #b57310);
+      color: #1c1204;
+      border: 2px solid #ffd27a;
+      cursor: pointer;
+      clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+    }
+
+    .retry-btn:hover {
+      filter: brightness(1.1);
+    }
+
+    .story-screen {
+      isolation: isolate;
+      color: #effaff;
+      background: #020814;
+      overflow: hidden
+    }
+
+    .story-art {
+      position: absolute;
+      z-index: -1;
+      inset: 0;
+      background-image: linear-gradient(180deg, #02081455 0%, #02081412 36%, #02081450 62%, #020814dc 100%), var(--story-art);
+      background-position: center;
+      background-size: cover
+    }
+
+    .story-screen::after {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      inset: 0;
+      pointer-events: none;
+      background: url("assets/ui-console-frame.png") center/100% 100% no-repeat
+    }
+
+    .story-brand,
+    .story-route,
+    .story-caption,
+    .story-next {
+      position: absolute;
+      z-index: 4
+    }
+
+    .story-brand {
+      top: 4%;
+      left: 4%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-shadow: 0 2px 8px #001
+    }
+
+    .story-brand img {
+      width: 34px;
+      height: 34px;
+      filter: drop-shadow(0 0 8px #27eaff88)
+    }
+
+    .story-brand span {
+      display: grid;
+      gap: 3px
+    }
+
+    .story-brand b {
+      font: 900 12px 'Share Tech Mono', monospace;
+      letter-spacing: .1em
+    }
+
+    .story-brand small {
+      color: #ffc64d;
+      font: 700 7px 'Share Tech Mono', monospace;
+      letter-spacing: .22em
+    }
+
+    .story-route {
+      top: 5%;
+      right: 5%;
+      color: #bdeaf4;
+      font: 800 9px 'Share Tech Mono', monospace;
+      letter-spacing: .14em;
+      text-shadow: 0 2px 8px #001
+    }
+
+    .story-caption {
+      left: 50%;
+      bottom: 23%;
+      transform: translateX(-50%);
+      width: min(1120px, 82vw);
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      padding: 17px 24px;
+      border: 1px solid #40e9ff;
+      background: linear-gradient(100deg, #041525f2, #08283bf0 52%, #041525f2);
+      box-shadow: 0 0 0 5px #062338b8, inset 0 0 26px #2deaff19, 0 0 30px #20dfff36
+    }
+
+    .story-caption::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 3px;
+      background: #ffc64d;
+      box-shadow: 0 0 14px #ffd27b99
+    }
+
+    .story-mark {
+      flex: 0 0 72px;
+      display: grid;
+      place-items: center;
+      height: 62px;
+      border-right: 1px solid #49e8f77a;
+      color: #55efff;
+      font: 48px/1 'Share Tech Mono', monospace;
+      text-shadow: 0 0 16px #27eaffaa
+    }
+
+    .story-caption>div {
+      min-width: 0
+    }
+
+    .story-caption small {
+      color: #ffc64d;
+      font: 800 8px 'Share Tech Mono', monospace;
+      letter-spacing: .18em
+    }
+
+    .story-caption h2 {
+      margin: 4px 0;
+      color: #f1fbff;
+      font: 900 clamp(16px, 1.7vw, 24px) 'Orbitron', sans-serif;
+      letter-spacing: .03em
+    }
+
+    .story-caption p {
+      margin: 0;
+      color: #d4eaf1;
+      font: 600 clamp(13px, 1.1vw, 17px)/1.55 'Rajdhani', sans-serif
+    }
+
+    .story-next {
+      left: 50%;
+      bottom: 16%;
+      transform: translateX(-50%);
+      width: min(290px, 70vw);
+      min-height: 60px;
+      border: 1px solid #69f5ff;
+      background: linear-gradient(100deg, #087d94, #09c8d5 50%, #087d94);
+      box-shadow: 0 0 0 5px #062338b8, 0 0 24px #27d9ed88, inset 0 0 14px #a4ffff30;
+      color: #f4fdff;
+      font: 900 18px 'Orbitron', sans-serif;
+      letter-spacing: .08em;
+      cursor: pointer
+    }
+
+    .story-next:hover {
+      filter: brightness(1.16)
+    }
+
+    .story-next:focus-visible {
+      outline: 3px solid #fff;
+      outline-offset: 5px
+    }
+
+    @media(max-width:650px) {
+      .story-brand {
+        top: 3%;
+        left: 6%;
+        gap: 6px
+      }
+
+      .story-brand img {
+        width: 26px;
+        height: 26px
+      }
+
+      .story-brand b {
+        font-size: 9px
+      }
+
+      .story-brand small {
+        font-size: 6px
+      }
+
+      .story-route {
+        top: 4%;
+        right: 7%;
+        max-width: 38vw;
+        text-align: right;
+        font-size: 7px;
+        line-height: 1.6
+      }
+
+      .story-caption {
+        bottom: 25%;
+        width: calc(100vw - 34px);
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px 13px
+      }
+
+      .story-mark {
+        flex-basis: 38px;
+        height: 46px;
+        font-size: 30px
+      }
+
+      .story-caption small {
+        font-size: 7px
+      }
+
+      .story-caption h2 {
+        font-size: 15px
+      }
+
+      .story-caption p {
+        font-size: 12px;
+        line-height: 1.45
+      }
+
+      .story-next {
+        bottom: 16%;
+        min-height: 48px;
+        width: min(250px, 68vw);
+        font-size: 15px
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .tutorial-screen {
+      isolation: isolate;
+      overflow: hidden;
+      background: linear-gradient(90deg, #031022df, #031022b8), url('assets/minigame-intercept-intro.webp') center/cover;
+      padding: 5vh 6vw;
+      color: #effaff
+    }
+
+    .tutorial-screen::after {
+      content: '';
+      position: absolute;
+      z-index: 2;
+      inset: 0;
+      pointer-events: none;
+      background: url('assets/ui-console-frame.png') center/100% 100% no-repeat
+    }
+
+    .tutorial-layout {
+      position: relative;
+      z-index: 1;
+      width: min(1100px, 100%);
+      height: min(650px, 90vh);
+      display: grid;
+      grid-template-columns: minmax(180px, 32%) 1fr;
+      align-items: end;
+      gap: clamp(16px, 3vw, 42px)
+    }
+
+    .tutorial-astra {
+      height: 100%;
+      background: url('assets/visual-novel-character-trio.png') center bottom/300% auto no-repeat;
+      filter: drop-shadow(0 10px 18px #0009)
+    }
+
+    .tutorial-content {
+      align-self: center;
+      padding: clamp(20px, 3vw, 36px);
+      background: #041629ed;
+      border: 1px solid #4eeaff;
+      box-shadow: 0 10px 35px #0008, inset 0 0 30px #16c6ee16
+    }
+
+    .tutorial-progress {
+      color: #71e9f6;
+      font: 700 12px 'Share Tech Mono', monospace;
+      letter-spacing: .12em
+    }
+
+    .tutorial-content h2 {
+      font: 700 clamp(22px, 3vw, 36px) 'Leelawadee UI', Tahoma, sans-serif;
+      margin: 12px 0;
+      color: #fff
+    }
+
+    .tutorial-content p {
+      font: 600 clamp(16px, 1.6vw, 20px)/1.6 'Leelawadee UI', Tahoma, sans-serif;
+      margin: 0 0 16px
+    }
+
+    .tutorial-demo {
+      min-height: 106px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding: 14px;
+      background: #071f35;
+      border: 1px solid #287a91
+    }
+
+    .tutorial-demo img {
+      width: 76px;
+      height: 65px;
+      object-fit: contain
+    }
+
+    .tutorial-demo strong {
+      font-size: 22px;
+      color: #8ff5ff
+    }
+
+    .tutorial-demo button,
+    .tutorial-actions button {
+      cursor: pointer;
+      color: #efffff;
+      background: #07455c;
+      border: 1px solid #61eaff;
+      padding: 10px 18px;
+      font: 700 16px 'Leelawadee UI', Tahoma, sans-serif
+    }
+
+    .tutorial-demo button:hover,
+    .tutorial-actions button:hover {
+      background: #0a7387
+    }
+
+    .tutorial-demo button:focus-visible,
+    .tutorial-actions button:focus-visible {
+      outline: 3px solid white;
+      outline-offset: 3px
+    }
+
+    .tutorial-feedback {
+      width: 100%;
+      color: #ffe28b;
+      font-size: 15px
+    }
+
+    .tutorial-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 20px
+    }
+
+    .tutorial-actions .tutorial-skip {
+      background: transparent;
+      border-color: #6993a1
+    }
+
+    @media(max-width:650px) {
+      .tutorial-screen {
+        padding: 12px
+      }
+
+      .tutorial-layout {
+        height: 100%;
+        grid-template-columns: 1fr;
+        grid-template-rows: minmax(90px, 25vh) auto;
+        gap: 0;
+        align-content: center
+      }
+
+      .tutorial-astra {
+        background-size: auto 100%;
+        background-position: center
+      }
+
+      .tutorial-content {
+        padding: 16px;
+        max-height: 70vh;
+        overflow: auto
+      }
+
+      .tutorial-content h2 {
+        font-size: 21px;
+        margin: 6px 0
+      }
+
+      .tutorial-content p {
+        font-size: 15px;
+        line-height: 1.45;
+        margin-bottom: 10px
+      }
+
+      .tutorial-demo {
+        min-height: 75px;
+        padding: 9px
+      }
+
+      .tutorial-demo img {
+        width: 54px;
+        height: 45px
+      }
+
+      .tutorial-actions {
+        margin-top: 12px
+      }
+
+      .tutorial-actions button,
+      .tutorial-demo button {
+        font-size: 14px;
+        padding: 8px 12px
+      }
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--toxic-dim);
+    }
+  </style>
+  <link rel="stylesheet" href="assets/orbit-interface.css">
+  <link rel="stylesheet" href="assets/minigame-tutorial.css">
+</head>
+
+<body>
+  <div id="app">
+
+    <!-- ================= MENU ================= -->
+    <div id="screen-menu" class="screen">
+      <div class="title-wrap">
+        <div class="kicker">ASTRA FLIGHT SYSTEMS · EMERGENCY INTERCEPT</div>
+        <h1 class="game-title">ORBITAL <span>INTERCEPT</span></h1>
+        <div class="subtitle">A FIVE-TARGET TRIGONOMETRY DEFENSE MISSION</div>
+      </div>
+
+      <div class="intro-card">
+        <div class="kicker">MISSION BRIEF · ASTRA</div>
+        <h2>HELIOS ESCORT UNDER ATTACK</h2>
+        <p>“Hostile interceptors have breached the convoy route. Each craft carries a trigonometry lock. Solve its
+          signal to fire, and stop all five before they reach your ship.”</p>
+        <div class="mission-facts"><span>♥ 3 HULL</span><span>✦ 5 INTERCEPTORS</span><span>TRIG ANSWER TO FIRE</span>
+        </div>
+        <button class="start-btn" id="startBtn">START INTERCEPT</button>
+      </div>
+    </div>
+
+    <div id="screen-story" class="screen story-screen hidden" role="dialog" aria-modal="true"
+      aria-labelledby="storyTitle">
+      <div id="storyArt" class="story-art" aria-hidden="true"></div>
+      <div class="story-brand"><img src="assets/favicon.svg" alt=""><span><b>ORBIT DEFENDER</b><small>DEGREE
+            PROTOCOL</small></span></div>
+      <small id="storyRoute" class="story-route"></small>
+      <div class="story-caption"><span class="story-mark" aria-hidden="true">⌖</span>
+        <div><small id="storyKicker"></small>
+          <h2 id="storyTitle"></h2>
+          <p id="storyCopy"></p>
+        </div>
+      </div>
+      <button id="storyNext" class="story-next" type="button">NEXT »</button>
+    </div>
+
+
+    <div id="screen-tutorial" class="screen tutorial-screen hidden" role="dialog" aria-modal="true"
+      aria-labelledby="tutorialTitle">
+      <div class="tutorial-layout">
+        <div class="tutorial-astra" role="img" aria-label="ASTRA ผู้ช่วยประจำยาน"></div>
+        <div class="tutorial-content">
+          <div id="tutorialProgress" class="tutorial-progress"></div>
+          <h2 id="tutorialTitle"></h2>
+          <p id="tutorialCopy"></p>
+          <div id="tutorialDemo" class="tutorial-demo"></div>
+          <div class="tutorial-actions"><button id="tutorialSkip" class="tutorial-skip"
+              type="button">ข้ามบทสอน</button><button id="tutorialNext" type="button">ถัดไป →</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= GAME ================= -->
+    <div id="screen-game" class="screen hidden">
+      <canvas id="gameCanvas"></canvas>
+      <div class="vignette-red" id="vignetteRed"></div>
+
+      <div class="hud">
+        <div class="hud-top">
+          <div class="hearts" id="heartsRow"></div>
+          <div class="hud-center-top">
+            <div class="hud-score" id="scoreVal">0</div>
+            <div class="hud-timer thai-ui" id="timerVal">เวลา 00:00</div>
+          </div>
+          <div class="target-box">
+            <div class="target-label thai-ui">กำจัดศัตรู</div>
+            <div class="target-count" id="targetVal">—</div>
+          </div>
+        </div>
+
+        <div class="attack-prompt-wrap attack-prompt thai-ui">คลิกยานศัตรูเพื่อล็อกเป้า · ตอบถูกเพื่อยิง</div>
+
+        <div class="flash-msg" id="flashMsg"></div>
+      </div>
+      <div class="briefing-toast hidden thai-ui" id="briefingToast"><strong>ASTRA ·
+          ตรวจพบยานศัตรู</strong>ตอบโจทย์ตรีโกณมิติเพื่อยิงสกัด รักษาความทนทานของยาน 3 หน่วย และกำจัดเป้าหมายทั้ง 5
+        ลำให้ครบ</div>
+
+      <div id="crosshair">
+        <svg viewBox="0 0 54 54">
+          <circle cx="27" cy="27" r="16" fill="none" stroke="#20eaff" stroke-width="1.6" opacity="0.8" />
+          <line x1="27" y1="2" x2="27" y2="14" stroke="#20eaff" stroke-width="2" />
+          <line x1="27" y1="40" x2="27" y2="52" stroke="#20eaff" stroke-width="2" />
+          <line x1="2" y1="27" x2="14" y2="27" stroke="#20eaff" stroke-width="2" />
+          <line x1="40" y1="27" x2="52" y2="27" stroke="#20eaff" stroke-width="2" />
+          <circle cx="27" cy="27" r="1.6" fill="#20eaff" />
+        </svg>
+      </div>
+
+      <div id="targetOverlay" class="hidden">
+        <div class="quiz-panel">
+          <div class="quiz-head">
+            <div class="quiz-title thai-ui" id="quizTitle">ล็อกเป้าหมายแล้ว</div>
+            <div class="quiz-sub thai-ui">ASTRA · เลือกคำตอบเพื่อยิง</div>
+          </div>
+          <div class="quiz-question thai-ui" id="quizQuestion">เมื่อ θ = <span class="theta">π/4</span> เลือก (cos θ,
+            sin θ) ที่ถูกต้อง</div>
+
+          <div class="quiz-canvas-wrap hidden" id="quizCanvasWrap">
+            <canvas id="quizCanvas" width="260" height="260"></canvas>
+            <div class="quiz-canvas-hint" id="quizCanvasHint"></div>
+          </div>
+
+          <div class="quiz-options" id="quizOptions"></div>
+          <div class="quiz-feedback" id="quizFeedback"></div>
+          <div class="quiz-footer">
+            <div class="quiz-stats thai-ui" id="quizStats">ตอบถูก 0/0 ข้อ</div>
+            <button id="resumeBtn" class="thai-ui">ยกเลิกการล็อกเป้า</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= GAME OVER ================= -->
+    <div id="screen-gameover" class="screen hidden">
+      <div class="go-title thai-ui" id="goTitle">ภารกิจล้มเหลว</div>
+      <div class="stats-panel">
+        <div class="stat-line">
+          <div class="stat-k">เวลาที่ใช้</div>
+          <div class="stat-v" id="goTime">00:00</div>
+        </div>
+        <div class="stat-line">
+          <div class="stat-k">ยานที่สกัดได้</div>
+          <div class="stat-v" id="goKills">0 / 5</div>
+        </div>
+        <div class="stat-line">
+          <div class="stat-k">คะแนน</div>
+          <div class="stat-v" id="goScore">0</div>
+        </div>
+        <div class="stat-line">
+          <div class="stat-k">ความแม่นยำการยิง</div>
+          <div class="stat-v" id="goAcc">0%</div>
+        </div>
+        <div class="stat-line">
+          <div class="stat-k">ความแม่นยำตรีโกณมิติ</div>
+          <div class="stat-v" id="goQuiz">0%</div>
+        </div>
+        <div class="stat-line">
+          <div class="stat-k">สถิติดีที่สุด</div>
+          <div class="stat-v" id="goBest">00:00</div>
+        </div>
+      </div>
+      <button class="retry-btn thai-ui" id="retryBtn">เล่นอีกครั้ง</button>
+    </div>
+
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      /* ---------------- ANGLE DATA (from the referenced unit-circle designs) ---------------- */
+      const ANGLES = {
+        1: [
+          { label: '0', cos: '1', sin: '0', cosV: 1, sinV: 0, rad: 0 },
+          { label: 'π/6', cos: '√3/2', sin: '1/2', cosV: 0.866, sinV: 0.5, rad: Math.PI / 6 },
+          { label: 'π/4', cos: '√2/2', sin: '√2/2', cosV: 0.707, sinV: 0.707, rad: Math.PI / 4 },
+          { label: 'π/3', cos: '1/2', sin: '√3/2', cosV: 0.5, sinV: 0.866, rad: Math.PI / 3 },
+          { label: 'π/2', cos: '0', sin: '1', cosV: 0, sinV: 1, rad: Math.PI / 2 },
+        ],
+        2: [
+          { label: '2π/3', cos: '-1/2', sin: '√3/2', cosV: -0.5, sinV: 0.866, rad: 2 * Math.PI / 3 },
+          { label: '3π/4', cos: '-√2/2', sin: '√2/2', cosV: -0.707, sinV: 0.707, rad: 3 * Math.PI / 4 },
+          { label: '5π/6', cos: '-√3/2', sin: '1/2', cosV: -0.866, sinV: 0.5, rad: 5 * Math.PI / 6 },
+          { label: 'π', cos: '-1', sin: '0', cosV: -1, sinV: 0, rad: Math.PI },
+        ],
+        3: [
+          { label: '7π/6', cos: '-√3/2', sin: '-1/2', cosV: -0.866, sinV: -0.5, rad: 7 * Math.PI / 6 },
+          { label: '5π/4', cos: '-√2/2', sin: '-√2/2', cosV: -0.707, sinV: -0.707, rad: 5 * Math.PI / 4 },
+          { label: '4π/3', cos: '-1/2', sin: '-√3/2', cosV: -0.5, sinV: -0.866, rad: 4 * Math.PI / 3 },
+          { label: '3π/2', cos: '0', sin: '-1', cosV: 0, sinV: -1, rad: 3 * Math.PI / 2 },
+        ],
+        4: [
+          { label: '5π/3', cos: '1/2', sin: '-√3/2', cosV: 0.5, sinV: -0.866, rad: 5 * Math.PI / 3 },
+          { label: '7π/4', cos: '√2/2', sin: '-√2/2', cosV: 0.707, sinV: -0.707, rad: 7 * Math.PI / 4 },
+          { label: '11π/6', cos: '√3/2', sin: '-1/2', cosV: 0.866, sinV: -0.5, rad: 11 * Math.PI / 6 },
+          { label: '2π', cos: '1', sin: '0', cosV: 1, sinV: 0, rad: 2 * Math.PI },
+        ],
+      };
+      const ALL_ANGLES = [];
+      Object.keys(ANGLES).forEach(k => { ANGLES[k].forEach(a => ALL_ANGLES.push({ ...a, q: Number(k) })); });
+      const QUAD_RANGE = { 1: [0, Math.PI / 2], 2: [Math.PI / 2, Math.PI], 3: [Math.PI, 3 * Math.PI / 2], 4: [3 * Math.PI / 2, 2 * Math.PI] };
+      const ENEMY_TOTAL = 5, MAX_PLAYER_HP = 3;
+      const params = new URLSearchParams(location.search);
+      const completedLevel = Math.max(1, Number(params.get('level')) || 1);
+      const unit = params.get('unit') === 'degree' ? 'degree' : 'radian';
+      const completedQuadrants = completedLevel < 2 ? [1] : completedLevel < 3 ? [1, 2] : [1, 2, 3, 4];
+      const displayAngle = label => unit === 'degree' ? ({ '0': '0°', 'π/6': '30°', 'π/4': '45°', 'π/3': '60°', 'π/2': '90°', '2π/3': '120°', '3π/4': '135°', '5π/6': '150°', 'π': '180°', '7π/6': '210°', '5π/4': '225°', '4π/3': '240°', '3π/2': '270°', '5π/3': '300°', '7π/4': '315°', '11π/6': '330°', '2π': '360°' }[label] || label) : label;
+
+      function flipSign(s) {
+        if (s === '0') return '0';
+        return s.startsWith('-') ? s.slice(1) : ('-' + s);
+      }
+      function pairStr(c, s) { return `(${c}, ${s})`; }
+      function angDist(a, b) { let d = Math.abs(a - b); if (d > Math.PI) d = Math.PI * 2 - d; return d; }
+
+      /* ---------------- Question builders ---------------- */
+      function buildPool() {
+        const p = [];
+        completedQuadrants.forEach(q => ANGLES[q].forEach(a => p.push(a)));
+        return p;
+      }
+
+      function buildPairQuestion(pool) {
+        const correct = pool[Math.floor(Math.random() * pool.length)];
+        const correctStr = pairStr(correct.cos, correct.sin);
+        const set = new Set([correctStr]);
+        const options = [correctStr];
+        const candidates = [
+          pairStr(flipSign(correct.cos), correct.sin),
+          pairStr(correct.cos, flipSign(correct.sin)),
+          pairStr(correct.sin, correct.cos),
+        ];
+        const others = pool.filter(a => pairStr(a.cos, a.sin) !== correctStr);
+        if (others.length) {
+          const r = others[Math.floor(Math.random() * others.length)];
+          candidates.push(pairStr(r.cos, r.sin));
+        }
+        for (const c of candidates) {
+          if (options.length >= 4) break;
+          if (!set.has(c)) { set.add(c); options.push(c); }
+        }
+        let guard = 0;
+        while (options.length < 4 && guard < 50) {
+          guard++;
+          const r = pool[Math.floor(Math.random() * pool.length)];
+          const f = pairStr(flipSign(r.cos), flipSign(r.sin));
+          if (!set.has(f)) { set.add(f); options.push(f); }
+        }
+        shuffle(options);
+        return { type: 'pair', angleLabel: displayAngle(correct.label), correctStr, options };
+      }
+
+      function buildSingleQuestion(pool) {
+        const correct = pool[Math.floor(Math.random() * pool.length)];
+        const askCos = Math.random() < 0.5;
+        const correctVal = askCos ? correct.cos : correct.sin;
+        const otherFn = askCos ? correct.sin : correct.cos;
+        const flipped = flipSign(correctVal);
+        const others = pool.filter(a => a !== correct);
+        const refPick = others.length ? others[Math.floor(Math.random() * others.length)] : correct;
+        const refVal = askCos ? refPick.cos : refPick.sin;
+
+        const set = new Set([correctVal]);
+        const options = [correctVal];
+        [flipped, otherFn, refVal, flipSign(otherFn)].forEach(c => {
+          if (options.length < 4 && !set.has(c)) { set.add(c); options.push(c); }
+        });
+        let guard = 0;
+        while (options.length < 4 && guard < 50) {
+          guard++;
+          const r = pool[Math.floor(Math.random() * pool.length)];
+          const v = flipSign(askCos ? r.cos : r.sin);
+          if (!set.has(v)) { set.add(v); options.push(v); }
+        }
+        shuffle(options);
+        return { type: 'single', angleLabel: displayAngle(correct.label), askCos, correctStr: correctVal, options };
+      }
+
+      function buildDiagramQuestion(pool) {
+        const correct = pool[Math.floor(Math.random() * pool.length)];
+        const set = new Set([correct.label]);
+        const options = [correct.label];
+        const others = pool.filter(a => a.label !== correct.label);
+        shuffle(others);
+        for (const o of others) {
+          if (options.length >= 4) break;
+          if (!set.has(o.label)) { set.add(o.label); options.push(o.label); }
+        }
+        shuffle(options);
+        return { type: 'diagram', angleRad: correct.rad, correctLabel: displayAngle(correct.label), options: options.map(displayAngle) };
+      }
+
+      function buildDragQuestion(pool) {
+        const correct = pool[Math.floor(Math.random() * pool.length)];
+        return { type: 'drag', targetLabel: correct.label, displayLabel: displayAngle(correct.label), targetRad: correct.rad };
+      }
+
+      function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+      }
+
+      function buildQuestion() {
+        const pool = buildPool();
+        const questionTypes = ['pair', 'single', 'diagram', 'drag'];
+        const type = questionTypes[Math.floor(Math.random() * questionTypes.length)];
+        if (type === 'pair') return buildPairQuestion(pool);
+        if (type === 'single') return buildSingleQuestion(pool);
+        if (type === 'diagram') return buildDiagramQuestion(pool);
+        return buildDragQuestion(pool);
+      }
+
+      /* ---------------- AUDIO (tiny synthesized SFX, no assets) ---------------- */
+      let actx = null;
+      function ac() { if (!actx) { try { actx = new (window.AudioContext || window.webkitAudioContext)(); } catch (e) { } } return actx; }
+      function beep(freq, dur, type, gainVal, glide) {
+        const A = ac(); if (!A) return;
+        const osc = A.createOscillator();
+        const gain = A.createGain();
+        osc.type = type || 'square';
+        osc.frequency.setValueAtTime(freq, A.currentTime);
+        if (glide) osc.frequency.exponentialRampToValueAtTime(Math.max(30, freq + glide), A.currentTime + dur);
+        gain.gain.setValueAtTime(gainVal || 0.08, A.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, A.currentTime + dur);
+        osc.connect(gain); gain.connect(A.destination);
+        osc.start(); osc.stop(A.currentTime + dur);
+      }
+      const sfx = {
+        shoot: () => { beep(200, 0.07, 'square', 0.1, -140); beep(70, 0.05, 'square', 0.05, -30); },
+        hit: () => { beep(380, 0.1, 'sawtooth', 0.11, 260); setTimeout(() => beep(95, 0.16, 'square', 0.13, -60), 18); },
+        heartLoss: () => beep(120, 0.35, 'sawtooth', 0.12, -60),
+        correct: () => beep(520, 0.14, 'triangle', 0.1, 260),
+        wrong: () => beep(140, 0.22, 'square', 0.1, -40),
+      };
+
+      /* ---------------- DOM refs ---------------- */
+      const screenMenu = document.getElementById('screen-menu');
+      const screenGame = document.getElementById('screen-game');
+      const screenOver = document.getElementById('screen-gameover');
+      const screenStory = document.getElementById('screen-story');
+      const storyArt = document.getElementById('storyArt');
+      const storyRoute = document.getElementById('storyRoute');
+      const storyKicker = document.getElementById('storyKicker');
+      const storyTitle = document.getElementById('storyTitle');
+      const storyCopy = document.getElementById('storyCopy');
+      const storyNext = document.getElementById('storyNext');
+      const canvas = document.getElementById('gameCanvas');
+      const ctx = canvas.getContext('2d');
+      const sceneArt = new Image(); sceneArt.src = 'assets/orbital-intercept-bg.webp';
+      const enemyArt = new Image(); enemyArt.src = 'assets/interceptor-enemy.webp';
+      const playerArt = new Image(); playerArt.src = 'assets/interceptor-player.webp';
+      const crosshair = document.getElementById('crosshair');
+      const heartsRow = document.getElementById('heartsRow');
+      const scoreVal = document.getElementById('scoreVal');
+      const timerVal = document.getElementById('timerVal');
+      const targetVal = document.getElementById('targetVal');
+      const briefingToast = document.getElementById('briefingToast');
+      const flashMsg = document.getElementById('flashMsg');
+      const vignetteRed = document.getElementById('vignetteRed');
+      const targetOverlay = document.getElementById('targetOverlay');
+      const quizQuestion = document.getElementById('quizQuestion');
+      const quizOptions = document.getElementById('quizOptions');
+      const quizFeedback = document.getElementById('quizFeedback');
+      const quizStats = document.getElementById('quizStats');
+      const quizCanvasWrap = document.getElementById('quizCanvasWrap');
+      const quizCanvas = document.getElementById('quizCanvas');
+      const quizCanvasHint = document.getElementById('quizCanvasHint');
+      const qctx = quizCanvas.getContext('2d');
+      const resumeBtn = document.getElementById('resumeBtn');
+      const startBtn = document.getElementById('startBtn');
+      const retryBtn = document.getElementById('retryBtn');
+
+      function showCampaignStory(result = null) {
+        const intro = !result, success = result?.success, passedAll = result?.score >= 0 && state.kills === ENEMY_TOTAL;
+        storyArt.style.setProperty('--story-art', `url("assets/minigame-intercept-${intro ? 'intro' : 'outro'}.webp")`);
+        storyRoute.textContent = `STARFALL ROUTE · LEVEL ${String(Number(params.get('level')) || 1).padStart(2, '0')} · ORBITAL INTERCEPT`;
+        storyKicker.textContent = intro ? 'ENEMY INCOMING · FIVE HOSTILES' : success ? 'INTERCEPT COMPLETE · ROUTE CLEAR' : 'INTERCEPT REPORT · ROUTE NOT SECURED';
+        storyTitle.textContent = intro ? 'ฝูงยานศัตรูปิดเส้นทาง' : success ? 'เส้นทางข้างหน้าเปิดแล้ว' : 'การสกัดกั้นยังไม่สมบูรณ์';
+        storyCopy.textContent = intro ? 'ระหว่างเดินทาง ยานลาดตระเวน Null Armada เข้ามาขัดขวางเส้นทางของ STARFALL เลือกคำตอบตรีโกณมิติให้ถูกต้องเพื่อยิงสกัดพวกมันให้ครบทั้งห้าลำ' : success ? 'ยานลาดตระเวน Null Armada ถูกกำจัดแล้ว เส้นทางข้างหน้าเปิดโล่งสำหรับการเดินทางต่อ' : 'ยังมียานศัตรูหลบหนีไปได้ค่ะ เราจะเดินทางต่อโดยเปิดระบบเฝ้าระวังไว้';
+        if (!intro && !success && passedAll) storyCopy.textContent = 'เรากำจัดยานศัตรูได้ครบแล้ว แต่ความแม่นยำของคำตอบยังไม่ถึงเกณฑ์ยืนยันเส้นทาง เราจะเดินทางต่อโดยเปิดระบบเฝ้าระวังไว้';
+        storyNext.textContent = intro ? 'เรียนรู้วิธีสกัด ↗' : window.parent === window ? 'ดูผลภารกิจ ↗' : 'ไปยังด่านถัดไป ↗';
+        storyNext.onclick = () => { if (intro) { screenStory.classList.add('hidden'); showTutorial(); } else if (window.parent !== window) { parent.postMessage(result, '*'); } else { screenStory.classList.add('hidden'); screenOver.classList.remove('hidden'); } };
+        screenMenu.classList.add('hidden'); screenGame.classList.add('hidden'); screenOver.classList.add('hidden'); screenStory.classList.remove('hidden'); storyNext.focus();
+      }
+
+      const tutorialScreen = document.getElementById('screen-tutorial');
+      const tutorialNext = document.getElementById('tutorialNext');
+      const tutorialDemo = document.getElementById('tutorialDemo');
+      let tutorialStep = 0;
+      function beginIntercept() {
+        tutorialScreen.classList.add('hidden');
+        if (timedIntermission && window.parent !== window) parent.postMessage({ type: 'orbit-minigame-start' }, '*');
+        startGame();
+      }
+      function showTutorial() {
+        tutorialStep = 0;
+        screenMenu.classList.add('hidden');
+        tutorialScreen.classList.remove('hidden');
+        renderTutorial();
+      }
+      function renderTutorial() {
+        const steps = [
+          ['เลือกยานที่ต้องการสกัด', 'ASTRA: คลิกหรือแตะยานศัตรูเพื่อเปิดโจทย์ประจำยาน เวลาจะเดินช้าลงระหว่างที่คุณคิดคำตอบค่ะ', '<img src="assets/interceptor-enemy.webp" alt="ยานศัตรู"><strong>แตะยาน → เปิดโจทย์</strong>'],
+          ['ลองตอบโจทย์ตัวอย่าง', 'ASTRA: เลือกคำตอบที่ถูกต้องเพื่อยิง ลองหาค่า sin 30° กันก่อนนะคะ', '<strong>sin 30° = ?</strong><button type="button" data-answer="wrong">√3/2</button><button type="button" data-answer="correct">1/2</button><span class="tutorial-feedback" aria-live="polite"></span>'],
+          ['พร้อมออกสกัด', 'ASTRA: ตอบผิดดูเฉลยแล้วลองใหม่ได้ แต่ยานยังเคลื่อนที่อยู่ หากศัตรูฝ่าเข้ามา HP จะลด สกัดให้ครบ 5 ลำและตอบให้แม่นยำอย่างน้อย 70% ค่ะ', '<img src="assets/interceptor-player.webp" alt="ยานผู้เล่น"><strong>3 HP · 5 เป้าหมาย · 70% ความแม่นยำ</strong>']
+        ];
+        const [title, copy, demo] = steps[tutorialStep];
+        document.getElementById('tutorialProgress').textContent = `ASTRA · บทสอน ${tutorialStep + 1} / ${steps.length}`;
+        document.getElementById('tutorialTitle').textContent = title;
+        document.getElementById('tutorialCopy').textContent = copy;
+        tutorialDemo.innerHTML = demo;
+        tutorialNext.textContent = tutorialStep === steps.length - 1 ? 'เริ่มภารกิจ →' : 'ถัดไป →';
+        tutorialDemo.querySelectorAll('[data-answer]').forEach(button => button.addEventListener('click', () => {
+          tutorialDemo.querySelector('.tutorial-feedback').textContent = button.dataset.answer === 'correct' ? 'ถูกต้อง! sin 30° = 1/2 · ยิงสกัดสำเร็จ' : 'ยังไม่ถูก ลองอีกครั้ง: sin 30° = 1/2';
+        }));
+        tutorialNext.focus();
+      }
+      tutorialNext.addEventListener('click', () => { if (tutorialStep < 2) { tutorialStep++; renderTutorial(); } else beginIntercept(); });
+      document.getElementById('tutorialSkip').addEventListener('click', beginIntercept);
+
+      const HEART_SVG = `<svg class="heart" viewBox="0 0 32 29" xmlns="http://www.w3.org/2000/svg"><path d="M16 28.5S1 19 1 9.6C1 4.6 4.9 1 9.4 1c2.9 0 5.4 1.5 6.6 3.9C17.2 2.5 19.7 1 22.6 1 27.1 1 31 4.6 31 9.6 31 19 16 28.5 16 28.5Z" fill="__COLOR__" stroke="#3a0507" stroke-width="1.3"/></svg>`;
+
+      /* ---------------- Menu selection state ---------------- */
+      const cfgQuadrants = completedQuadrants;
+
+      /* ---------------- Game state ---------------- */
+      let W = 0, H = 0;
+      function resize() {
+        W = canvas.width = window.innerWidth;
+        H = canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+
+      let mouseX = 0, mouseY = 0;
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX; mouseY = e.clientY;
+        crosshair.style.transform = `translate(${mouseX}px, ${mouseY}px) translate(-50%,-50%)`;
+      });
+
+      let state = null;
+      let bestTime = 0;
+
+      /* ---------- Impact FX state ---------- */
+      let shakeMag = 0;
+      let hitStopT = 0;
+      let particles = [];
+      let muzzleFlashes = [];
+
+      function spawnParticles(x, y, color, count) {
+        for (let i = 0; i < count; i++) {
+          const a = Math.random() * Math.PI * 2;
+          const sp = 60 + Math.random() * 220;
+          particles.push({
+            x, y,
+            vx: Math.cos(a) * sp,
+            vy: Math.sin(a) * sp - 40,
+            life: 1,
+            dec: 1.4 + Math.random() * 0.8,
+            color,
+            size: 2.5 + Math.random() * 3.5,
+          });
+        }
+      }
+      function updateParticles(dt) {
+        for (let i = particles.length - 1; i >= 0; i--) {
+          const p = particles[i];
+          p.x += p.vx * dt;
+          p.y += p.vy * dt;
+          p.vy += 260 * dt;
+          p.life -= p.dec * dt;
+          if (p.life <= 0) particles.splice(i, 1);
+        }
+      }
+      function drawParticles() {
+        for (const p of particles) {
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, p.life);
+          ctx.fillStyle = p.color;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+      function updateMuzzle(dt) {
+        for (let i = muzzleFlashes.length - 1; i >= 0; i--) {
+          muzzleFlashes[i].life -= dt * 7;
+          if (muzzleFlashes[i].life <= 0) muzzleFlashes.splice(i, 1);
+        }
+      }
+      function drawMuzzle() {
+        for (const m of muzzleFlashes) {
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, m.life);
+          const r = 26 * (1 - m.life) + 10;
+          const grad = ctx.createRadialGradient(m.x, m.y, 0, m.x, m.y, r);
+          grad.addColorStop(0, 'rgba(255,240,200,0.9)');
+          grad.addColorStop(0.4, 'rgba(32,234,255,0.5)');
+          grad.addColorStop(1, 'rgba(32,234,255,0)');
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(m.x, m.y, r, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+      function triggerHitFlash() {
+        crosshair.classList.add('hitflash');
+        setTimeout(() => crosshair.classList.remove('hitflash'), 130);
+      }
+      function triggerRecoil() {
+        crosshair.classList.remove('recoil');
+        void crosshair.offsetWidth;
+        crosshair.classList.add('recoil');
+      }
+
+      function newGameState() {
+        return {
+          hearts: MAX_PLAYER_HP,
+          kills: 0,
+          shotsFired: 0,
+          shotsHit: 0,
+          score: 0,
+          simTime: 0,
+          spawnTimer: 1.8,
+          enemies: [],
+          lanes: shuffle([...LANES]),
+          nextId: 1,
+          spawned: 0,
+          running: true,
+          quizOpen: false,
+          quizCorrect: 0,
+          quizTotal: 0,
+          lastQuestion: null,
+          targetId: null,
+          firing: false,
+          projectiles: [],
+        };
+      }
+
+      function heartsMarkup(n) {
+        let html = '';
+        for (let i = 0; i < MAX_PLAYER_HP; i++) {
+          html += HEART_SVG.replace('__COLOR__', i < n ? '#d9333f' : '#3a1013');
+        }
+        return html;
+      }
+
+      function fmtTime(t) {
+        const m = Math.floor(t / 60).toString().padStart(2, '0');
+        const s = Math.floor(t % 60).toString().padStart(2, '0');
+        return `${m}:${s}`;
+      }
+
+      function updateHud() {
+        heartsRow.innerHTML = heartsMarkup(state.hearts);
+        scoreVal.textContent = Math.floor(state.score);
+        timerVal.textContent = `เวลา ${fmtTime(state.simTime)}`;
+        targetVal.textContent = `${state.kills} / 5`;
+      }
+
+      function showFlash(text) {
+        flashMsg.textContent = text;
+        flashMsg.classList.remove('show');
+        void flashMsg.offsetWidth;
+        flashMsg.classList.add('show');
+      }
+
+      function redFlash() {
+        vignetteRed.classList.add('hit');
+        setTimeout(() => vignetteRed.classList.remove('hit'), 180);
+      }
+
+      /* ---------- Hostile interceptors ---------- */
+      const LANES = [0.18, 0.34, 0.5, 0.66, 0.82];
+
+      function spawnEnemy() {
+        if (state.spawned >= ENEMY_TOTAL) return;
+        const lane = state.lanes[state.spawned];
+        const speedVar = 0.9 + Math.random() * 0.2;
+        state.enemies.push({
+          id: state.nextId++,
+          lane,
+          z: 0,
+          dz: (1 / 14) * speedVar,
+          swayPhase: Math.random() * Math.PI * 2,
+          swayAmp: 0.012,
+          hp: 1,
+          dying: 0,
+          alive: true,
+          problem: buildQuestion(),
+        });
+        state.spawned++;
+      }
+
+      function enemyScreenPos(z) {
+        const horizonY = H * 0.2;
+        const groundY = H * 0.86;
+        const y = horizonY + z * (groundY - horizonY);
+        return { y };
+      }
+
+      function enemyBounds(zb) {
+        const { y } = enemyScreenPos(zb.z);
+        const sway = Math.sin(state.simTime * 1.6 + zb.swayPhase) * zb.swayAmp * (1 - zb.z * 0.6);
+        const x = W * (zb.lane + sway);
+        const scale = 0.62 + zb.z * 1.05;
+        const height = 74 * scale;
+        const width = 112 * scale;
+        return { x, y, width, height, scale };
+      }
+
+      /* ---------- Rendering (main game) ---------- */
+      function drawBackground() {
+        if (sceneArt.complete && sceneArt.naturalWidth) {
+          const scale = Math.max(W / sceneArt.width, H / sceneArt.height), w = sceneArt.width * scale, h = sceneArt.height * scale;
+          ctx.drawImage(sceneArt, (W - w) / 2, (H - h) / 2, w, h);
+        } else {
+          const g = ctx.createLinearGradient(0, 0, 0, H); g.addColorStop(0, '#071a31'); g.addColorStop(1, '#020711'); ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+        }
+        ctx.fillStyle = 'rgba(1,7,18,.2)'; ctx.fillRect(0, 0, W, H);
+        const vignette = ctx.createRadialGradient(W / 2, H / 2, H * .2, W / 2, H / 2, H * .8);
+        vignette.addColorStop(0, 'rgba(0,0,0,0)'); vignette.addColorStop(1, 'rgba(0,0,0,.32)'); ctx.fillStyle = vignette; ctx.fillRect(0, 0, W, H);
+      }
+
+      function drawEnemy(enemy) {
+        const { x, y, width, height } = enemyBounds(enemy);
+        ctx.save(); ctx.globalAlpha = Math.min(1, enemy.z * 3 + .2) * (1 - enemy.dying * .75);
+        if (enemyArt.complete && enemyArt.naturalWidth) ctx.drawImage(enemyArt, x - width / 2, y - height * .58, width, height);
+        else { ctx.fillStyle = '#142b4d'; ctx.strokeStyle = '#ff426d'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(x, y - height * .65); ctx.lineTo(x + width * .48, y - height * .2); ctx.lineTo(x, y); ctx.lineTo(x - width * .48, y - height * .2); ctx.closePath(); ctx.fill(); ctx.stroke(); }
+        if (state.targetId === enemy.id) {
+          const r = width * .57, cy = y - height * .28, c = width * .16; ctx.strokeStyle = '#ff426d'; ctx.lineWidth = 3; ctx.shadowColor = '#ff426d'; ctx.shadowBlur = 14;
+          ctx.beginPath(); ctx.moveTo(x - r + c, cy - r); ctx.lineTo(x - r, cy - r); ctx.lineTo(x - r, cy - r + c); ctx.moveTo(x + r - c, cy - r); ctx.lineTo(x + r, cy - r); ctx.lineTo(x + r, cy - r + c); ctx.moveTo(x - r, cy + r - c); ctx.lineTo(x - r, cy + r); ctx.lineTo(x - r + c, cy + r); ctx.moveTo(x + r - c, cy + r); ctx.lineTo(x + r, cy + r); ctx.lineTo(x + r, cy + r - c); ctx.stroke();
+        }
+        ctx.restore();
+      }
+
+      function drawEnemies() {
+        [...state.enemies].sort((a, b) => a.z - b.z).forEach(drawEnemy);
+      }
+
+      function drawPlayer() {
+        const w = Math.min(190, W * .22), h = w * .92, x = (W - w) / 2, y = H * .86 - h * .48;
+        if (playerArt.complete && playerArt.naturalWidth) ctx.drawImage(playerArt, x, y, w, h);
+        else { ctx.fillStyle = '#20eaff'; ctx.beginPath(); ctx.moveTo(W / 2, H * .77); ctx.lineTo(W * .56, H * .9); ctx.lineTo(W / 2, H * .87); ctx.lineTo(W * .44, H * .9); ctx.closePath(); ctx.fill(); }
+      }
+
+      function drawProjectiles() {
+        for (const shot of state.projectiles) {
+          ctx.save(); ctx.strokeStyle = '#7cf7ff'; ctx.shadowColor = '#20eaff'; ctx.shadowBlur = 18; ctx.lineWidth = 4;
+          ctx.beginPath(); ctx.moveTo(shot.x, shot.y + 22); ctx.lineTo(shot.x, shot.y); ctx.stroke();
+          ctx.fillStyle = '#fff'; ctx.beginPath(); ctx.arc(shot.x, shot.y, 4, 0, Math.PI * 2); ctx.fill(); ctx.restore();
+        }
+      }
+
+      /* ---------- Combat ---------- */
+      function tryShoot() {
+        if (state.quizOpen || state.firing) return;
+        let best = null, bestZ = -1;
+        for (const zb of state.enemies) {
+          if (zb.dying > 0) continue;
+          const b = enemyBounds(zb);
+          const dx = mouseX - b.x, dy = mouseY - (b.y - b.height * 0.4);
+          const rx = b.width * 0.55, ry = b.height * 0.55;
+          const inside = (dx * dx) / (rx * rx) + (dy * dy) / (ry * ry) <= 1;
+          if (inside && zb.z > bestZ) { best = zb; bestZ = zb.z; }
+        }
+        if (best) openTargetQuestion(best);
+      }
+
+      canvas.addEventListener('pointerdown', (e) => {
+        if (e.button !== 0 || !e.isPrimary) return;
+        if (!state || !state.running) return;
+        mouseX = e.clientX; mouseY = e.clientY;
+        tryShoot();
+      });
+
+      /* ---------- Target-bound combat quiz ---------- */
+      function openTargetQuestion(target) {
+        if (!state || !state.running || target.dying > 0) return;
+        state.targetId = target.id;
+        state.quizOpen = true;
+        targetOverlay.classList.remove('hidden');
+        document.getElementById('quizTitle').textContent = `ล็อกเป้าหมาย #${target.id}`;
+        quizFeedback.textContent = 'ASTRA: เลือกคำตอบที่ถูกต้องเพื่อยิง';
+        quizFeedback.className = 'quiz-feedback';
+        nextQuestion(target.problem);
+      }
+      function closeTargetQuestion() {
+        state.quizOpen = false;
+        state.targetId = null;
+        targetOverlay.classList.add('hidden');
+      }
+      function shootTarget(target) {
+        const fromX = W / 2, fromY = H * .88;
+        state.firing = true; state.targetId = target.id;
+        state.projectiles.push({ targetId: target.id, x: fromX, y: fromY, progress: 0 });
+        muzzleFlashes.push({ x: fromX, y: fromY, life: 1 });
+        triggerRecoil(); sfx.shoot(); shakeMag = Math.min(shakeMag + 3.5, 8);
+      }
+      function updateProjectiles(dt) {
+        for (let i = state.projectiles.length - 1; i >= 0; i--) {
+          const shot = state.projectiles[i]; shot.progress += dt * 4.2;
+          const target = state.enemies.find(z => z.id === shot.targetId && z.dying === 0);
+          if (!target) { state.projectiles.splice(i, 1); state.firing = false; if (state.targetId === shot.targetId) state.targetId = null; continue; }
+          const b = enemyBounds(target); shot.x = W / 2 + (b.x - W / 2) * Math.min(shot.progress, 1); shot.y = H * .88 + ((b.y - b.height * .4) - H * .88) * Math.min(shot.progress, 1);
+          if (shot.progress >= 1) {
+            target.dying = .001; state.kills++; state.shotsHit++; state.score += 10 + Math.floor(target.z * 20);
+            sfx.hit(); triggerHitFlash(); shakeMag = Math.min(shakeMag + 14, 22); hitStopT = .06;
+            spawnParticles(shot.x, shot.y, '#20eaff', 18); spawnParticles(shot.x, shot.y, '#ff426d', 8);
+            state.projectiles.splice(i, 1); state.firing = false; state.targetId = null;
+            showFlash('กำจัดยานศัตรูแล้ว'); updateHud();
+          }
+        }
+      }
+
+      /* --- drag-question interactive state --- */
+      let dragState = { angle: 0, dragging: false, locked: false, targetRad: 0, targetLabel: '' };
+
+      function angleAtPointer(clientX, clientY) {
+        const rect = quizCanvas.getBoundingClientRect();
+        const scaleX = quizCanvas.width / rect.width, scaleY = quizCanvas.height / rect.height;
+        const px = (clientX - rect.left) * scaleX, py = (clientY - rect.top) * scaleY;
+        const cx = 130, cy = 130;
+        let a = Math.atan2(cy - py, px - cx);
+        if (a < 0) a += Math.PI * 2;
+        return a;
+      }
+      function angleToXY(angle, cx = 130, cy = 130, r = 92) {
+        return { x: cx + r * Math.cos(angle), y: cy - r * Math.sin(angle) };
+      }
+      function qFindSnap(angle) {
+        let best = -1, bd = 0.18;
+        ALL_ANGLES.forEach((a, i) => { const d = angDist(angle, a.rad); if (d < bd) { bd = d; best = i; } });
+        return best;
+      }
+
+      function drawMiniCircleBase() {
+        const cx = 130, cy = 130, r = 92;
+        qctx.clearRect(0, 0, 260, 260);
         qctx.save();
-        qctx.beginPath(); qctx.arc(tp.x,tp.y,9,0,Math.PI*2);
-        qctx.strokeStyle='#20eaff'; qctx.lineWidth=2.4; qctx.stroke();
-        qctx.fillStyle='#20eaff'; qctx.font='700 12px "Share Tech Mono",monospace'; qctx.textAlign='center';
-        qctx.fillText(displayAngle(dragState.targetLabel), tp.x, tp.y-15);
+        qctx.fillStyle = 'rgba(255,255,255,0.02)';
+        qctx.fillRect(0, 0, 260, 260);
+        qctx.strokeStyle = 'rgba(255,255,255,0.08)'; qctx.lineWidth = 1;
+        qctx.beginPath(); qctx.moveTo(cx - r - 14, cy); qctx.lineTo(cx + r + 14, cy); qctx.stroke();
+        qctx.beginPath(); qctx.moveTo(cx, cy - r - 14); qctx.lineTo(cx, cy + r + 14); qctx.stroke();
+
+        cfgQuadrants.forEach(q => {
+          const [mn, mx] = QUAD_RANGE[q];
+          qctx.beginPath();
+          qctx.moveTo(cx, cy);
+          qctx.arc(cx, cy, r, -mn, -mx, true);
+          qctx.closePath();
+          qctx.fillStyle = 'rgba(32,234,255,0.06)';
+          qctx.fill();
+        });
+
+        qctx.beginPath(); qctx.arc(cx, cy, r, 0, Math.PI * 2);
+        qctx.strokeStyle = 'rgba(32,234,255,0.4)'; qctx.lineWidth = 1.5; qctx.stroke();
+
+        ALL_ANGLES.forEach(a => {
+          const active = cfgQuadrants.includes(a.q);
+          const dx = Math.cos(a.rad), dy = -Math.sin(a.rad);
+          qctx.beginPath();
+          qctx.moveTo(cx + (r - 6) * dx, cy + (r - 6) * dy);
+          qctx.lineTo(cx + (r + 4) * dx, cy + (r + 4) * dy);
+          qctx.strokeStyle = active ? 'rgba(32,234,255,0.55)' : 'rgba(255,255,255,0.12)';
+          qctx.lineWidth = 1.4;
+          qctx.stroke();
+        });
         qctx.restore();
       }
-      quizCanvasHint.textContent = '';
-    } else {
-      // FIX: Hide hint while dragging so the answer isn't leaked
-      quizCanvasHint.textContent = 'ลากจุดไปรอบวงกลมเพื่อเลือกมุม';
-    }
-  }
 
-  function onQuizPointerDown(e){
-    if(!state || !state.quizOpen) return;
-    if(!state.lastQuestion || state.lastQuestion.type!=='drag') return;
-    if(dragState.locked) return;
-    dragState.dragging = true;
-    dragState.angle = angleAtPointer(e.clientX, e.clientY);
-    drawDragCanvas();
-    e.preventDefault();
-  }
-  function onQuizPointerMove(e){
-    if(!dragState.dragging || dragState.locked) return;
-    dragState.angle = angleAtPointer(e.clientX, e.clientY);
-    drawDragCanvas();
-  }
-  function onQuizPointerUp(e){
-    if(!dragState.dragging || dragState.locked) return;
-    dragState.dragging = false;
-    dragState.locked = true;
-    drawDragCanvas();
-    const snapIdx = qFindSnap(dragState.angle);
-    const snappedLabel = snapIdx>=0 ? ALL_ANGLES[snapIdx].label : null;
-    const correct = snappedLabel === dragState.targetLabel;
-    finishAnswer(correct, displayAngle(dragState.targetLabel));
-  }
-  quizCanvas.addEventListener('pointerdown', onQuizPointerDown);
-  window.addEventListener('pointermove', onQuizPointerMove);
-  window.addEventListener('pointerup', onQuizPointerUp);
+      function drawDiagramCanvas(angleRad) {
+        drawMiniCircleBase();
+        const p = angleToXY(angleRad);
+        qctx.save();
+        qctx.shadowColor = '#20eaff'; qctx.shadowBlur = 14;
+        qctx.beginPath(); qctx.arc(p.x, p.y, 7, 0, Math.PI * 2); qctx.fillStyle = '#20eaff'; qctx.fill();
+        qctx.shadowBlur = 0;
+        qctx.fillStyle = '#20eaff'; qctx.font = '700 18px "Share Tech Mono", monospace';
+        qctx.textAlign = 'center';
+        qctx.fillText('?', p.x, p.y - 18);
+        qctx.restore();
+      }
 
-  function renderMCOptions(options, correctVal){
-    quizOptions.innerHTML = '';
-    options.forEach(opt=>{
-      const btn = document.createElement('button');
-      btn.className = 'opt-btn';
-      btn.textContent = opt;
-      btn.addEventListener('click', ()=>{
-        [...quizOptions.children].forEach(b=>{
-          b.disabled = true;
-          if(b.textContent===correctVal) b.classList.add('correct');
-          else if(b===btn) b.classList.add('wrong');
+      function drawDragCanvas() {
+        drawMiniCircleBase();
+        const p = angleToXY(dragState.angle);
+        let col = '#20eaff';
+        let snapIdx = qFindSnap(dragState.angle);
+        if (dragState.locked) {
+          const snappedLabel = snapIdx >= 0 ? ALL_ANGLES[snapIdx].label : null;
+          col = (snappedLabel === dragState.targetLabel) ? '#20eaff' : '#d9333f';
+        }
+        qctx.save();
+        qctx.shadowColor = col; qctx.shadowBlur = 14;
+        qctx.beginPath(); qctx.arc(p.x, p.y, 8, 0, Math.PI * 2); qctx.fillStyle = col; qctx.fill();
+        qctx.shadowBlur = 0;
+        qctx.restore();
+
+        if (dragState.locked) {
+          const snappedLabel = snapIdx >= 0 ? ALL_ANGLES[snapIdx].label : null;
+          if (snappedLabel !== dragState.targetLabel) {
+            const tp = angleToXY(dragState.targetRad);
+            qctx.save();
+            qctx.beginPath(); qctx.arc(tp.x, tp.y, 9, 0, Math.PI * 2);
+            qctx.strokeStyle = '#20eaff'; qctx.lineWidth = 2.4; qctx.stroke();
+            qctx.fillStyle = '#20eaff'; qctx.font = '700 12px "Share Tech Mono",monospace'; qctx.textAlign = 'center';
+            qctx.fillText(displayAngle(dragState.targetLabel), tp.x, tp.y - 15);
+            qctx.restore();
+          }
+          quizCanvasHint.textContent = '';
+        } else {
+          // FIX: Hide hint while dragging so the answer isn't leaked
+          quizCanvasHint.textContent = 'ลากจุดไปรอบวงกลมเพื่อเลือกมุม';
+        }
+      }
+
+      function onQuizPointerDown(e) {
+        if (!state || !state.quizOpen) return;
+        if (!state.lastQuestion || state.lastQuestion.type !== 'drag') return;
+        if (dragState.locked) return;
+        dragState.dragging = true;
+        dragState.angle = angleAtPointer(e.clientX, e.clientY);
+        drawDragCanvas();
+        e.preventDefault();
+      }
+      function onQuizPointerMove(e) {
+        if (!dragState.dragging || dragState.locked) return;
+        dragState.angle = angleAtPointer(e.clientX, e.clientY);
+        drawDragCanvas();
+      }
+      function onQuizPointerUp(e) {
+        if (!dragState.dragging || dragState.locked) return;
+        dragState.dragging = false;
+        dragState.locked = true;
+        drawDragCanvas();
+        const snapIdx = qFindSnap(dragState.angle);
+        const snappedLabel = snapIdx >= 0 ? ALL_ANGLES[snapIdx].label : null;
+        const correct = snappedLabel === dragState.targetLabel;
+        finishAnswer(correct, displayAngle(dragState.targetLabel));
+      }
+      quizCanvas.addEventListener('pointerdown', onQuizPointerDown);
+      window.addEventListener('pointermove', onQuizPointerMove);
+      window.addEventListener('pointerup', onQuizPointerUp);
+
+      function renderMCOptions(options, correctVal) {
+        quizOptions.innerHTML = '';
+        options.forEach(opt => {
+          const btn = document.createElement('button');
+          btn.className = 'opt-btn';
+          btn.textContent = opt;
+          btn.addEventListener('click', () => {
+            [...quizOptions.children].forEach(b => {
+              b.disabled = true;
+              if (b.textContent === correctVal) b.classList.add('correct');
+              else if (b === btn) b.classList.add('wrong');
+            });
+            finishAnswer(opt === correctVal, correctVal);
+          });
+          quizOptions.appendChild(btn);
         });
-        finishAnswer(opt===correctVal, correctVal);
+        quizOptions.querySelector('button')?.focus({ preventScroll: true });
+      }
+
+      function nextQuestion(q = buildQuestion()) {
+        state.lastQuestion = q;
+        quizFeedback.textContent = '';
+        quizFeedback.className = 'quiz-feedback';
+        quizStats.textContent = `ตอบถูก ${state.quizCorrect}/${state.quizTotal} ข้อ`;
+
+        quizCanvasWrap.classList.add('hidden');
+        quizOptions.classList.remove('hidden');
+        quizOptions.innerHTML = '';
+
+        if (q.type === 'pair') {
+          quizQuestion.innerHTML = `เมื่อ θ = <span class="theta">${q.angleLabel}</span> เลือก (cos θ, sin θ) ที่ถูกต้อง`;
+          renderMCOptions(q.options, q.correctStr);
+        } else if (q.type === 'single') {
+          quizQuestion.innerHTML = `${q.askCos ? 'cos' : 'sin'} θ เมื่อ θ = <span class="theta">${q.angleLabel}</span> มีค่าเท่าใด?`;
+          renderMCOptions(q.options, q.correctStr);
+        } else if (q.type === 'diagram') {
+          quizQuestion.innerHTML = 'จุดที่ทำเครื่องหมายตรงกับมุมใด?';
+          quizCanvasWrap.classList.remove('hidden');
+          quizCanvas.style.cursor = 'default';
+          drawDiagramCanvas(q.angleRad);
+          renderMCOptions(q.options, q.correctLabel);
+        } else if (q.type === 'drag') {
+          quizQuestion.innerHTML = `ลากจุดไปยังมุม θ = <span class="theta">${q.displayLabel}</span>`;
+          quizCanvasWrap.classList.remove('hidden');
+          quizOptions.classList.add('hidden');
+          quizCanvas.style.cursor = 'grab';
+          dragState = { angle: 0, dragging: false, locked: false, targetRad: q.targetRad, targetLabel: q.targetLabel };
+          drawDragCanvas();
+        }
+      }
+
+      function finishAnswer(correct, correctDisplay) {
+        state.quizTotal++;
+        state.shotsFired++;
+        if (correct) {
+          state.quizCorrect++;
+          quizFeedback.textContent = 'ตอบถูก · ยิงสกัดแล้ว';
+          quizFeedback.className = 'quiz-feedback ok';
+          sfx.correct();
+          const target = state.enemies.find(z => z.id === state.targetId && z.dying === 0);
+          setTimeout(() => { if (target && target.alive) { closeTargetQuestion(); shootTarget(target); } }, 280);
+        } else {
+          quizFeedback.textContent = `ยังไม่ถูก · คำตอบที่ถูกคือ ${correctDisplay}`;
+          quizFeedback.className = 'quiz-feedback bad';
+          sfx.wrong();
+        }
+        quizStats.textContent = `ตอบถูก ${state.quizCorrect}/${state.quizTotal} ข้อ`;
+        updateHud();
+        setTimeout(() => {
+          if (!state.quizOpen || correct) return;
+          const target = state.enemies.find(z => z.id === state.targetId && z.dying === 0);
+          if (target) nextQuestion(target.problem);
+        }, 1100);
+      }
+
+      resumeBtn.addEventListener('click', closeTargetQuestion);
+
+      window.addEventListener('keydown', (e) => {
+        if (e.code === 'Escape' && state && state.quizOpen) closeTargetQuestion();
       });
-      quizOptions.appendChild(btn);
-    });
-    quizOptions.querySelector('button')?.focus({preventScroll:true});
-  }
 
-  function nextQuestion(q=buildQuestion()){
-    state.lastQuestion = q;
-    quizFeedback.textContent = '';
-    quizFeedback.className = 'quiz-feedback';
-    quizStats.textContent = `ตอบถูก ${state.quizCorrect}/${state.quizTotal} ข้อ`;
+      /* ---------- Main loop ---------- */
+      let lastTs = null;
+      function loop(ts) {
+        if (!state || !state.running) { return; }
+        if (lastTs === null) lastTs = ts;
+        let rawDt = (ts - lastTs) / 1000;
+        lastTs = ts;
+        rawDt = Math.min(rawDt, 0.05);
 
-    quizCanvasWrap.classList.add('hidden');
-    quizOptions.classList.remove('hidden');
-    quizOptions.innerHTML = '';
+        const timeScale = state.quizOpen ? 0.18 : 1;
+        const hitStopScale = hitStopT > 0 ? 0.05 : 1;
+        const dt = rawDt * timeScale * hitStopScale;
 
-    if(q.type==='pair'){
-      quizQuestion.innerHTML = `เมื่อ θ = <span class="theta">${q.angleLabel}</span> เลือก (cos θ, sin θ) ที่ถูกต้อง`;
-      renderMCOptions(q.options, q.correctStr);
-    } else if(q.type==='single'){
-      quizQuestion.innerHTML = `${q.askCos?'cos':'sin'} θ เมื่อ θ = <span class="theta">${q.angleLabel}</span> มีค่าเท่าใด?`;
-      renderMCOptions(q.options, q.correctStr);
-    } else if(q.type==='diagram'){
-      quizQuestion.innerHTML = 'จุดที่ทำเครื่องหมายตรงกับมุมใด?';
-      quizCanvasWrap.classList.remove('hidden');
-      quizCanvas.style.cursor = 'default';
-      drawDiagramCanvas(q.angleRad);
-      renderMCOptions(q.options, q.correctLabel);
-    } else if(q.type==='drag'){
-      quizQuestion.innerHTML = `ลากจุดไปยังมุม θ = <span class="theta">${q.displayLabel}</span>`;
-      quizCanvasWrap.classList.remove('hidden');
-      quizOptions.classList.add('hidden');
-      quizCanvas.style.cursor = 'grab';
-      dragState = { angle:0, dragging:false, locked:false, targetRad:q.targetRad, targetLabel:q.targetLabel };
-      drawDragCanvas();
-    }
-  }
+        hitStopT = Math.max(0, hitStopT - rawDt);
+        shakeMag = Math.max(0, shakeMag - rawDt * 40);
 
-  function finishAnswer(correct, correctDisplay){
-    state.quizTotal++;
-    state.shotsFired++;
-    if(correct){
-      state.quizCorrect++;
-      quizFeedback.textContent = 'ตอบถูก · ยิงสกัดแล้ว';
-      quizFeedback.className = 'quiz-feedback ok';
-      sfx.correct();
-      const target=state.enemies.find(z=>z.id===state.targetId && z.dying===0);
-      setTimeout(()=>{if(target && target.alive){closeTargetQuestion();shootTarget(target);}},280);
-    } else {
-      quizFeedback.textContent = `ยังไม่ถูก · คำตอบที่ถูกคือ ${correctDisplay}`;
-      quizFeedback.className = 'quiz-feedback bad';
-      sfx.wrong();
-    }
-    quizStats.textContent = `ตอบถูก ${state.quizCorrect}/${state.quizTotal} ข้อ`;
-    updateHud();
-    setTimeout(()=>{
-      if(!state.quizOpen || correct) return;
-      const target=state.enemies.find(z=>z.id===state.targetId && z.dying===0);
-      if(target) nextQuestion(target.problem);
-    }, 1100);
-  }
+        state.simTime += dt;
+        state.score += dt * 1.5;
 
-  resumeBtn.addEventListener('click', closeTargetQuestion);
+        const spawnInterval = 1.8;
+        state.spawnTimer += dt;
+        if (state.spawnTimer >= spawnInterval && state.spawned < ENEMY_TOTAL) {
+          state.spawnTimer = 0;
+          spawnEnemy();
+        }
 
-  window.addEventListener('keydown', (e)=>{
-    if(e.code==='Escape' && state && state.quizOpen) closeTargetQuestion();
-  });
+        for (const zb of state.enemies) {
+          if (zb.dying > 0) {
+            zb.dying += rawDt * 4;
+            continue;
+          }
+          zb.z += zb.dz * dt;
+          if (zb.z >= 1) {
+            if (state.targetId === zb.id) closeTargetQuestion();
+            zb.alive = false;
+            state.hearts--;
+            redFlash();
+            sfx.heartLoss();
+            showFlash('ศัตรูฝ่าแนวป้องกันแล้ว!');
+          }
+        }
+        state.enemies = state.enemies.filter(zb => zb.alive && zb.dying < 1);
 
-  /* ---------- Main loop ---------- */
-  let lastTs = null;
-  function loop(ts){
-    if(!state || !state.running){ return; }
-    if(lastTs===null) lastTs = ts;
-    let rawDt = (ts-lastTs)/1000;
-    lastTs = ts;
-    rawDt = Math.min(rawDt, 0.05);
+        updateParticles(rawDt);
+        updateMuzzle(rawDt);
+        updateHud();
 
-    const timeScale = state.quizOpen ? 0.18 : 1;
-    const hitStopScale = hitStopT>0 ? 0.05 : 1;
-    const dt = rawDt * timeScale * hitStopScale;
+        ctx.clearRect(0, 0, W, H);
+        ctx.save();
+        const shakeX = (Math.random() - 0.5) * shakeMag;
+        const shakeY = (Math.random() - 0.5) * shakeMag;
+        ctx.translate(shakeX, shakeY);
+        drawBackground();
+        drawEnemies();
+        drawPlayer();
+        updateProjectiles(rawDt);
+        drawProjectiles();
+        drawParticles();
+        drawMuzzle();
+        ctx.restore();
 
-    hitStopT = Math.max(0, hitStopT - rawDt);
-    shakeMag = Math.max(0, shakeMag - rawDt*40);
+        if (state.hearts <= 0) {
+          endGame(false);
+          return;
+        }
+        if (state.kills === ENEMY_TOTAL) {
+          endGame(true);
+          return;
+        }
 
-    state.simTime += dt;
-    state.score += dt*1.5;
-
-    const spawnInterval = 1.8;
-    state.spawnTimer += dt;
-    if(state.spawnTimer >= spawnInterval && state.spawned < ENEMY_TOTAL){
-      state.spawnTimer = 0;
-      spawnEnemy();
-    }
-
-    for(const zb of state.enemies){
-      if(zb.dying>0){
-        zb.dying += rawDt*4;
-        continue;
+        requestAnimationFrame(loop);
       }
-      zb.z += zb.dz*dt;
-      if(zb.z >= 1){
-        if(state.targetId===zb.id) closeTargetQuestion();
-        zb.alive = false;
-        state.hearts--;
-        redFlash();
-        sfx.heartLoss();
-        showFlash('ศัตรูฝ่าแนวป้องกันแล้ว!');
+
+      function endGame(victory) {
+        state.running = false;
+        closeTargetQuestion();
+        document.getElementById('goTitle').textContent = victory ? 'สกัดกั้นสำเร็จ' : 'ภารกิจล้มเหลว';
+        document.getElementById('goTitle').classList.toggle('success', victory);
+        bestTime = Math.max(bestTime, state.simTime);
+        document.getElementById('goTime').textContent = fmtTime(state.simTime);
+        document.getElementById('goKills').textContent = `${state.kills} / ${ENEMY_TOTAL}`;
+        document.getElementById('goScore').textContent = Math.floor(state.score);
+        const acc = state.shotsFired ? Math.round(100 * state.shotsHit / state.shotsFired) : 0;
+        document.getElementById('goAcc').textContent = acc + '%';
+        const qacc = state.quizTotal ? Math.round(100 * state.quizCorrect / state.quizTotal) : 0;
+        document.getElementById('goQuiz').textContent = qacc + '%';
+        document.getElementById('goBest').textContent = fmtTime(bestTime);
+
+        const quizAccuracy = state.quizTotal ? Math.round(100 * state.quizCorrect / state.quizTotal) : 0;
+        const result = {
+          type: 'orbit-minigame-result',
+          success: victory && quizAccuracy >= 70,
+          score: Math.floor(state.score),
+          level: Number(new URLSearchParams(location.search).get('level')) || 1,
+          quizAccuracy,
+        };
+        if (timedIntermission && window.parent !== window) parent.postMessage({ type: 'orbit-minigame-story-wait' }, '*');
+        screenGame.classList.add('hidden');
+        if (storyFlow) showCampaignStory(result);
+        else { if (window.parent !== window) window.parent.postMessage(result, '*'); screenOver.classList.remove('hidden'); }
       }
-    }
-    state.enemies = state.enemies.filter(zb => zb.alive && zb.dying < 1);
 
-    updateParticles(rawDt);
-    updateMuzzle(rawDt);
-    updateHud();
+      function startGame() {
+        resize();
+        state = newGameState();
+        lastTs = null;
+        shakeMag = 0; hitStopT = 0; particles = []; muzzleFlashes = [];
+        screenMenu.classList.add('hidden');
+        screenOver.classList.add('hidden');
+        screenGame.classList.remove('hidden');
+        briefingToast.classList.remove('hidden');
+        setTimeout(() => briefingToast.classList.add('hidden'), 6500);
+        updateHud();
+        requestAnimationFrame(loop);
+      }
 
-    ctx.clearRect(0,0,W,H);
-    ctx.save();
-    const shakeX = (Math.random()-0.5)*shakeMag;
-    const shakeY = (Math.random()-0.5)*shakeMag;
-    ctx.translate(shakeX, shakeY);
-    drawBackground();
-    drawEnemies();
-    drawPlayer();
-    updateProjectiles(rawDt);
-    drawProjectiles();
-    drawParticles();
-    drawMuzzle();
-    ctx.restore();
+      startBtn.addEventListener('click', () => {
+        ac();
+        showTutorial();
+      });
+      const timedIntermission = params.get('autostart') === '1';
+      const storyFlow = timedIntermission || window.parent === window;
+      retryBtn.addEventListener('click', () => {
+        if (timedIntermission) { startGame(); return; }
+        screenOver.classList.add('hidden');
+        screenMenu.classList.remove('hidden');
+      });
 
-    if(state.hearts<=0){
-      endGame(false);
-      return;
-    }
-    if(state.kills===ENEMY_TOTAL){
-      endGame(true);
-      return;
-    }
-
-    requestAnimationFrame(loop);
-  }
-
-  function endGame(victory){
-    state.running = false;
-    closeTargetQuestion();
-    document.getElementById('goTitle').textContent = victory ? 'สกัดกั้นสำเร็จ' : 'ภารกิจล้มเหลว';
-    document.getElementById('goTitle').classList.toggle('success', victory);
-    bestTime = Math.max(bestTime, state.simTime);
-    document.getElementById('goTime').textContent = fmtTime(state.simTime);
-    document.getElementById('goKills').textContent = `${state.kills} / ${ENEMY_TOTAL}`;
-    document.getElementById('goScore').textContent = Math.floor(state.score);
-    const acc = state.shotsFired ? Math.round(100*state.shotsHit/state.shotsFired) : 0;
-    document.getElementById('goAcc').textContent = acc+'%';
-    const qacc = state.quizTotal ? Math.round(100*state.quizCorrect/state.quizTotal) : 0;
-    document.getElementById('goQuiz').textContent = qacc+'%';
-    document.getElementById('goBest').textContent = fmtTime(bestTime);
-
-    const quizAccuracy = state.quizTotal ? Math.round(100 * state.quizCorrect / state.quizTotal) : 0;
-    const result = {
-        type: 'orbit-minigame-result',
-        success: victory && quizAccuracy >= 70,
-        score: Math.floor(state.score),
-        level: Number(new URLSearchParams(location.search).get('level')) || 1,
-        quizAccuracy,
-      };
-    if(timedIntermission&&window.parent!==window)parent.postMessage({type:'orbit-minigame-story-wait'},'*');
-    screenGame.classList.add('hidden');
-    if(storyFlow)showCampaignStory(result);
-    else{if(window.parent!==window)window.parent.postMessage(result,'*');screenOver.classList.remove('hidden');}
-  }
-
-  function startGame(){
-    resize();
-    state = newGameState();
-    lastTs = null;
-    shakeMag = 0; hitStopT = 0; particles = []; muzzleFlashes = [];
-    screenMenu.classList.add('hidden');
-    screenOver.classList.add('hidden');
-    screenGame.classList.remove('hidden');
-    briefingToast.classList.remove('hidden');
-    setTimeout(()=>briefingToast.classList.add('hidden'),6500);
-    updateHud();
-    requestAnimationFrame(loop);
-  }
-
-  startBtn.addEventListener('click', ()=>{
-    ac();
-    showTutorial();
-  });
-  const timedIntermission = params.get('autostart') === '1';
-  const storyFlow = timedIntermission || window.parent === window;
-  retryBtn.addEventListener('click', ()=>{
-    if(timedIntermission){ startGame(); return; }
-    screenOver.classList.add('hidden');
-    screenMenu.classList.remove('hidden');
-  });
-
-  resize();
-  if(storyFlow)showCampaignStory();
-})();
-</script>
+      resize();
+      if (storyFlow) showCampaignStory();
+    })();
+  </script>
   <script src="assets/minigame-tutorial.js" defer></script>
 </body>
+
 </html>
