@@ -51,6 +51,7 @@
       <div class="wave-line"><span id="progress-label">WAVE PROGRESS</span><b id="progress-text">—</b></div>
       <div class="progress-track"><i id="progress-fill"></i></div>
       <div class="combo-readout"><small>COMBO</small><b id="combo">×0</b><span id="combo-label">BUILD YOUR STREAK</span></div>
+      <div id="mission-space-hint" class="mission-space-hint" hidden><kbd>SPACE</kbd><span>เปิดคำถามของเป้าที่อยู่ในแนวเล็ง</span></div>
       <section id="mission-completion" class="mission-completion" hidden aria-live="polite">
         <b class="completion-status">MISSION COMPLETE</b>
         <p id="completion-copy">เลือกอัปเกรดก่อนออกเดินทาง</p>
@@ -81,6 +82,15 @@
     <div class="center-reticle" aria-hidden="true"><i></i><b></b></div>
     <div class="toast" id="toast"></div>
     <div class="weapon-rack" id="weapon-rack" aria-label="แถบเลือกอาวุธสองชนิด"><div class="weapon-strip angle-strip"><b>ANGLE<br>CANNON</b><div class="weapon-cards" id="angle-weapons"></div><span class="weapon-control-hint" title="เลื่อนลูกกลิ้งหรือลากเพื่อเลือกมุม แล้วคลิกปุ่มมุมเพื่อยิง">↕ ล้อเมาส์ · ลากเลือก · คลิกมุมยิง</span></div><div class="weapon-strip value-strip"><b>VALUE<br>CANNON</b><div class="weapon-cards" id="value-weapons"></div></div></div>
+    <section id="answer-menu" class="answer-menu" hidden aria-live="polite" aria-label="เมนูตอบคำถาม">
+      <header><span><small>LEVEL 1 · TARGET LOCK</small><b id="answer-question">เลือกวิธีตอบ</b></span><button id="answer-cancel" type="button" aria-label="ปิดเมนู">×</button></header>
+      <div id="answer-categories" class="answer-categories">
+        <button type="button" data-answer-type="angle"><b>θ · มุม</b><small>หามุมจากพิกัด</small></button>
+        <button type="button" data-answer-type="value"><b>x / y · พิกัด</b><small>หาค่าจากมุม</small></button>
+      </div>
+      <div id="answer-options" class="answer-options" hidden></div>
+      <footer><span>⏱ เวลาช้าลงขณะเลือกคำตอบ</span><button id="answer-back" type="button" hidden>← กลับ</button></footer>
+    </section>
     <aside id="travel-hud" class="travel-hud" hidden aria-live="polite">
       <div><small>DEEP-SPACE INTERCEPT</small><b id="travel-clock">00:28</b></div>
       <div><small>AMMO</small><b id="travel-ammo">8 / 8</b></div>
