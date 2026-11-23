@@ -886,7 +886,6 @@ body:has(#overlay.academy-screen)::after{display:none!important}
 .weapon-rack .polarity-switch.negative i{transform:translateX(40px);background:linear-gradient(180deg,#d09aff,#7940ce);box-shadow:0 0 12px #c982ff88,inset 0 1px 4px #f1ddffcc}
 .weapon-rack .polarity-switch:not(.negative) span:first-of-type,.weapon-rack .polarity-switch.negative span:last-of-type{color:#061923}
 .value-key-slot{display:flex;flex:1 1 0;min-width:0;flex-direction:column;align-items:stretch;gap:3px}.weapon-key-hint{display:block!important;min-height:14px;margin:0!important;color:#e4fbff!important;font:700 11px/14px Consolas,monospace!important;text-align:center;text-shadow:0 0 6px #38dfffa8}.weapon-control-hint{flex:none;align-self:center;color:#9eeaf4;font:700 13px/1.25 Consolas,monospace;letter-spacing:.02em;white-space:nowrap;text-shadow:0 0 9px #23cce488}.angle-strip .weapon-control-hint{margin-left:6px}.sign-control-hint{margin-left:6px}.weapon-rack .value-unified .quadrant-weapons{align-items:center}
-.weapon-rack .angle-card.selected{position:relative;border:1px solid #ffe28a!important;background:linear-gradient(145deg,#735627,#1c2530 72%)!important;color:#fff2bd!important;box-shadow:0 0 7px #ffd166aa,0 0 18px #ffbc4380,inset 0 0 14px #ffd16655!important;transform:translateY(-3px) scale(1.06);z-index:2}.weapon-rack .angle-card.selected b{color:#fff2bd!important;text-shadow:0 0 9px #ffd166!important}
 @media(max-width:900px){.weapon-rack{gap:5px;padding:6px 8px}.weapon-strip>b{width:64px}.weapon-strip.angle-strip .weapon-cards{min-width:660px}.weapon-strip.value-strip .weapon-cards{min-width:600px}}
 @media(max-width:650px){.weapon-rack{padding:5px;gap:4px}.weapon-strip{gap:5px;min-height:42px}.weapon-strip>b{width:46px;font-size:6px}.weapon-strip.angle-strip .weapon-cards{min-width:590px;gap:4px}.weapon-strip.value-strip .weapon-cards{min-width:540px;gap:4px}.weapon-strip.value-strip .quadrant-group{padding:2px 4px}.weapon-rack .weapon-card{height:34px}.weapon-rack .polarity-switch{width:76px;min-width:76px;height:32px;min-height:32px;margin-left:2px;padding:0 6px;font-size:12px}.weapon-rack .polarity-switch i{left:3px;top:3px;width:32px;height:24px}.weapon-rack .polarity-switch.negative i{transform:translateX(35px)}}
 /* Lesson circle layout: equations beside the ring, active coordinates below it */
@@ -1128,30 +1127,7 @@ body.is-portrait .orientation-notice small{font:12px/1.6 var(--sans);color:#a6ba
 .brief-box.has-results .result-feedback{grid-column:1/-1;grid-row:4}
 @media(max-width:650px){.brief-box.has-results{width:calc(100vw - 20px);max-height:calc(100dvh - 12px);padding:10px;overflow-y:auto}.brief-box.has-results .result-visual{min-height:0;padding:10px 9px;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto auto auto;gap:8px}.brief-box.has-results .result-visual::before{left:1%;top:1%;width:23%}.brief-box.has-results .result-hero{grid-column:1;grid-row:1;min-height:58px;padding-left:26%}.brief-box.has-results .result-hero img{left:1%;top:0;width:23%;height:auto;max-height:17%;transform:none}.brief-box.has-results .result-metrics{grid-column:1;grid-row:2}.brief-box.has-results .result-learning{grid-column:1;grid-row:3}.result-learning>header{align-items:flex-start;flex-direction:column;gap:2px}.learning-topic-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:5px}.learning-topic{min-height:116px;padding:6px}.learning-topic>header b{font-size:8px}.learning-topic>header span{font-size:6px}.learning-topic>p,.learning-topic-note{font-size:7px}.brief-box.has-results .result-feedback{grid-column:1;grid-row:4}}
 
-/* Level 1 answer-first combat prototype */
-.answer-menu{position:absolute;z-index:12;right:24px;bottom:24px;width:min(430px,calc(100vw - 32px));padding:14px 16px;background:linear-gradient(145deg,#071c2af5,#07121ff5);border:1px solid #67e7e0aa;box-shadow:0 0 0 1px #101c2b,0 0 30px #32ddf044,0 12px 36px #000a;backdrop-filter:blur(10px);color:#edfaff}
-.answer-menu[hidden]{display:none}
-.answer-menu>header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-bottom:11px;border-bottom:1px solid #69d8de44}
-.answer-menu>header span{display:grid;gap:4px}.answer-menu>header small,.answer-menu footer span{color:#8bc4d2;font:8px Consolas,monospace;letter-spacing:.1em}.answer-menu>header b{color:#f0fcff;font:700 15px/1.3 var(--sans)}
-.answer-menu button{cursor:pointer;color:#dffaff;background:#0d2635;border:1px solid #55b9c877;border-radius:4px;font-family:var(--sans);transition:background .15s,border-color .15s,transform .15s}
-.answer-menu button:hover,.answer-menu button:focus-visible{background:#124052;border-color:#7ef0cf;outline:none}.answer-menu button:active{transform:translateY(1px)}
-#answer-cancel{width:30px;height:30px;font-size:20px;color:#a8c5cf;background:#0a1722}
-.answer-categories{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:13px 0}
-.answer-categories button{min-height:70px;padding:10px;text-align:left}.answer-categories b,.answer-categories small{display:block}.answer-categories b{color:#7ef0cf;font-size:13px}.answer-categories small{margin-top:5px;color:#aac6ce;font-size:10px}
-.answer-options{padding:12px 0 10px}.answer-options[hidden]{display:none}.answer-options>small{display:block;margin-bottom:8px;color:#a8cbd3;font:9px Consolas,monospace;letter-spacing:.07em}.answer-options>div{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}.answer-options button{min-height:42px;padding:5px;color:#86eaff;font:700 13px Consolas,monospace}
-.answer-menu>footer{display:flex;align-items:center;justify-content:space-between;gap:8px;padding-top:9px;border-top:1px solid #69d8de33}.answer-menu footer span{color:#ffd27b}.answer-menu footer button{padding:5px 10px;font-size:10px}
-.game-shell:has(#answer-menu:not([hidden])) .weapon-rack{display:none!important}
-@media(max-width:650px){.answer-menu{right:8px;bottom:8px;width:calc(100vw - 16px);padding:10px 11px}.answer-menu>header{padding-bottom:7px}.answer-menu>header b{font-size:12px}.answer-categories{gap:6px;padding:8px 0}.answer-categories button{min-height:56px;padding:7px}.answer-categories b{font-size:11px}.answer-categories small{font-size:8px;margin-top:3px}.answer-options{padding:8px 0 6px}.answer-options>div{gap:4px}.answer-options button{min-height:36px;font-size:11px}}
-.answer-menu{top:50%;left:50%;right:auto;bottom:auto;transform:translate(-50%,-50%);width:min(560px,calc(100vw - 32px));padding:20px 22px}
-.answer-menu button{background:url("assets/ui-button-small.png") center / 100% 100% no-repeat!important;border:0!important;border-radius:0;filter:brightness(.95)}
-.answer-menu button:hover,.answer-menu button:focus-visible{background:url("assets/ui-button-small.png") center / 100% 100% no-repeat!important;filter:brightness(1.25);box-shadow:0 0 14px #50e2ff55}
-.answer-options .answer-polarity{display:block;width:100%;min-height:42px;margin:0 0 8px;color:#ffd27b;font-size:12px}
-.answer-options .answer-polarity b{color:#fff2bd;font:700 16px Consolas,monospace}
-.answer-options>div{grid-template-columns:repeat(auto-fit,minmax(80px,1fr))}
-@media(max-width:650px){.answer-menu{top:50%;left:50%;right:auto;bottom:auto;transform:translate(-50%,-50%);width:calc(100vw - 24px);padding:13px}.answer-options>div{grid-template-columns:repeat(auto-fit,minmax(54px,1fr))}.answer-options .answer-polarity{min-height:38px}}
-#game .weapon-rack{display:none!important}
 .field-camera-controls button{background-image:url("assets/ui-button-small.png")!important;background-size:100% 180%!important;background-position:center!important;background-repeat:no-repeat!important}
-.answer-menu button{background-image:url("assets/ui-button-small.png")!important;background-size:100% 180%!important;background-position:center!important;background-repeat:no-repeat!important}
 .game-shell:not(.mission-complete) .mission-panel{top:82px;left:14px;width:min(260px,calc(100vw - 28px));max-height:calc(100dvh - 164px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:#397f91 #071522}
 .game-shell:not(.mission-complete) .mission-panel .panel-heading{display:flex!important}
 .game-shell:not(.mission-complete) .mission-panel .mission-kicker{display:block!important;margin-top:9px}
@@ -1169,7 +1145,40 @@ body.is-portrait .orientation-notice small{font:12px/1.6 var(--sans);color:#a6ba
 .mission-space-hint[hidden]{display:none!important}
 .mission-space-hint kbd{padding:3px 5px;border:1px solid #69dfe177;border-radius:3px;color:#d8fbff;font:700 8px var(--mono)}
 @media(max-width:650px){.game-shell:not(.mission-complete) .mission-panel{top:66px;left:8px;width:min(220px,calc(100vw - 16px));max-height:calc(100dvh - 132px);padding:8px}.game-shell:not(.mission-complete) .mission-panel h1{font-size:13px}.game-shell:not(.mission-complete) .mission-panel p{font-size:8px}.mission-space-hint{font-size:7px}}
-.answer-menu button{background-size:118% 220%!important;transition:none!important;transform:none!important;}
-.answer-menu button:hover,.answer-menu button:focus-visible,.answer-menu button:active{background-size:118% 220%!important;transition:none!important;transform:none!important;}
-#answer-cancel{display:grid!important;place-items:center!important;flex:0 0 34px!important;width:34px!important;min-width:34px!important;max-width:34px!important;height:34px!important;min-height:34px!important;margin:0!important;padding:0!important;line-height:1!important;text-align:center!important;}
-#answer-cancel::first-letter{margin:0!important;padding:0!important;}
+
+/* Restore the left firing rail; only the answer family relevant to the aligned target is shown. */
+#game .weapon-rack:not([hidden]){display:flex!important}
+#game .weapon-rack[hidden]{display:none!important}
+#game .weapon-rack .weapon-strip[hidden]{display:none!important}
+
+/* One contextual answer row along the bottom of the playfield. */
+#game .weapon-rack:not([hidden]){position:absolute;z-index:6;top:auto;right:auto;bottom:12px;left:50%;transform:translateX(-50%);box-sizing:border-box;width:min(1240px,calc(100vw - 32px));max-width:none;max-height:76px;min-height:58px;display:flex!important;flex-direction:row!important;align-items:center;justify-content:center;gap:8px;overflow-x:auto;overflow-y:hidden;padding:6px 10px;border:1px solid #52dceb99;border-radius:6px;background:linear-gradient(100deg,#041521f2,#082535f2);box-shadow:0 8px 28px #0008,0 0 22px #28d5e52a;scrollbar-width:thin}
+#game .weapon-rack[hidden],#game .weapon-rack .weapon-strip[hidden],#game .weapon-rack .quadrant-group[hidden],#game .weapon-rack .value-key-slot[hidden]{display:none!important}
+#game .weapon-empty{color:#a9cad3;font:10px var(--mono);letter-spacing:.04em;text-align:center}
+#game .weapon-empty[hidden]{display:none!important}
+#game .weapon-rack .weapon-strip{display:flex;flex:1;flex-direction:row;align-items:center;gap:8px;min-width:0;min-height:0}
+#game .weapon-rack .weapon-strip>b{width:auto;min-width:54px;min-height:0;padding:0 8px 0 0;border:0;border-right:1px solid #70b4c355;text-align:center;font-size:8px}
+#game .weapon-rack .weapon-cards{display:flex;flex:1;align-items:center;justify-content:center;gap:7px;min-width:0;overflow:visible;padding:0}
+#game .weapon-rack .quadrant-group{display:flex;flex:1;align-items:center;justify-content:center;gap:8px;min-width:0;padding:0 5px;border:0;background:transparent}
+#game .weapon-rack .quadrant-group>small{display:none}
+#game .weapon-rack .quadrant-weapons{display:flex;align-items:center;justify-content:center;gap:7px;min-height:0}
+#game .weapon-rack .weapon-card{display:flex;width:clamp(78px,8vw,118px);min-width:70px;height:42px;flex-direction:column;align-items:center;justify-content:center;gap:1px;padding:3px 6px}
+#game .weapon-rack .weapon-card b{margin:0;font-size:15px}
+#game .weapon-rack .weapon-key-hint{display:block!important;min-height:12px;font:700 10px/12px var(--mono)!important;color:#f1ffff!important;text-shadow:0 0 7px #53e9ffb0!important;opacity:1!important}
+#game .weapon-rack .value-key-slot{flex:0 1 100px;min-width:58px;align-items:center;gap:0}
+#game .weapon-rack .value-unified{flex:1;min-width:0}
+#game .weapon-rack .value-unified .quadrant-weapons{justify-content:center;gap:7px}
+#game .weapon-rack .value-unified .weapon-card{width:clamp(72px,8vw,104px);min-width:58px;flex:1 1 72px}
+#game .weapon-rack .polarity-switch{flex:0 0 76px;width:76px;min-width:76px;height:34px;min-height:34px;margin:0 3px;padding:0 7px}
+#game .weapon-rack .polarity-switch i{width:30px;height:24px}
+#game .weapon-rack .polarity-switch.negative i{transform:translateX(33px)}
+#game .weapon-rack .weapon-control-hint{font-size:8px;white-space:nowrap}
+@media(max-width:700px){#game .weapon-rack:not([hidden]){bottom:6px;width:calc(100vw - 12px);min-height:48px;max-height:62px;gap:4px;padding:4px}#game .weapon-rack .weapon-strip{gap:4px}#game .weapon-rack .weapon-strip>b{min-width:40px;padding-right:4px;font-size:6px}#game .weapon-rack .weapon-cards,#game .weapon-rack .quadrant-weapons{gap:4px}#game .weapon-rack .quadrant-group{padding:0 2px}#game .weapon-rack .weapon-card,#game .weapon-rack .value-unified .weapon-card{width:auto;min-width:48px;height:36px;flex:1 1 48px;padding:2px}#game .weapon-rack .weapon-card b{font-size:12px}#game .weapon-rack .weapon-key-hint{font-size:7px!important}#game .weapon-rack .value-key-slot{min-width:45px}#game .weapon-rack .polarity-switch{flex-basis:58px;width:58px;min-width:58px;height:29px;min-height:29px;padding:0 4px;font-size:12px}#game .weapon-rack .polarity-switch i{left:3px;top:3px;width:24px;height:21px}#game .weapon-rack .polarity-switch.negative i{transform:translateX(25px)}#game .weapon-rack .weapon-control-hint{font-size:6px;white-space:normal;text-align:center}}
+
+/* Give neighboring answer buttons more breathing room. */
+#game .weapon-rack .weapon-cards{column-gap:14px}
+#game .weapon-rack .quadrant-weapons{column-gap:14px}
+#game .weapon-rack .value-unified .quadrant-weapons{column-gap:18px}
+#game .weapon-rack .value-key-slot{flex-basis:112px}
+@media(max-width:700px){#game .weapon-rack .weapon-cards,#game .weapon-rack .quadrant-weapons{column-gap:8px}#game .weapon-rack .value-unified .quadrant-weapons{column-gap:8px}#game .weapon-rack .value-key-slot{flex-basis:54px}}
+.settings-keybind .keybind-button{display:grid!important;place-items:center;text-align:center}
