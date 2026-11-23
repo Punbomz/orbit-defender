@@ -42,10 +42,10 @@
 
         .shell {
             position: relative;
-            width: min(840px, 100%);
+            width: min(1160px, 100%);
             min-height: 100vh;
             margin: auto;
-            padding: 18px;
+            padding: 18px clamp(20px, 3vw, 42px);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -87,13 +87,14 @@
         .layout {
             width: 100%;
             display: grid;
-            grid-template-columns: minmax(210px, .8fr) minmax(290px, 1fr);
-            gap: 18px;
+            grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+            gap: clamp(28px, 4vw, 54px);
             align-items: center
         }
 
         .mission,
         .game {
+            min-width: 0;
             border: 1px solid #37ddff99;
             background: #041422e8;
             box-shadow: 0 0 24px #22d7ff20;
@@ -128,6 +129,12 @@
             color: #ffd56b;
             font-size: 28px
         }
+
+        .target-meta { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:4px }
+        .quadrant-badge { padding:4px 8px; border:1px solid #6de9ff88; border-radius:99px; color:#9af5ff; font:800 11px Consolas,monospace; letter-spacing:.08em }
+        .quadrant-badge.q2 { color:#adffd2; border-color:#62e7aa88 }
+        .quadrant-badge.q3 { color:#ffe59a; border-color:#ffd16699 }
+        .quadrant-badge.q4 { color:#e0c0ff; border-color:#ba8bff99 }
 
         .stats {
             display: flex;
@@ -194,6 +201,12 @@
             box-shadow: 0 0 20px #ff9b64aa;
             animation: pop .28s ease-out
         }
+
+        .cell.tile.angle-q1 { background:linear-gradient(145deg,#b1faff,#42d6e8) }
+        .cell.tile.angle-q2 { background:linear-gradient(145deg,#bbf6d8,#50dba2) }
+        .cell.tile.angle-q3 { background:linear-gradient(145deg,#ffe694,#ffc34c) }
+        .cell.tile.angle-q4 { background:linear-gradient(145deg,#e1c4ff,#a878ef) }
+        .cell.tile.target-tile { color:#fff; background:linear-gradient(145deg,#fff2a8,#ffad45); border-color:#fff4bd; box-shadow:0 0 10px #ffd166,0 0 30px #ffb22eaa,inset 0 0 16px #fff; animation:target-lock .55s cubic-bezier(.16,1,.3,1) both }
 
         @keyframes pop {
             from {
@@ -347,7 +360,7 @@
             display: none
         }
 
-        @media(max-width:650px) {
+        @media(max-width:900px) {
             .shell {
                 padding: 10px;
                 justify-content: flex-start
@@ -507,6 +520,59 @@
             animation: board-nudge .22s ease-out
         }
 
+        .board.merge-pop .cell.tile {
+            animation: merge-pop .34s cubic-bezier(.2, .9, .25, 1) both
+        }
+
+        .board .cell.target-tile {
+            z-index: 1;
+            color: #fff;
+            background: linear-gradient(145deg, #fff2a8, #ffad45);
+            border-color: #fff4bd;
+            box-shadow: 0 0 10px #ffd166, 0 0 30px #ffb22eaa, inset 0 0 16px #fff;
+            animation: target-lock .55s cubic-bezier(.16, 1, .3, 1) both
+        }
+
+        .board.merge-pop .cell.target-tile {
+            animation: target-lock .55s cubic-bezier(.16, 1, .3, 1) both
+        }
+
+        .mission.target-cleared {
+            animation: mission-clear .65s ease-out
+        }
+
+        .mission.all-targets-cleared {
+            animation: mission-victory .95s ease-in-out infinite alternate
+        }
+
+        .target.quadrant-change #target {
+            animation: target-swap .34s cubic-bezier(.2, .9, .25, 1)
+        }
+
+        .run-progress {
+            display: flex;
+            justify-content: center;
+            gap: 7px;
+            margin: 12px auto 4px
+        }
+
+        .run-progress i {
+            width: 11px;
+            height: 11px;
+            border: 1px solid #39839a;
+            border-radius: 50%;
+            background: #06182a;
+            transition: transform .2s, background .2s, box-shadow .2s
+        }
+
+        .run-progress i.done { background: #53efcb; border-color: #b8fff0; box-shadow: 0 0 10px #53efcb99 }
+        .run-progress i.active { transform: scale(1.35); background: #ffd166; border-color: #fff0b2; box-shadow: 0 0 14px #ffd166 }
+
+        @keyframes merge-pop { 0% { transform:scale(.72);filter:brightness(1.8) } 55% { transform:scale(1.13);filter:brightness(1.35) } 100% { transform:scale(1);filter:brightness(1) } }
+        @keyframes mission-clear { 30% { border-color:#fff1a5; box-shadow:0 0 38px #ffd16688 } }
+        @keyframes mission-victory { to { box-shadow:0 0 38px #37f7ce77, inset 0 0 24px #37f7ce22 } }
+        @keyframes target-swap { 50% { transform:scale(1.18);color:#fff } }
+
         .cell {
             border-radius: 2px;
             transition: background .16s, border-color .16s, transform .15s, filter .15s
@@ -536,55 +602,62 @@
 
         .controls {
             display: grid;
-            grid-template-columns: repeat(3, 52px);
-            grid-template-rows: repeat(2, 46px);
+            grid-template-columns: repeat(3, 58px);
+            grid-template-rows: repeat(2, 50px);
             gap: 5px;
             margin-top: 13px
         }
 
-        .controls button {
+        body .controls button {
             min-width: 0;
             min-height: 0;
             padding: 0;
-            border: 1px solid #45dfffa8;
-            background: linear-gradient(155deg, #0b3854, #062238);
+            border: 0;
+            background-image: url("assets/space-direction-keys-v2.png") !important;
+            background-size: 200% 200% !important;
+            background-repeat: no-repeat !important;
+            background-color: transparent !important;
+            box-shadow: none !important;
             font-size: 22px;
             line-height: 1;
-            box-shadow: inset 0 1px #c9ffff20, 0 3px 0 #03101b, 0 5px 12px #0007;
-            transition: transform .1s, background .14s, box-shadow .14s, border-color .14s
+            text-shadow: 0 0 8px #dffcff, 0 1px 4px #001522;
+            filter: drop-shadow(0 2px 3px #0009);
+            transition: transform .1s, filter .14s
         }
 
-        .controls button[data-dir=up] {
+        body .controls button[data-dir=up] {
             grid-column: 2;
-            grid-row: 1
+            grid-row: 1;
+            background-position: left top !important
         }
 
-        .controls button[data-dir=left] {
+        body .controls button[data-dir=left] {
             grid-column: 1;
-            grid-row: 2
+            grid-row: 2;
+            background-position: right top !important
         }
 
-        .controls button[data-dir=down] {
+        body .controls button[data-dir=down] {
             grid-column: 2;
-            grid-row: 2
+            grid-row: 2;
+            background-position: left bottom !important
         }
 
-        .controls button[data-dir=right] {
+        body .controls button[data-dir=right] {
             grid-column: 3;
-            grid-row: 2
+            grid-row: 2;
+            background-position: right bottom !important
         }
 
         .controls button:hover,
         .controls button:focus-visible {
-            background: #0c526f;
-            border-color: #b4faff;
-            box-shadow: 0 0 15px #42eaff5b, 0 3px 0 #03101b;
+            filter: brightness(1.18) drop-shadow(0 0 8px #42eaffaa);
             outline: none
         }
 
         .controls button:active {
-            transform: translateY(3px) scale(.96);
-            box-shadow: inset 0 2px 5px #001a2c, 0 0 8px #42eaff55
+            transform: translateY(2px) scale(.96);
+            filter: brightness(1.3) drop-shadow(0 0 10px #42eaffcc)
         }
 
         .game {
@@ -696,7 +769,7 @@
             }
         }
 
-        @media(max-width:650px) {
+        @media(max-width:900px) {
             .shell {
                 gap: 10px
             }
@@ -731,11 +804,6 @@
                 font-size: 25px
             }
 
-            .badge {
-                font-size: 10px;
-                padding: 6px 8px
-            }
-
             .mission .stats {
                 display: none
             }
@@ -753,6 +821,15 @@
             .help {
                 margin-top: 7px
             }
+        }
+
+        @media (max-height: 1000px) and (min-width: 901px) {
+            .shell { padding-top: 10px; padding-bottom: 10px; gap: 10px; }
+            .board { width: min(100%, 330px); }
+            .game { padding: 10px; }
+            .controls { margin-top: 6px; }
+            .run-progress { margin: 6px auto 2px; }
+            .status { margin-top: 4px; }
         }
 
         @media(prefers-reduced-motion:reduce) {
@@ -919,6 +996,54 @@
             outline-offset: 4px
         }
 
+        .success-beat { position:fixed; inset:0; z-index:19; display:grid; place-items:center; overflow:hidden; padding:20px; background:#020914a8; opacity:0; pointer-events:none; backdrop-filter:blur(3px); }
+        .success-beat.show { animation:success-arrive 3.9s ease both; }
+        .clear-panel { position:relative; width:min(92vw,620px); padding:clamp(20px,4vw,38px); overflow:hidden; border:1px solid #59efff; color:#eafaff; background:linear-gradient(145deg,#071b2df5,#061321f7 65%,#082a36f5); box-shadow:0 0 0 5px #062237bd,0 0 44px #16dfff6b,inset 0 0 34px #26dfff10; clip-path:polygon(0 14px,14px 0,calc(100% - 14px) 0,100% 14px,100% calc(100% - 14px),calc(100% - 14px) 100%,14px 100%,0 calc(100% - 14px)); animation:clear-panel-enter .56s cubic-bezier(.16,1,.3,1) both; }
+        .clear-panel:before { content:""; position:absolute; inset:7px; border:1px solid #6deeff32; pointer-events:none; clip-path:inherit; }
+        .clear-panel:after { content:""; position:absolute; top:0; left:-45%; width:36%; height:100%; background:linear-gradient(90deg,transparent,#77fff22a,transparent); transform:skewX(-18deg); animation:clear-scan 1.2s .35s ease-out both; pointer-events:none; }
+        .clear-head { position:relative; display:flex; align-items:center; gap:15px; padding-bottom:18px; border-bottom:1px solid #60ebff49; }
+        .clear-mark { display:grid; place-items:center; flex:0 0 52px; width:52px; height:52px; border:1px solid #8affdf; color:#8affdf; font:900 30px Consolas,monospace; box-shadow:0 0 22px #34ffc766,inset 0 0 16px #34ffc733; animation:clear-mark .5s .2s cubic-bezier(.16,1,.3,1) both; }
+        .clear-heading { min-width:0; flex:1; }
+        .clear-heading small,.clear-panel .clear-footer { color:#78e9f7; font:800 9px Consolas,monospace; letter-spacing:.16em; }
+        .clear-heading h2 { margin:5px 0 0; color:#f4ffff; font-size:clamp(21px,3.4vw,34px); line-height:1.15; }
+        .clear-brand { color:#ffd166; font:900 9px Consolas,monospace; letter-spacing:.12em; text-align:right; }
+        .clear-score { display:grid; justify-items:center; gap:4px; padding:20px 0 16px; }
+        .clear-score strong { color:#eaffff; font:900 clamp(36px,7vw,58px)/1 Consolas,monospace; text-shadow:0 0 22px #46edff7d; }
+        .clear-score span { color:#a8dce5; font:800 9px Consolas,monospace; letter-spacing:.22em; }
+        .clear-quarters { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin:0 0 15px; }
+        .clear-quarters span { display:flex; align-items:center; justify-content:center; gap:6px; min-height:34px; border:1px solid #5eeaff44; background:#24dfff0b; color:#aaf5ff; font:900 10px Consolas,monospace; letter-spacing:.08em; animation:clear-quarter .35s both; }
+        .clear-quarters span:nth-child(2) { animation-delay:.08s; color:#baffd7; border-color:#71e9a555; }
+        .clear-quarters span:nth-child(3) { animation-delay:.16s; color:#ffe5a1; border-color:#ffd16666; }
+        .clear-quarters span:nth-child(4) { animation-delay:.24s; color:#dfc5ff; border-color:#bb8aff66; }
+        .clear-quarters b { font-size:13px; }
+        .clear-meter { display:grid; grid-template-columns:repeat(5,1fr); gap:5px; }
+        .clear-meter i { height:5px; background:#38f2c9; box-shadow:0 0 10px #38f2c9a6; animation:clear-meter-fill .3s both; animation-delay:calc(var(--pip) * 55ms); }
+        .clear-footer { display:flex; justify-content:space-between; gap:12px; margin-top:16px; padding-top:12px; border-top:1px solid #60ebff32; }
+        .clear-footer b { color:#8affdf; }
+        @keyframes success-arrive { 0%{opacity:0} 9%,90%{opacity:1} 100%{opacity:0} }
+        @keyframes clear-panel-enter { from{opacity:0;transform:translateY(18px) scale(.94);filter:brightness(1.8)} to{opacity:1;transform:translateY(0) scale(1);filter:brightness(1)} }
+        @keyframes clear-mark { from{transform:scale(.5) rotate(-35deg);opacity:0} to{transform:scale(1) rotate(0);opacity:1} }
+        @keyframes clear-quarter { from{transform:translateY(7px);opacity:0} to{transform:translateY(0);opacity:1} }
+        @keyframes clear-meter-fill { from{transform:scaleX(0);transform-origin:left;filter:brightness(2)} to{transform:scaleX(1);transform-origin:left;filter:brightness(1)} }
+        @keyframes clear-scan { 0%{left:-45%;opacity:0} 18%{opacity:1} 100%{left:120%;opacity:0} }
+
+        @media(prefers-reduced-motion:reduce) {
+            *,*::before,*::after { scroll-behavior:auto !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important }
+            .success-beat.show { opacity:1; animation:none }
+        }
+
+        @media(max-width:520px) {
+            .success-beat { padding:12px }
+            .clear-panel { padding:20px 16px }
+            .clear-head { gap:10px }
+            .clear-mark { flex-basis:42px; width:42px; height:42px; font-size:25px }
+            .clear-heading small { font-size:7px; letter-spacing:.1em }
+            .clear-brand { max-width:62px; font-size:7px }
+            .clear-quarters { gap:4px }
+            .clear-quarters span { gap:3px; font-size:8px }
+            .clear-footer { font-size:7px!important; letter-spacing:.08em!important }
+        }
+
         @media(max-height:620px) {
             .minigame-tutorial-shell.trigo-merge-tutorial {
                 grid-template-rows: 28% 1fr 4%
@@ -1064,7 +1189,13 @@
         }
 
         .minigame-tutorial-shell.trigo-merge-tutorial .minigame-demo-console {
-            min-height: clamp(290px, 40vh, 450px)
+            min-height: clamp(340px, 46vh, 500px)
+        }
+
+        .minigame-tutorial-shell.trigo-merge-tutorial .minigame-demo-row>b {
+            min-width: 38px;
+            color: #80efff;
+            font: 900 10px Consolas, monospace
         }
 
         @media(max-width:900px) {
@@ -1113,6 +1244,10 @@
                 min-height: 210px
             }
 
+            .minigame-tutorial-shell.trigo-merge-tutorial .minigame-demo-console {
+                min-height: 260px
+            }
+
             .minigame-tutorial-shell.trigo-merge-tutorial .minigame-tutorial-dialog p {
                 min-height: 56px;
                 margin: 8px 0;
@@ -1128,19 +1263,18 @@
             <div class="brand">STARFALL<small>TRIGO MERGE · NAVIGATION RECOVERY</small></div>
             <div class="top-right">
                 <div class="move-counter" aria-live="polite"><span>MOVES</span><strong id="topMoves">0/2</strong></div>
-                <div class="badge" id="unitBadge">DEGREE</div>
             </div>
         </header>
         <div class="layout">
             <aside class="mission">
                 <h1>กู้คืนข้อมูลมุม</h1>
                 <p>เลื่อนไทล์มุมค่าเดียวกันให้รวมกัน
-                    และสร้างมุมเป้าหมายที่สุ่มจากบทเรียนของเลเวลนี้ภายในจำนวนครั้งที่กำหนด</p>
-                <div class="target"><small>มุมเป้าหมาย · TARGET ANGLE</small><strong id="target">240°</strong></div>
+                    และสร้างมุมเป้าหมายทั้ง 5 ข้อภายในจำนวนครั้งที่กำหนด</p>
+                <div class="target"><small>มุมเป้าหมาย · TARGET ANGLE</small><div class="target-meta"><strong id="target">240°</strong><span class="quadrant-badge q1" id="quadrantBadge">QUADRANT I</span></div></div>
                 <div class="stats"><span>รวมมุม <b id="merges">0</b></span><span>จำกัด <b id="moveLimitLabel">2
                             moves</b></span></div>
-                <p class="help">รวมไทล์ให้ถึงเป้าหมายภายใน <span id="moveLimitInline">2</span> moves<br>ลูกศร / WASD /
-                    D-pad · Space รีเซ็ตระหว่างเล่น</p>
+                <p class="help">เริ่มจาก 15° แล้วรวมไทล์ให้ถึงเป้าหมายภายใน <span id="moveLimitInline">2</span> moves<br>ลูกศร / WASD /
+                    D-pad · รวมไทล์ที่มีค่าเท่ากัน</p>
             </aside>
             <section class="game" aria-label="กระดาน Trigo Merge">
                 <div class="board" id="board" role="grid" aria-label="กระดาน 4 คูณ 4"></div>
@@ -1148,6 +1282,7 @@
                         aria-label="ขึ้น">↑</button><button data-dir="left" aria-label="ซ้าย">←</button><button
                         data-dir="down" aria-label="ลง">↓</button><button data-dir="right" aria-label="ขวา">→</button>
                 </div>
+                <div class="run-progress" id="runProgress" role="img" aria-label="ความคืบหน้า 0 จาก 5 เป้าหมาย"></div>
                 <p class="status" id="status" aria-live="polite">จับคู่มุมค่าเดียวกันเพื่อรวมไทล์</p>
             </section>
         </div>
@@ -1179,11 +1314,336 @@
         </article>
         <button class="action story-next" id="done">ไปยังภารกิจถัดไป ↗</button>
     </section>
+    <section class="success-beat" id="successBeat" role="status" aria-hidden="true" aria-live="polite" aria-label="ภารกิจสำเร็จ">
+        <div class="clear-panel">
+            <header class="clear-head">
+                <span class="clear-mark" aria-hidden="true">✓</span>
+                <div class="clear-heading"><small>MISSION CLEAR · SIGNAL RESTORED</small><h2>กู้คืนเส้นทางสำเร็จ</h2></div>
+                <span class="clear-brand">STARFALL<br>TRIGO MERGE</span>
+            </header>
+            <div class="clear-score"><strong>5 / 5</strong><span>TARGETS SYNCHRONIZED</span></div>
+            <div class="clear-quarters" aria-label="ผ่านครบทั้งสี่ควอดแรนต์"><span><b>✓</b> QUADRANT I</span><span><b>✓</b> QUADRANT II</span><span><b>✓</b> QUADRANT III</span><span><b>✓</b> QUADRANT IV</span></div>
+            <div class="clear-meter" aria-hidden="true"><i style="--pip:0"></i><i style="--pip:1"></i><i style="--pip:2"></i><i style="--pip:3"></i><i style="--pip:4"></i></div>
+            <footer class="clear-footer"><span>5 QUESTIONS · ALL QUADRANTS</span><b>ALL SYSTEMS ONLINE</b></footer>
+        </div>
+    </section>
     <script>
         (() => {
-            'use strict'; const params = new URLSearchParams(location.search), level = Math.max(1, Number(params.get('level')) || 1), unit = params.get('unit') === 'radian' ? 'radian' : 'degree', content = params.get('content') || 'basic', $ = id => document.getElementById(id), labels = { 15: ['15°', 'π/12'], 30: ['30°', 'π/6'], 60: ['60°', 'π/3'], 120: ['120°', '2π/3'], 240: ['240°', '4π/3'] }, format = v => unit === 'radian' ? (labels[v]?.[1] || `${(v * Math.PI / 180).toFixed(2)} rad`) : (labels[v]?.[0] || `${v}°`), boardEl = $('board'), targetsByContent = { basic: [30, 60], reflection: [30, 60, 120], quadrants: [30, 60, 120, 240], boss: [30, 60, 120, 240] }, targetChoices = targetsByContent[content] || targetsByContent.basic, goal = targetChoices[Math.floor(Math.random() * targetChoices.length)], moveLimits = { 30: 2, 60: 3, 120: 8, 240: 14 }, moveLimit = moveLimits[goal] || 14; let board, merges = 0, moves = 0, ended = false, started = false, outcome = false; const render = () => { boardEl.replaceChildren(...board.map((v, i) => { const cell = document.createElement('div'); cell.className = 'cell' + (v ? ` tile v${v}` : ''); cell.setAttribute('role', 'gridcell'); cell.setAttribute('aria-label', v ? format(v) : 'ว่าง'); cell.textContent = v ? format(v) : '·'; return cell })); $('merges').textContent = merges; $('topMoves').textContent = `${moves}/${moveLimit}`; $('topMoves').classList.remove('tick'); requestAnimationFrame(() => $('topMoves').classList.add('tick')); document.querySelector('.top').style.setProperty('--move-progress', `${moves / moveLimit * 100}%`); boardEl.classList.remove('moved'); requestAnimationFrame(() => boardEl.classList.add('moved')) }; function spawn() { const empty = board.map((v, i) => v ? null : i).filter(i => i !== null); if (!empty.length) return; const idx = empty[Math.floor(Math.random() * empty.length)]; board[idx] = goal === 30 ? 15 : (Math.random() < .82 ? 15 : 30) } function reset() { board = Array(16).fill(0); merges = moves = 0; ended = false; board[5] = board[10] = 15; $('status').textContent = 'จับคู่มุมค่าเดียวกันเพื่อรวมไทล์'; render() } function finish(success, reason = '') { if (ended) return; ended = true; outcome = success; $('resultKicker').textContent = success ? 'ROUTE RESTORED · SYSTEM ONLINE' : 'SIGNAL PARTIAL · BACKUP ACTIVE'; $('resultTitle').textContent = success ? 'ปรับแนวเสาอากาศสำเร็จ' : 'ยังรวมข้อมูลมุมไม่ครบ'; $('resultText').textContent = success ? `กู้คืนมุม ${format(goal)} ได้สำเร็จ ดาวเทียมเชื่อมต่อสถานีควบคุมแล้ว ระบบนำทางของ STARFALL กลับมาทำงานตามปกติ` : `${reason || 'กระดานเต็มและไม่มีการรวมที่ทำได้'} ASTRA กำลังชดเชยเส้นทางให้ STARFALL`; $('resultRoute').textContent = `STARFALL ROUTE · LEVEL ${String(level).padStart(2, '0')}`; $('resultArt').style.setProperty('--brief-art', `url("assets/satellite-alignment-${success ? 'outro' : 'intro'}.webp")`); $('done').hidden = false; $('done').textContent = success ? 'ไปยังภารกิจถัดไป ↗' : 'ส่งผลภารกิจและไปต่อ ↗'; $('result').hidden = false; if (window.parent !== window) parent.postMessage({ type: 'orbit-minigame-story-wait' }, '*') }
-            function canMove(dir) { for (let r = 0; r < 4; r++)for (let c = 0; c < 4; c++) { const i = r * 4 + c, nr = r + (dir === 'up' ? -1 : dir === 'down' ? 1 : 0), nc = c + (dir === 'left' ? -1 : dir === 'right' ? 1 : 0); if (nr >= 0 && nr < 4 && nc >= 0 && nc < 4) { const a = board[i], b = board[nr * 4 + nc]; if (!a && b || a && a === b) return true } } return false } function slide(dir) { if (!started || ended) return; const before = board.join(','); for (let n = 0; n < 4; n++) { let ids = []; for (let k = 0; k < 4; k++) { const r = dir === 'up' ? k : dir === 'down' ? 3 - k : n, c = dir === 'left' ? k : dir === 'right' ? 3 - k : n; ids.push(r * 4 + c) } const row = ids.map(i => board[i]).filter(Boolean), out = []; for (let j = 0; j < row.length; j++) { if (row[j] === row[j + 1]) { const val = row[j] * 2; out.push(val); merges++; j++; if (val === goal) { moves++; board = Array(16).fill(0); ids.forEach((id, k) => board[id] = out[k] || 0); render(); finish(true); return } } else out.push(row[j]) } ids.forEach((id, k) => board[id] = out[k] || 0) } if (before === board.join(',')) return; moves++; spawn(); render(); if (moves >= moveLimit) finish(false, `ใช้การเลื่อนครบ ${moveLimit} ครั้งแล้วยังสร้างมุมเป้าหมายไม่สำเร็จ`); else if (!['up', 'down', 'left', 'right'].some(canMove)) finish(false, 'ข้อมูลมุมกระจายเต็มกระดานแล้ว'); }
-            document.addEventListener('keydown', e => { const d = { ArrowUp: 'up', w: 'up', ArrowDown: 'down', s: 'down', ArrowLeft: 'left', a: 'left', ArrowRight: 'right', d: 'right' }[e.key]; if (d) { e.preventDefault(); slide(d) } if (e.code === 'Space' && started && !ended) { e.preventDefault(); reset() } }); document.querySelectorAll('[data-dir]').forEach(b => b.addEventListener('click', () => slide(b.dataset.dir))); let touch = null; boardEl.addEventListener('pointerdown', e => { touch = [e.clientX, e.clientY] }); boardEl.addEventListener('pointerup', e => { if (!touch) return; const dx = e.clientX - touch[0], dy = e.clientY - touch[1]; touch = null; if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) return; slide(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up')) }); document.body.dataset.trigoGoal = goal; document.body.dataset.trigoUnit = unit; document.body.dataset.trigoMoveLimit = moveLimit; $('unitBadge').textContent = unit === 'degree' ? 'DEGREE' : 'RADIAN'; $('target').textContent = format(goal); $('moveLimitLabel').textContent = `${moveLimit} moves`; $('moveLimitInline').textContent = moveLimit; $('topMoves').textContent = `0/${moveLimit}`; $('introText').textContent = `ASTRA: คลื่นรบกวนทำให้ข้อมูลมุมกระจัดกระจายค่ะ รวมไทล์มุมค่าเดียวกันเพื่อสร้าง ${format(goal)} ภายใน ${moveLimit} moves แล้วเราจะใช้ค่านั้นปรับแนวเสาอากาศและกู้การสื่อสารกลับมา`; $('route').textContent = $('resultRoute').textContent = `STARFALL ROUTE · LEVEL ${String(level).padStart(2, '0')} · ${(content || 'basic').toUpperCase()}`; $('introArt').style.setProperty('--brief-art', 'url("assets/satellite-alignment-intro.webp")'); $('start').addEventListener('click', () => { if (started) return; started = true; $('intro').hidden = true; reset(); if (window.parent !== window) parent.postMessage({ type: 'orbit-minigame-start' }, '*') }); $('done').addEventListener('click', () => { if (window.parent !== window) parent.postMessage({ type: 'orbit-minigame-result', success: outcome, score: Math.max(0, 1000 - moves * 10), level, quizAccuracy: outcome ? 100 : 0 }, '*'); else $('result').hidden = true }); render()
+            'use strict';
+
+            const params = new URLSearchParams(location.search);
+            const level = Math.max(1, Number(params.get('level')) || 1);
+            const selectedUnit = params.get('unit') === 'radian' ? 'radian' : 'degree';
+            const content = params.get('content') || 'basic';
+            const $ = id => document.getElementById(id);
+            const boardEl = $('board');
+            const labels = {
+                15: ['15°', 'π/12'], 30: ['30°', 'π/6'], 45: ['45°', 'π/4'],
+                60: ['60°', 'π/3'], 120: ['120°', '2π/3'], 135: ['135°', '3π/4'],
+                150: ['150°', '5π/6'], 210: ['210°', '7π/6'], 225: ['225°', '5π/4'],
+                240: ['240°', '4π/3'], 300: ['300°', '5π/3'], 315: ['315°', '7π/4'],
+                330: ['330°', '11π/6']
+            };
+            // Every spawned tile is 15°. Larger values can only come from player merges.
+            // The final QIV synthesis combines the earned 240° and 60° tiles to reach 300°.
+            const targetsByQuadrant = {
+                I: [{ angle: 30, mergeValue: 30 }, { angle: 60, mergeValue: 60 }],
+                II: [{ angle: 120, mergeValue: 120 }],
+                III: [{ angle: 240, mergeValue: 240 }],
+                IV: [{ angle: 300, mergeValue: 300, recipe: '240° + 60°' }]
+            };
+            const targetQuadrants = ['I', 'II', 'III', 'IV'];
+            const moveLimits = { 30: 2, 60: 6, 120: 14, 240: 30, 300: 40 };
+            const TOTAL_TARGETS = 5;
+
+            let board = Array(16).fill(0);
+            let roundGoals = [];
+            let round = 0;
+            let merges = 0;
+            let moves = 0;
+            let totalMoves = 0;
+            let completedTargets = 0;
+            let ended = false;
+            let started = false;
+            let outcome = false;
+            let touchStart = null;
+            let completionTimer = 0;
+
+            function pickFromQuadrant(quadrant) {
+                const choices = targetsByQuadrant[quadrant];
+                return { ...choices[Math.floor(Math.random() * choices.length)], quadrant };
+            }
+
+            function shuffle(values) {
+                for (let index = values.length - 1; index > 0; index--) {
+                    const other = Math.floor(Math.random() * (index + 1));
+                    [values[index], values[other]] = [values[other], values[index]];
+                }
+                return values;
+            }
+
+            function buildGoals() {
+                const quadrants = shuffle([...targetQuadrants]);
+                return [
+                    ...shuffle(quadrants).map(pickFromQuadrant),
+                    pickFromQuadrant(targetQuadrants[Math.floor(Math.random() * targetQuadrants.length)])
+                ];
+            }
+
+            function currentGoal() { return roundGoals[round]; }
+            function currentMoveLimit() { return moveLimits[currentGoal().mergeValue] || 14; }
+            function isRadianPrompt() { return round === 1 || round === 3; }
+            function quadrantOf(angle) {
+                const normalized = ((angle % 360) + 360) % 360;
+                if (normalized > 0 && normalized < 90) return 'I';
+                if (normalized > 90 && normalized < 180) return 'II';
+                if (normalized > 180 && normalized < 270) return 'III';
+                return 'IV';
+            }
+            function formatAngle(degrees, radians = false) {
+                const label = labels[degrees];
+                if (label) return radians ? label[1] : label[0];
+                return radians ? `${(degrees * Math.PI / 180).toFixed(2)} rad` : `${degrees}°`;
+            }
+
+            function render(merged = false, goalReached = false) {
+                boardEl.replaceChildren(...board.map(value => {
+                    const cell = document.createElement('div');
+                    cell.className = `cell${value ? ` tile v${value}` : ''}`;
+                    if (value) cell.classList.add(`angle-q${['I', 'II', 'III', 'IV'].indexOf(quadrantOf(value)) + 1}`);
+                    if (goalReached && value === currentGoal().mergeValue) cell.classList.add('target-tile');
+                    cell.setAttribute('role', 'gridcell');
+                    cell.setAttribute('aria-label', value ? `${value}°` : 'ว่าง');
+                    cell.textContent = value ? `${value}°` : '·';
+                    return cell;
+                }));
+                $('merges').textContent = String(merges);
+                $('topMoves').textContent = `${moves}/${currentMoveLimit()}`;
+                $('topMoves').classList.remove('tick');
+                requestAnimationFrame(() => $('topMoves').classList.add('tick'));
+                document.querySelector('.top').style.setProperty('--move-progress', `${moves / currentMoveLimit() * 100}%`);
+                boardEl.classList.remove('moved');
+                boardEl.classList.remove('merge-pop');
+                requestAnimationFrame(() => {
+                    boardEl.classList.add('moved');
+                    if (merged) boardEl.classList.add('merge-pop');
+                });
+                if (merged) window.setTimeout(() => boardEl.classList.remove('merge-pop'), 380);
+            }
+
+            function renderProgress() {
+                const progress = $('runProgress');
+                const dots = Array.from({ length: TOTAL_TARGETS }, (_, index) => {
+                    const dot = document.createElement('i');
+                    const quadrant = roundGoals[index].quadrant;
+                    dot.className = index < completedTargets ? 'done' : index === round ? 'active' : '';
+                    dot.title = `เป้าหมาย ${index + 1}: Quadrant ${quadrant}`;
+                    return dot;
+                });
+                progress.replaceChildren(...dots);
+                progress.setAttribute('aria-label', `ความคืบหน้า ${completedTargets} จาก ${TOTAL_TARGETS} เป้าหมาย`);
+            }
+
+            function updateRoundDisplay() {
+                const goal = currentGoal();
+                document.body.dataset.trigoGoal = String(goal);
+                const shown = formatAngle(goal.angle, isRadianPrompt());
+                const quadrant = goal.quadrant;
+                const quadrantNumber = ['I', 'II', 'III', 'IV'].indexOf(quadrant) + 1;
+                const targetCard = document.querySelector('.target');
+                targetCard.classList.remove('quadrant-change');
+                requestAnimationFrame(() => targetCard.classList.add('quadrant-change'));
+                $('target').textContent = shown;
+                $('quadrantBadge').textContent = `QUADRANT ${quadrant}`;
+                $('quadrantBadge').className = `quadrant-badge q${quadrantNumber}`;
+                const conversion = isRadianPrompt() ? `แปลง ${shown} เป็น ${goal.angle}°` : `เป้าหมาย ${shown}`;
+                const mergeInstruction = goal.recipe
+                    ? `รวมไทล์ ${goal.recipe} เพื่อสร้าง ${goal.angle}° จริง`
+                    : `รวมไทล์ให้ได้ ${goal.angle}°`;
+                $('status').textContent = `ข้อ ${round + 1}/${TOTAL_TARGETS} · Quadrant ${quadrant} · ${conversion} · ${mergeInstruction}`;
+                $('moveLimitLabel').textContent = `${currentMoveLimit()} moves`;
+                $('moveLimitInline').textContent = String(currentMoveLimit());
+                $('topMoves').textContent = `0/${currentMoveLimit()}`;
+                renderProgress();
+            }
+
+            function spawnTile() {
+                const empty = board.map((value, index) => value === 0 ? index : -1).filter(index => index >= 0);
+                if (!empty.length) return;
+                const index = empty[Math.floor(Math.random() * empty.length)];
+                board[index] = 15;
+            }
+
+            function resetRound() {
+                board = Array(16).fill(0);
+                merges = 0;
+                moves = 0;
+                ended = false;
+                board[5] = 15;
+                board[6] = 15;
+                updateRoundDisplay();
+                render();
+            }
+
+            function showResult(success, reason = '') {
+                $('successBeat').classList.remove('show');
+                $('successBeat').setAttribute('aria-hidden', 'true');
+                outcome = success;
+                $('resultKicker').textContent = success ? 'ROUTE RESTORED · SYSTEM ONLINE' : 'SIGNAL PARTIAL · BACKUP ACTIVE';
+                $('resultTitle').textContent = success ? 'ปรับแนวเสาอากาศสำเร็จ' : 'ยังรวมข้อมูลมุมไม่ครบ';
+                $('resultText').textContent = success
+                    ? `กู้คืนข้อมูลครบทั้ง ${TOTAL_TARGETS} ข้อและใช้ ${totalMoves} moves ดาวเทียมเชื่อมต่อสถานีควบคุมแล้ว`
+                    : `${reason || 'กระดานเต็มและไม่มีการรวมที่ทำได้'} ASTRA กำลังชดเชยเส้นทางให้ STARFALL`;
+                $('resultRoute').textContent = `STARFALL ROUTE · LEVEL ${String(level).padStart(2, '0')}`;
+                $('resultArt').style.setProperty('--brief-art', `url("assets/satellite-alignment-${success ? 'outro' : 'intro'}.webp")`);
+                $('done').hidden = false;
+                $('done').textContent = success ? 'ไปยังภารกิจถัดไป ↗' : 'ส่งผลภารกิจและไปต่อ ↗';
+                $('result').hidden = false;
+                if (window.parent !== window) parent.postMessage({ type: 'orbit-minigame-story-wait' }, '*');
+            }
+
+            function finishTarget(success, reason = '') {
+                if (ended) return;
+                ended = true;
+                if (!success) {
+                    showResult(false, reason);
+                    return;
+                }
+                completedTargets++;
+                if (round < TOTAL_TARGETS - 1) {
+                    document.querySelector('.mission').classList.remove('target-cleared');
+                    document.querySelector('.mission').classList.add('target-cleared');
+                    $('status').textContent = `ล็อกมุม ${currentGoal().angle}° สำเร็จ · เตรียมเป้าหมายถัดไป`;
+                    round++;
+                    renderProgress();
+                    window.setTimeout(() => {
+                        document.querySelector('.mission').classList.remove('target-cleared');
+                        resetRound();
+                    }, 780);
+                    return;
+                }
+                document.querySelector('.mission').classList.add('all-targets-cleared');
+                renderProgress();
+                $('status').textContent = 'ครบทั้ง 5 ข้อ ครบ Q1–Q4 · กำลังกู้คืนเส้นทางสื่อสาร';
+                $('successBeat').classList.add('show');
+                $('successBeat').setAttribute('aria-hidden', 'false');
+                const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+                completionTimer = window.setTimeout(() => showResult(true), reducedMotion ? 1200 : 3900);
+            }
+
+            function canMove(direction) {
+                const canMerge = (first, second) => {
+                    const combined = first + second;
+                    const equalTiles = first === second && combined <= currentGoal().mergeValue;
+                    const completesTarget = combined === currentGoal().mergeValue && Boolean(currentGoal().recipe);
+                    return equalTiles || completesTarget;
+                };
+                for (let row = 0; row < 4; row++) {
+                    for (let col = 0; col < 4; col++) {
+                        const nextRow = row + (direction === 'up' ? -1 : direction === 'down' ? 1 : 0);
+                        const nextCol = col + (direction === 'left' ? -1 : direction === 'right' ? 1 : 0);
+                        if (nextRow < 0 || nextRow >= 4 || nextCol < 0 || nextCol >= 4) continue;
+                        const value = board[row * 4 + col];
+                        const next = board[nextRow * 4 + nextCol];
+                        if ((!value && next) || (value && next && canMerge(value, next))) return true;
+                    }
+                }
+                return false;
+            }
+
+            function slide(direction) {
+                if (!started || ended) return;
+                const before = board.join(',');
+                let didMerge = false;
+                for (let line = 0; line < 4; line++) {
+                    const indexes = [];
+                    for (let offset = 0; offset < 4; offset++) {
+                        const row = direction === 'up' ? offset : direction === 'down' ? 3 - offset : line;
+                        const col = direction === 'left' ? offset : direction === 'right' ? 3 - offset : line;
+                        indexes.push(row * 4 + col);
+                    }
+                    const values = indexes.map(index => board[index]).filter(Boolean);
+                    const merged = [];
+                    for (let index = 0; index < values.length; index++) {
+                        const combined = values[index] + (values[index + 1] || 0);
+                        const equalTiles = values[index] === values[index + 1] && combined <= currentGoal().mergeValue;
+                        const completesTarget = values[index + 1] !== undefined
+                            && combined === currentGoal().mergeValue
+                            && Boolean(currentGoal().recipe);
+                        if (equalTiles || completesTarget) {
+                            merged.push(combined);
+                            merges++;
+                            didMerge = true;
+                            index++;
+                            if (combined === currentGoal().mergeValue) {
+                                moves++;
+                                totalMoves++;
+                                indexes.forEach((cellIndex, position) => { board[cellIndex] = merged[position] || 0; });
+                                render(true, true);
+                                finishTarget(true);
+                                return;
+                            }
+                        } else {
+                            merged.push(values[index]);
+                        }
+                    }
+                    indexes.forEach((cellIndex, position) => { board[cellIndex] = merged[position] || 0; });
+                }
+                if (before === board.join(',')) return;
+                moves++;
+                totalMoves++;
+                spawnTile();
+                render(didMerge);
+                if (moves >= currentMoveLimit()) {
+                    finishTarget(false, `ใช้การเลื่อนครบ ${currentMoveLimit()} ครั้งแล้วยังรวมไทล์ถึง ${currentGoal().mergeValue}° ไม่สำเร็จ`);
+                } else if (!['up', 'down', 'left', 'right'].some(canMove)) {
+                    finishTarget(false, 'ข้อมูลมุมกระจายเต็มกระดานแล้ว');
+                }
+            }
+
+            document.addEventListener('keydown', event => {
+                const directions = { ArrowUp: 'up', w: 'up', ArrowDown: 'down', s: 'down', ArrowLeft: 'left', a: 'left', ArrowRight: 'right', d: 'right' };
+                const direction = directions[event.key];
+                if (direction) {
+                    event.preventDefault();
+                    slide(direction);
+                }
+            });
+            document.querySelectorAll('[data-dir]').forEach(button => button.addEventListener('click', () => slide(button.dataset.dir)));
+            boardEl.addEventListener('pointerdown', event => { touchStart = [event.clientX, event.clientY]; });
+            boardEl.addEventListener('pointerup', event => {
+                if (!touchStart) return;
+                const dx = event.clientX - touchStart[0];
+                const dy = event.clientY - touchStart[1];
+                touchStart = null;
+                if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) return;
+                slide(Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : (dy > 0 ? 'down' : 'up'));
+            });
+
+            roundGoals = buildGoals();
+            document.body.dataset.trigoGoal = String(roundGoals[0].mergeValue);
+            document.body.dataset.trigoDisplayGoal = String(roundGoals[0].angle);
+            document.body.dataset.trigoUnit = selectedUnit;
+            document.body.dataset.trigoMoveLimit = String(moveLimits[roundGoals[0].mergeValue] || 14);
+            $('route').textContent = $('resultRoute').textContent = `STARFALL ROUTE · LEVEL ${String(level).padStart(2, '0')} · ${content.toUpperCase()}`;
+            $('introArt').style.setProperty('--brief-art', 'url("assets/satellite-alignment-intro.webp")');
+            $('introText').textContent = 'ASTRA: เกมนี้มีโจทย์ 5 ข้อ ครบ Quadrant I, II, III และ IV บางข้อแสดงเป็นเรเดียน ให้แปลงเป็นองศาก่อนรวมไทล์นะคะ ไทล์ใหม่ทุกใบเริ่มที่ 15° และโจทย์ QIV ต้องรวม 240° กับ 60° ให้ได้ 300° ค่ะ';
+            $('start').addEventListener('click', () => {
+                if (started) return;
+                started = true;
+                $('intro').hidden = true;
+                resetRound();
+                if (window.parent !== window) parent.postMessage({ type: 'orbit-minigame-start' }, '*');
+            });
+            $('done').addEventListener('click', () => {
+                if (window.parent !== window) {
+                    parent.postMessage({ type: 'orbit-minigame-result', success: outcome, score: outcome ? Math.max(0, 1000 - totalMoves * 10) : 0, level, quizAccuracy: outcome ? 100 : 0 }, '*');
+                } else {
+                    $('result').hidden = true;
+                }
+            });
+            updateRoundDisplay();
+            render();
         })();
     </script>
     <script src="assets/minigame-tutorial.js" defer></script>

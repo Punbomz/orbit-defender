@@ -609,13 +609,17 @@
     setSceneMusic('minigame');
     saveCampaignCheckpoint(nextStage+1);state.mode='zombie';state.zombieStarted=false;state.zombieStoryWait=false;state.travelNextStage=nextStage;$('zombie-break').hidden=true;
     const params=new URLSearchParams({autostart:'1',level:String(state.stage+1),unit:state.unit,content:['basic','reflection','quadrants','boss'][state.stage]||'basic'});
-    const miniGames=['wiring.html','radar.html','matching.html','trigo_merge.html','light_path.html'];
+    const allMiniGames=['wiring.html','radar.html','matching.html','trigo_merge.html','light_path.html'];
+    const earlyQuadrantMiniGames=['light_path.html','matching.html','radar.html','wiring.html'];
+    const candidateMiniGames=state.stage<=1?earlyQuadrantMiniGames:allMiniGames;
     let usedMiniGames=[];
-    if(!state.practiceMode&&!state.endlessMode){try{const saved=JSON.parse(localStorage.getItem(CAMPAIGN_MINIGAMES_KEY)||'[]');if(Array.isArray(saved))usedMiniGames=saved.filter(game=>miniGames.includes(game));}catch(_){}}
-    const availableMiniGames=miniGames.filter(game=>!usedMiniGames.includes(game));
-    const selectedMiniGame=miniGames.includes(devSelected)?devSelected:(availableMiniGames.length?availableMiniGames:miniGames)[Math.floor(Math.random()*(availableMiniGames.length||miniGames.length))];state.activeMinigame=selectedMiniGame;
+    if(!state.practiceMode&&!state.endlessMode){try{const saved=JSON.parse(localStorage.getItem(CAMPAIGN_MINIGAMES_KEY)||'[]');if(Array.isArray(saved))usedMiniGames=saved.filter(game=>allMiniGames.includes(game));}catch(_){}}
+    const availableMiniGames=candidateMiniGames.filter(game=>!usedMiniGames.includes(game));
+    const selectedMiniGame=allMiniGames.includes(devSelected)?devSelected:availableMiniGames[Math.floor(Math.random()*availableMiniGames.length)];
+    if(!selectedMiniGame){console.error('No unused minigame is available for this campaign stage.',{stage:state.stage,candidateMiniGames,usedMiniGames});return;}
+    state.activeMinigame=selectedMiniGame;
     if(!state.practiceMode&&!state.endlessMode&&!devSelected){usedMiniGames.push(selectedMiniGame);try{localStorage.setItem(CAMPAIGN_MINIGAMES_KEY,JSON.stringify(usedMiniGames));}catch(_){}}
-    state.zombieTime=selectedMiniGame==='radar.html'?300:selectedMiniGame==='matching.html'?120:selectedMiniGame==='light_path.html'?60:90;state.zombieGraceTime=selectedMiniGame==='trigo_combat.html'?0:5;
+    state.zombieTime=selectedMiniGame==='radar.html'||selectedMiniGame==='trigo_merge.html'?300:selectedMiniGame==='matching.html'?120:selectedMiniGame==='light_path.html'?60:90;state.zombieGraceTime=selectedMiniGame==='trigo_combat.html'?0:5;
     $('zombie-clock').textContent=`${String(Math.floor(state.zombieTime/60)).padStart(2,'0')}:${String(Math.floor(state.zombieTime%60)).padStart(2,'0')}`;$('zombie-game').src='about:blank';$('pause').style.visibility='hidden';
     try{localStorage.setItem('orbit-defender-minigame-current',JSON.stringify({level:state.stage+1,content:params.get('content'),startedAt:new Date().toISOString(),status:'in-progress'}));}catch(_){}
     const labels={'trigo_combat.html':'COMBAT QUIZ · ANSWER TO FIRE','wiring.html':'WIRING · RESTORE THE CORE','radar.html':'RADAR · POSITIONING','matching.html':'SIGNAL MATCH · NAVIGATION DATA','satellite_radar.html':'SATELLITE ALIGNMENT','trigo_merge.html':'TRIGO MERGE · ANGLE RECOVERY','light_path.html':'LIGHT PATH · SIGNAL ALIGNMENT'};$('minigame-title').textContent=labels[selectedMiniGame]||'STARFALL ROUTE · MINIGAME';

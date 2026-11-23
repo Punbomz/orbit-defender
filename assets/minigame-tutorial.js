@@ -3,12 +3,15 @@
   const setup = () => {
     const path = location.pathname.toLowerCase();
     const mergeTarget = Number(document.body.dataset.trigoGoal) || 30;
+    const mergeDisplayTarget = Number(document.body.dataset.trigoDisplayGoal) || mergeTarget;
     const mergeUnit = document.body.dataset.trigoUnit === 'radian' ? 'radian' : 'degree';
     const mergeLimit = Number(document.body.dataset.trigoMoveLimit) || 2;
-    const mergeLabels = {15: ['15°', 'π/12'], 30: ['30°', 'π/6'], 60: ['60°', 'π/3'], 120: ['120°', '2π/3'], 240: ['240°', '4π/3']};
+    const mergeLabels = {15: ['15°', 'π/12'], 30: ['30°', 'π/6'], 45: ['45°', 'π/4'], 60: ['60°', 'π/3'], 120: ['120°', '2π/3'], 135: ['135°', '3π/4'], 150: ['150°', '5π/6'], 210: ['210°', '7π/6'], 225: ['225°', '5π/4'], 240: ['240°', '4π/3'], 300: ['300°', '5π/3'], 315: ['315°', '7π/4'], 330: ['330°', '11π/6']};
     const mergeAngle = value => mergeLabels[value]?.[mergeUnit === 'radian' ? 1 : 0] || `${value}°`;
-    const mergeSteps = [15, 30, 60, 120, 240].slice(0, [15, 30, 60, 120, 240].indexOf(mergeTarget)).map(value => `<div class="minigame-demo-row"><span class="minigame-demo-chip">${mergeAngle(value)} + ${mergeAngle(value)}</span><span>➜</span><span class="minigame-demo-chip answer">${mergeAngle(value * 2)}</span></div>`).join('');
-    const mergeDemo = `<div class="minigame-demo-console"><div class="minigame-demo-title">ไทล์มุมเท่ากันบวกกัน</div>${mergeSteps}<div class="minigame-demo-title">เป้าหมาย ${mergeAngle(mergeTarget)} · ไม่เกิน ${mergeLimit} moves</div></div>`;
+    const mergeExamples = [[15, 15, 30, 'QI'], [60, 60, 120, 'QII'], [120, 120, 240, 'QIII'], [240, 60, 300, 'QIV']];
+    const mergeSteps = mergeExamples.map(([left, right, result, quadrant]) => `<div class="minigame-demo-row"><b>${quadrant}</b><span class="minigame-demo-chip">${mergeAngle(left)} + ${mergeAngle(right)}</span><span>➜</span><span class="minigame-demo-chip answer">${mergeAngle(result)}</span></div>`).join('');
+    const mergeGoalText = mergeAngle(mergeDisplayTarget);
+    const mergeDemo = `<div class="minigame-demo-console"><div class="minigame-demo-title">เริ่มทุกกระดานที่ 15° · เลขโตจากการรวม · ครบ Q1–Q4</div>${mergeSteps}<div class="minigame-demo-title">ตัวอย่างเป้าหมาย ${mergeGoalText} · ไม่เกิน ${mergeLimit} moves</div></div>`;
     const config = path.includes('trigo_combat')
       ? { target: '#screen-tutorial', title: 'วงโคจรสกัดกั้น', copy: '#tutorialCopy', action: '#tutorialNext', demo: '<div class="minigame-demo-console"><div class="minigame-demo-title">ยานลาดตระเวนเข้ามาใกล้!</div><div class="minigame-demo-row"><span class="minigame-demo-chip">sin 30° = ?</span><span>➜</span><span class="minigame-demo-chip answer">1/2</span></div><div class="minigame-demo-row"><span class="minigame-demo-chip">เลือกคำตอบ</span><span class="minigame-demo-chip">ยิงสกัด</span></div></div>' }
       : path.includes('wiring')
