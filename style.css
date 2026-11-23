@@ -1183,3 +1183,20 @@ body.is-portrait .orientation-notice small{font:12px/1.6 var(--sans);color:#a6ba
 #game .weapon-rack .value-key-slot{flex-basis:112px}
 @media(max-width:700px){#game .weapon-rack .weapon-cards,#game .weapon-rack .quadrant-weapons{column-gap:8px}#game .weapon-rack .value-unified .quadrant-weapons{column-gap:8px}#game .weapon-rack .value-key-slot{flex-basis:54px}}
 .settings-keybind .keybind-button{display:grid!important;place-items:center;text-align:center}
+
+/* Keep tablet HUD controls distinct and leave a clear touch area above the weapon rack. */
+@media (min-width:651px) and (max-width:1000px){
+  .hud-top{padding:0 12px;gap:10px}
+  .brand-lockup{min-width:180px}
+  .mission-readout{display:none}
+  .hud-actions{min-width:0;gap:6px}
+  .score-box,.pilot-box,.energy-box,.shield-box{flex-shrink:0}
+  .energy-box{width:76px}
+}
+@media (max-width:1000px){
+  .field-camera-controls{right:8px;bottom:96px;z-index:8}
+}
+@media (min-width:1001px) and (max-width:1640px){
+  #game .weapon-rack:not([hidden]){left:14px;right:auto;width:min(1240px,calc(100vw - 252px));transform:none}
+  .field-camera-controls{right:14px;bottom:12px;z-index:8;width:204px}
+}
