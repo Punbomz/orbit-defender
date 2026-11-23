@@ -609,7 +609,7 @@
     setSceneMusic('minigame');
     saveCampaignCheckpoint(nextStage+1);state.mode='zombie';state.zombieStarted=false;state.zombieStoryWait=false;state.travelNextStage=nextStage;$('zombie-break').hidden=true;
     const params=new URLSearchParams({autostart:'1',level:String(state.stage+1),unit:state.unit,content:['basic','reflection','quadrants','boss'][state.stage]||'basic'});
-    const miniGames=['trigo_combat.html','wiring.html','radar.html','matching.html','satellite_radar.html','trigo_merge.html','light_path.html'];
+    const miniGames=['wiring.html','radar.html','matching.html','trigo_merge.html','light_path.html'];
     let usedMiniGames=[];
     if(!state.practiceMode&&!state.endlessMode){try{const saved=JSON.parse(localStorage.getItem(CAMPAIGN_MINIGAMES_KEY)||'[]');if(Array.isArray(saved))usedMiniGames=saved.filter(game=>miniGames.includes(game));}catch(_){}}
     const availableMiniGames=miniGames.filter(game=>!usedMiniGames.includes(game));
