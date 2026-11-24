@@ -1167,7 +1167,7 @@ body.is-portrait .orientation-notice small{font:12px/1.6 var(--sans);color:#a6ba
 /* One contextual answer row along the bottom of the playfield. */
 #game .weapon-rack:not([hidden]){position:absolute;z-index:6;top:auto;right:auto;bottom:12px;left:50%;transform:translateX(-50%);box-sizing:border-box;width:min(1240px,calc(100vw - 32px));max-width:none;max-height:76px;min-height:58px;display:flex!important;flex-direction:row!important;align-items:center;justify-content:center;gap:8px;overflow-x:auto;overflow-y:hidden;padding:6px 10px;border:1px solid #52dceb99;border-radius:6px;background:linear-gradient(100deg,#041521f2,#082535f2);box-shadow:0 8px 28px #0008,0 0 22px #28d5e52a;scrollbar-width:thin}
 #game .weapon-rack[hidden],#game .weapon-rack .weapon-strip[hidden],#game .weapon-rack .quadrant-group[hidden],#game .weapon-rack .value-key-slot[hidden]{display:none!important}
-#game .weapon-empty{color:#a9cad3;font:10px var(--mono);letter-spacing:.04em;text-align:center}
+#game .weapon-empty{color:#c5f8f5;font:700 13px/1.45 var(--sans);letter-spacing:.01em;text-align:center}
 #game .weapon-empty[hidden]{display:none!important}
 #game .weapon-rack .weapon-strip{display:flex;flex:1;flex-direction:row;align-items:center;gap:8px;min-width:0;min-height:0}
 #game .weapon-rack .weapon-strip>b{width:auto;min-width:54px;min-height:0;padding:0 8px 0 0;border:0;border-right:1px solid #70b4c355;text-align:center;font-size:8px}
