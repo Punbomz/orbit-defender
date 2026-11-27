@@ -33,6 +33,12 @@
   const STAGE_DESTINATION_NAMES=['Helios Outpost','Mirror Belt','Shattered Meridian','NOX Command Base'];
   const overlay = $('overlay');
   const box = overlay.querySelector('.brief-box');
+  // Route wheel input directly to the report scrollport while a result is open.
+  box.addEventListener('wheel', event => {
+    if (!box.classList.contains('has-results') || box.scrollHeight <= box.clientHeight) return;
+    box.scrollTop += event.deltaY;
+    event.preventDefault();
+  }, { passive: false });
   const PLAYFIELD_LEFT=0;
   const TAU = Math.PI * 2;
   const SPECIAL = [0,30,45,60,90,120,135,150,180,210,225,240,270,300,315,330];
